@@ -11,6 +11,7 @@
     "start": "node .output/server/index.mjs"
   },
   "dependencies": {
+    "@hsorby/vue3-katex": "0.6.0-rc.7",
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@prisma/client": "5.18.0",
     "@vee-validate/zod": "^4.13.2",

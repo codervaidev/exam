@@ -25,13 +25,17 @@
                     </Badge>
                 </div>
 
-                <div class="mt-3 text-lg font-semibold" v-katex="q.question"></div>
+                <ClientOnly>
+                    <div class="mt-3 text-lg font-semibold" v-katex="q.question"></div>
 
+                </ClientOnly>
                 <div class="flex flex-wrap gap-3 mt-4">
                     <div v-for="(a, k) in q.options" :key="k">
                         <div class="p-2 border rounded-lg"
                             :class="{ 'border-2 border-black': a.correct, 'bg-white': !a.correct }">
-                            <div v-katex="a.option_text"></div>
+                            <ClientOnly>
+                                <div v-katex="a.option_text"></div>
+                            </ClientOnly>
                         </div>
 
                     </div>

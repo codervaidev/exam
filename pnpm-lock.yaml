@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@hsorby/vue3-katex':
+    specifier: 0.6.0-rc.7
+    version: 0.6.0-rc.7(typescript@5.5.4)
   '@lucia-auth/adapter-prisma':
     specifier: ^4.0.1
     version: 4.0.1(@prisma/client@5.18.0)(lucia@3.2.0)
@@ -1059,6 +1062,17 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+    dev: false
+
+  /@hsorby/vue3-katex@0.6.0-rc.7(typescript@5.5.4):
+    resolution: {integrity: sha512-4j3SHjPc8Ih6hSIysalItG84sGEP/6YtjBnOKP9NhAgdZnWtxWDqGJ0g7LzfwM8uIRHTY133uPtmO+s4/yCTFw==}
+    dependencies:
+      core-js: 3.38.1
+      deepmerge: 4.3.1
+      katex: 0.16.11
+      vue: 3.4.38(typescript@5.5.4)
+    transitivePeerDependencies:
+      - typescript
     dev: false
 
   /@iconify/collections@1.0.451:
@@ -3269,6 +3283,11 @@ packages:
     engines: {node: '>=12.13'}
     dependencies:
       is-what: 4.1.16
+
+  /core-js@3.38.1:
+    resolution: {integrity: sha512-OP35aUorbU3Zvlx7pjsFdu1rGNnD4pgw/CWoYzRY3t2EzoVT7shKHY1dlAy3f41cGIO7ZDPQimhGFTlEYkG/Hw==}
+    requiresBuild: true
+    dev: false
 
   /core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}

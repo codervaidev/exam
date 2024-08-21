@@ -1,4 +1,6 @@
 import katexvue3 from "katex-vue3";
+import "katex/dist/katex.min.css";
+
 export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(katexvue3, {
     flag: [
