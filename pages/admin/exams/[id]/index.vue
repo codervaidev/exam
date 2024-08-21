@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div v-if="q.explain">
 
                     <div class="mt-3 text-lg font-semibold">Explanation</div>
 
@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-
+import katex from 'katex'
 import { useToast } from '@/components/ui/toast/use-toast'
 definePageMeta({
     title: 'Questions',
@@ -103,6 +103,10 @@ const deleteMCQ = async (id) => {
 
 }
 
+
+onMounted(() => {
+    window.katex = katex
+})
 
 </script>
 

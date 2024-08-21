@@ -132,7 +132,7 @@
 </template>
 
 <script setup>
-import katex from 'katex'
+
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { useToast } from '@/components/ui/toast/use-toast'
 import { SUBJECTS, DIFFICULTY_LEVELS } from '~/constants/academic'
@@ -250,6 +250,19 @@ const onSubmit = async () => {
 
             refreshNuxtData('exam-questions')
 
+            model.value = {
+                question: '',
+                options: [
+                    { option_text: '', correct: false },
+                    { option_text: '', correct: false },
+                    { option_text: '', correct: false },
+                    { option_text: '', correct: false }
+                ],
+                subject: '',
+                difficulty: '',
+                explain: ''
+            }
+
             return onClose()
         }
 
@@ -272,7 +285,8 @@ const onSubmit = async () => {
                     { option_text: '', correct: false }
                 ],
                 subject: '',
-                difficulty: ''
+                difficulty: '',
+                explain: ''
             }
             toast({
                 title: "Question created successfully"
@@ -312,12 +326,16 @@ watch(() => initialQuestion.value, (value) => {
 
 const setOptions = (lang, val) => {
 
-    model.value.options = optionLabels[lang].map(l => {
+    model.value.options = model.value.options.map((o, i) => {
+
+        let option_text = optionLabels[lang][i] ?? null
+
+        let correct = val == option_text
+
         return {
-            option_text: l,
-            correct: val === l
+            ...o, option_text, correct
         }
-    })
+    }).filter(o => o.option_text)
 
 
 }
@@ -328,9 +346,7 @@ const setOptions = (lang, val) => {
 
 
 
-onMounted(() => {
-    window.katex = katex
-})
+
 
 </script>
 
