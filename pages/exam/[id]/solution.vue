@@ -25,7 +25,7 @@
 
                 <div v-for="(a, j) in q.options" :key="j"
                     class="flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
-                    :class="{ 'border-slate-500': a.correct }">
+                    :class="{ 'border-green-500': a.correct }">
 
 
                     <div v-katex="a.option_text">
