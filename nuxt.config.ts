@@ -19,4 +19,13 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["./lib"],
   },
+  app: {
+    head: {
+      title: "ACS - Second timer",
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+      ],
+    },
+  },
 });
