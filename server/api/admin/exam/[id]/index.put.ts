@@ -12,17 +12,21 @@ export default defineEventHandler(async (event) => {
 
   const examId = event.context.params?.id;
 
-  const exam = await db.author.update({
+  const exam = await db.exam.update({
     where: {
       id: examId,
     },
     data: {
       ...data,
+      startTime: new Date(data.startTime),
+      endTime: new Date(data.endTime),
+      resultPublishTime: new Date(data.resultPublishTime),
+      solutionPublishTime: new Date(data.solutionPublishTime),
     },
   });
 
   return {
     status: 201,
-    body: exam,
+    message: 'Exam updated successfully',
   };
 });

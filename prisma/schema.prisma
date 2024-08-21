@@ -74,14 +74,15 @@ model Exam {
 }
 
 model Submission {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  userId   String @db.ObjectId
-  examId   String @db.ObjectId
-  answers  Json
-  attempt  Int    @default(1)
-  marks    Int    @default(0)
-  duration Int
-  status   String @default("pending")
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String    @db.ObjectId
+  examId      String    @db.ObjectId
+  answers     Json?
+  attempt     Int       @default(1)
+  marks       Int       @default(0)
+  duration    Int?
+  status      String    @default("pending")
+  submittedAt DateTime?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

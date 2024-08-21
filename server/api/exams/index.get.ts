@@ -23,8 +23,16 @@ export default defineEventHandler(async (event) => {
     };
   });
 
+  const ongoingExams = examsWithStatus.filter((e) => e.status === "ongoing");
+  const upcomingExams = examsWithStatus.filter((e) => e.status === "upcoming");
+  const pastExams = examsWithStatus.filter((e) => e.status === "past");
+
   return {
     statusCode: 200,
-    body: examsWithStatus,
+    body: {
+      ongoingExams,
+      upcomingExams,
+      pastExams,
+    },
   };
 });

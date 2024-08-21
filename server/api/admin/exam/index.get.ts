@@ -1,5 +1,9 @@
 export default defineEventHandler(async (event) => {
-  const exams = await db.exam.findMany({});
+  const exams = await db.exam.findMany({
+    orderBy: {
+      startTime: "asc",
+    },
+  });
 
   return {
     statusCode: 200,

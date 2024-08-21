@@ -48,15 +48,25 @@
                     <Timer class="w-4 h-4 mr-2 text-primary" />
                     Time Remaining
                 </div>
-                <ExamCardTimer :endTime="exam.endTime" />
+
+                <div v-if="exam.status == 'ongoing'">
+                    <ExamCardTimer :endTime="exam.endTime" />
+                </div>
+                <div v-if="exam.status == 'upcoming'">
+                    <ExamCardTimer :endTime="exam.startTime" />
+                </div>
+
+
+
             </div>
         </CardContent>
         <CardFooter class="flex justify-end space-x-2">
             <Button v-if="exam.status === 'upcoming'" variant="outline" disabled>Upcoming</Button>
-            <Button v-if="exam.status === 'ongoing'">Participate</Button>
+            <Button v-if="exam.status === 'ongoing'"
+                @click="navigateTo(`/exam/${exam.id}/onboard`)">Participate</Button>
             <template v-if="exam.status === 'past'">
-                <Button variant="outline">Solution</Button>
-                <Button variant="outline">Leaderboard</Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/solution`)" variant="outline">Solution</Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/leaderbaord`)" variant="outline">Leaderboard</Button>
             </template>
         </CardFooter>
     </Card>

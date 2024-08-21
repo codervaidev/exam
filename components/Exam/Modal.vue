@@ -175,6 +175,24 @@ const onSubmit = form.handleSubmit(async (data) => {
 })
 
 
+watch(() => initialExam.value, (value) => {
+
+    if (value) {
+        form.setValues({
+            title: value.title,
+            subject: value.subject,
+            startTime: dateFieldFormat(value.startTime),
+            endTime: dateFieldFormat(value.endTime),
+            duration: value.duration,
+            totalMarks: value.totalMarks,
+            resultPublishTime: dateFieldFormat(value.resultPublishTime),
+            solutionPublishTime: dateFieldFormat(value.solutionPublishTime)
+        })
+    }
+}, { immediate: true })
+
+
+
 
 </script>
 

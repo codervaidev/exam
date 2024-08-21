@@ -11,19 +11,8 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Exam not found",
     });
   }
-
-  const questions = await db.question.findMany({
-    where: { examId: id },
-    include: {
-      options: true,
-    },
-    
-  });
   return {
     statusCode: 200,
-    body: {
-      exam,
-      questions,
-    },
+    exam
   };
 });

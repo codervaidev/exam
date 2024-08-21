@@ -3,7 +3,7 @@
         <div class="flex items-center justify-between mb-6">
             <div>
                 <h1 class="text-2xl font-bold">{{ exam.title }}</h1>
-                <p class="text-muted-foreground">Computer Science</p>
+                <p class="text-muted-foreground">{{ exam.subject }}</p>
             </div>
             <div class="flex gap-2">
                 <Button variant="outline" size="sm" @click="navigateTo(`/admin/exams/${exam.id}`)">
