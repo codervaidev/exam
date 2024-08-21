@@ -6,7 +6,7 @@
                 <CardTitle class="text-xl">{{ exam.title }}</CardTitle>
                 <Badge
                     :variant="exam.status === 'ongoing' ? 'destructive' : exam.status === 'upcoming' ? 'secondary' : 'outline'">
-                    {{ exam.status }}
+                    {{ exam.status.charAt(0).toUpperCase() + exam.status.slice(1) }}
                 </Badge>
             </div>
             <p class="mt-1 text-sm text-muted-foreground">{{ exam.subject }}</p>
@@ -46,14 +46,16 @@
             <div v-if="exam.status === 'ongoing'" class="flex flex-col items-center p-3 rounded-lg bg-primary/10">
                 <div class="flex items-center mb-2 text-sm font-medium">
                     <Timer class="w-4 h-4 mr-2 text-primary" />
-                    Time Remaining
+                    <p class="font-semibold text-center "> পরীক্ষা {{ exam.status === 'ongoing' ? 'শেষ' : 'শুরু' }} হতে
+                        সময় বাকি
+                    </p>
                 </div>
 
                 <div v-if="exam.status == 'ongoing'">
-                    <ExamCardTimer :endTime="exam.endTime" />
+                    <AppTimer :end="exam.endTime" />
                 </div>
                 <div v-if="exam.status == 'upcoming'">
-                    <ExamCardTimer :endTime="exam.startTime" />
+                    <AppTimer :end="exam.startTime" />
                 </div>
 
 
