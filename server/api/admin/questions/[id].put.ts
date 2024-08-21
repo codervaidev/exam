@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     // Update the options
     await Promise.all(
       options.map(async (option) => {
-        if (option.id) {
+        if (option.id && option.type == "update") {
           // Update existing option
           await db.option.update({
             where: { id: option.id },
@@ -37,14 +37,9 @@ export default defineEventHandler(async (event) => {
               correct: option.correct,
             },
           });
-        } else {
-          // Create new option
-          await db.option.create({
-            data: {
-              option_text: option.option_text,
-              correct: option.correct,
-              questionId: questionId,
-            },
+        } else if (option.type == "delete") {
+          await db.option.delete({
+            where: { id: option.id },
           });
         }
       })

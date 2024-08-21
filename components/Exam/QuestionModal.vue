@@ -215,7 +215,7 @@ const onSubmit = async () => {
         return
     }
 
-    if (model.value.options.filter(o => o.option_text.trim() == '').length > 0) {
+    if (!model.value.options.some(o => o.option_text)) {
         toast({
             title: "Please fill all the options"
         })
@@ -329,13 +329,15 @@ const setOptions = (lang, val) => {
     model.value.options = model.value.options.map((o, i) => {
 
         let option_text = optionLabels[lang][i] ?? null
-
         let correct = val == option_text
 
         return {
-            ...o, option_text, correct
+            ...o,
+            option_text, correct,
+            type: option_text ? 'update' : 'delete'
         }
-    }).filter(o => o.option_text)
+    })
+
 
 
 }
