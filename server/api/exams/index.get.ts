@@ -1,5 +1,11 @@
 export default defineEventHandler(async (event) => {
-  const exams = await db.exam.findMany({});
+  const exams = await db.exam.findMany({
+    where: {
+      id: {
+        not: "66c4ca1e4f7234b6f01a4a26",
+      },
+    },
+  });
 
   const currentDate = new Date();
 
