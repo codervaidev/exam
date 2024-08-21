@@ -91,10 +91,10 @@ const onSubmit = form.handleSubmit(async () => {
         await assignUser();
         return navigateTo('/')
     } catch (error) {
-        toast({
-            title: error.toString(),
-            variant: 'destructive'
-        });
+        // toast({
+        //     title: error.toString(),
+        //     variant: 'destructive'
+        // });
         return navigateTo('/register')
     } finally {
         isLoading.value = false;

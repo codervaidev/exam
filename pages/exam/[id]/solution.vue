@@ -33,6 +33,9 @@
                 </div>
             </div>
 
+            <div v-katex="q.explain">
+            </div>
+
         </div>
     </div>
 

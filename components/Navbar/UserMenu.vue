@@ -30,11 +30,7 @@
                                 Admin Panel
                             </span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem @click="navigateTo('/orders')">
-                            <span>
-                                Previous Orders
-                            </span>
-                        </DropdownMenuItem>
+
 
                         <DropdownMenuItem @click="logout">
                             <Icon name="lucide:log-out" class="w-4 h-4 mr-2" />
