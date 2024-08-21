@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
-  const { question, options, subject, difficulty, examId } = body;
+  const { question, options, subject, difficulty, examId, explian } = body;
 
   if (!question || !options || !subject || !examId) {
     return {
@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
         subject,
         difficulty: difficulty || "Medium",
         examId,
+        explian,
         options: {
           create: options.map((option) => ({
             option_text: option.option_text,

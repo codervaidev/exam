@@ -1,0 +1,78 @@
+<template>
+    <Card class="flex flex-col">
+
+        <CardHeader>
+            <div class="flex items-center justify-between">
+                <CardTitle class="text-xl">{{ exam.title }}</CardTitle>
+                <Badge
+                    :variant="exam.status === 'ongoing' ? 'destructive' : exam.status === 'upcoming' ? 'secondary' : 'outline'">
+                    {{ exam.status }}
+                </Badge>
+            </div>
+            <p class="mt-1 text-sm text-muted-foreground">{{ exam.subject }}</p>
+        </CardHeader>
+        <CardContent class="flex-grow">
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div class="p-3 rounded-lg bg-secondary">
+                    <div class="flex items-center mb-1 text-sm font-medium">
+                        <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-blue-500" />
+                        Start
+                    </div>
+                    <div class="text-xs">{{ formatDate(exam.startTime) }}</div>
+                </div>
+                <div class="p-3 rounded-lg bg-secondary">
+                    <div class="flex items-center mb-1 text-sm font-medium">
+                        <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-red-500" />
+                        End
+                    </div>
+                    <div class="text-xs">{{ formatDate(exam.endTime) }}</div>
+                </div>
+                <div class="p-3 rounded-lg bg-secondary">
+                    <div class="flex items-center mb-1 text-sm font-medium">
+                        <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-green-500" />
+                        Duration
+                    </div>
+                    <div class="text-xs">{{ exam.duration }} minutes</div>
+                </div>
+                <div class="p-3 rounded-lg bg-secondary">
+                    <div class="flex items-center mb-1 text-sm font-medium">
+                        <Icon name="lucide:award" class="w-4 h-4 mr-2 text-yellow-500" />
+                        Total Marks
+                    </div>
+                    <div class="text-xs">{{ exam.totalMarks }}</div>
+                </div>
+            </div>
+
+            <div v-if="exam.status === 'ongoing'" class="flex flex-col items-center p-3 rounded-lg bg-primary/10">
+                <div class="flex items-center mb-2 text-sm font-medium">
+                    <Timer class="w-4 h-4 mr-2 text-primary" />
+                    Time Remaining
+                </div>
+                <ExamCardTimer :endTime="exam.endTime" />
+            </div>
+        </CardContent>
+        <CardFooter class="flex justify-end space-x-2">
+            <Button v-if="exam.status === 'upcoming'" variant="outline" disabled>Upcoming</Button>
+            <Button v-if="exam.status === 'ongoing'">Participate</Button>
+            <template v-if="exam.status === 'past'">
+                <Button variant="outline">Solution</Button>
+                <Button variant="outline">Leaderboard</Button>
+            </template>
+        </CardFooter>
+    </Card>
+</template>
+
+<script setup>
+
+
+const { exam } = defineProps({
+    exam: {
+        type: Object,
+        required: true,
+    },
+})
+
+
+</script>
+
+<style lang="scss" scoped></style>

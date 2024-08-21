@@ -48,6 +48,7 @@ model Question {
   difficulty String? @default("Medium")
   subject    String
   examId     String  @db.ObjectId
+  explain    String?
 
   options Option[]
   exam    Exam?    @relation(fields: [examId], references: [id])

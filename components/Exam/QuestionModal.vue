@@ -50,42 +50,76 @@
                     <Textarea v-if="!richText.question" v-model="model.question" placeholder="Question">
                         </Textarea>
                     <div v-else>
-                        <ClientOnly>
-                            <QuillEditor v-model:content="model.question" contentType="html" />
-
-                        </ClientOnly>
+                        <QuillEditor v-model:content="model.question" contentType="html" :options="editorOptions" />
                     </div>
                 </div>
             </div>
-            <div class="space-y-3">
-                <template v-for="(s, i) in ['a', 'b', 'c', 'd']" :key="i">
 
-                    <div class="w-full p-1 space-y-2">
-                        <div class="flex items-center justify-between">
+            <Tabs default-value="easy">
+                <TabsList class="grid w-full grid-cols-2">
+                    <TabsTrigger value="easy">
+                        Option Based
+                    </TabsTrigger>
+                    <TabsTrigger value="text">
+                        Text Based
+                    </TabsTrigger>
+                </TabsList>
+                <TabsContent value="easy">
 
-                            <div class="flex gap-2">
-                                <Checkbox @update:checked="model.options[i].correct = !model.options[i].correct"
-                                    :checked="model.options[i].correct" />
-                                <label class="block mb-2 text-xs font-bold tracking-wide text-gray-700 uppercase"
-                                    for="grid-question">Option {{ s.toUpperCase() }}</label>
-                            </div>
-
-                            <div class="flex gap-2">
-                                <Checkbox @update:checked="richText[s] = !richText[s]" />
-                                <label class="block mb-2 text-xs font-bold tracking-wide text-gray-700 uppercase"
-                                    for="grid-question">Rich Text</label>
-                            </div>
-
-                        </div>
-                        <Input v-if="!richText[s]" v-model="model.options[i].option_text" placeholder="Answer" />
-                        <div v-else>
-                            <ClientOnly>
-                                <QuillEditor v-model:content="model.options[i].option_text" contentType="html" />
-                            </ClientOnly>
+                    <div class="grid gap-6 my-6">
+                        <div v-for="labels, key in optionLabels" :key="key" class="grid grid-cols-4 gap-4">
+                            <Button v-for="l, j in labels" :key="j" @click.prevent="setOptions(key, l)"
+                                :variant="model.options[j].correct && model.options[j].option_text === l ? '' : 'outline'">
+                                {{ l }}
+                            </Button>
                         </div>
                     </div>
-                </template>
+
+
+                </TabsContent>
+                <TabsContent value="text">
+                    <div class="space-y-3">
+                        <template v-for="(s, i) in ['a', 'b', 'c', 'd']" :key="i">
+
+                            <div class="w-full p-1 space-y-2">
+                                <div class="flex items-center justify-between">
+
+                                    <div class="flex gap-2">
+                                        <Checkbox @update:checked="model.options[i].correct = !model.options[i].correct"
+                                            :checked="model.options[i].correct" />
+                                        <label
+                                            class="block mb-2 text-xs font-bold tracking-wide text-gray-700 uppercase"
+                                            for="grid-question">Option {{ s.toUpperCase() }}</label>
+                                    </div>
+
+                                    <div class="flex gap-2">
+                                        <Checkbox @update:checked="richText[s] = !richText[s]" />
+                                        <label
+                                            class="block mb-2 text-xs font-bold tracking-wide text-gray-700 uppercase"
+                                            for="grid-question">Rich Text</label>
+                                    </div>
+
+                                </div>
+                                <Input v-if="!richText[s]" v-model="model.options[i].option_text"
+                                    placeholder="Answer" />
+                                <div v-else>
+                                    <QuillEditor v-model:content="model.options[i].option_text" contentType="html"
+                                        :options="editorOptions" />
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </TabsContent>
+            </Tabs>
+
+
+            <div>
+                <Label>
+                    Explanation
+                </Label>
+                <QuillEditor v-model:content="model.explain" contentType="html" :options="editorOptions" />
             </div>
+
 
 
             <div class="py-2 my-3 text-center">
@@ -98,6 +132,7 @@
 </template>
 
 <script setup>
+import katex from 'katex'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { useToast } from '@/components/ui/toast/use-toast'
 import { SUBJECTS, DIFFICULTY_LEVELS } from '~/constants/academic'
@@ -123,12 +158,21 @@ if (!import.meta.server) {
 const { onClose, isOpen, initialQuestion } = useQuestion()
 
 
+const optionLabels = {
+    'en': ['A', 'B', 'C', 'D'],
+    'bn': ['ক', 'খ', 'গ', 'ঘ'],
+    'mul': ['i, ii', 'ii, iii', 'i, iii', 'i, ii, iii']
+}
+
+
+
 const model = ref(
     initialQuestion.value ? {
         question: initialQuestion.value.question,
         options: initialQuestion.value.options.map(o => ({ option_text: o.option_text, correct: o.correct })),
         subject: initialQuestion.value.subject,
-        difficulty: initialQuestion.value.difficulty
+        difficulty: initialQuestion.value.difficulty,
+        explain: initialQuestion.value.explain
     } : {
         question: '',
         options: [
@@ -138,7 +182,9 @@ const model = ref(
             { option_text: '', correct: false }
         ],
         subject: '',
-        difficulty: ''
+        difficulty: '',
+        explain: ''
+
     })
 const richText = ref({
     question: true,
@@ -147,7 +193,8 @@ const richText = ref({
     c: true,
     d: true,
     subject: '',
-    difficulty: ''
+    difficulty: '',
+    explain: ''
 })
 
 
@@ -188,8 +235,8 @@ const onSubmit = async () => {
 
     try {
 
-        if (initialQuestion.value) { 
-            const data = await $fetch('/api/admin/questions/'+initialQuestion.value.id, {
+        if (initialQuestion.value) {
+            const data = await $fetch('/api/admin/questions/' + initialQuestion.value.id, {
                 method: 'PUT',
                 body: {
                     examId: route.params.id,
@@ -256,9 +303,33 @@ watch(() => initialQuestion.value, (value) => {
             question: value.question,
             options: value.options.map(o => ({ ...o, option_text: o.option_text, correct: o.correct })),
             subject: value.subject,
-            difficulty: value.difficulty
+            difficulty: value.difficulty,
+            explain: value.explain
         }
     }
+})
+
+
+const setOptions = (lang, val) => {
+
+    model.value.options = optionLabels[lang].map(l => {
+        return {
+            option_text: l,
+            correct: val === l
+        }
+    })
+
+
+}
+
+
+
+
+
+
+
+onMounted(() => {
+    window.katex = katex
 })
 
 </script>

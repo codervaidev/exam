@@ -1,19 +1,27 @@
 <template>
-  <div>
-    <h1>MathJax Example</h1>
-   
-      <div v-katex="formula"></div>
-   
-  </div>
+  <AppContainer>
+
+    <div v-if="status === 'success'" class="grid gap-6 md:grid-cols-2">
+
+
+
+      <ExamCard v-for="exam in data.body" :key="exam.id" :exam="exam" />
+    </div>
+    <div v-else class="py-8">
+      <AppLoader />
+    </div>
+  </AppContainer>
 </template>
 
-<script setup lang="ts">
+<script setup>
 
+const { onOpen } = useExam()
 
-const formula = ref<string>('$x^2$')
-
+const { data, status, error, refresh } = await useFetch('/api/exams', {
+  key: 'admin-exams',
+})
 
 
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

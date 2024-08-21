@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
-  const { question, options, subject, difficulty, examId } = body;
+  const { question, options, subject, difficulty, examId, explain } = body;
 
   const questionId = event.context.params?.id;
 
@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
         subject,
         difficulty: difficulty || "Medium",
         examId,
+        explain,
       },
     });
 
