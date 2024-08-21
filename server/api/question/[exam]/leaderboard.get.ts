@@ -8,6 +8,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+
+  const examData = await db.exam.findUnique({
+    where: {
+      id: exam as string,
+    },
+  });
+
+
+
   // Fetch the leaderboard data
   const leaderboard = await db.submission.findMany({
     where: {

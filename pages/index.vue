@@ -41,10 +41,7 @@
 </template>
 
 <script setup>
-
-const { onOpen } = useExam()
-
-const { data, status, error, refresh } = await useFetch('/api/exams', {
+const { data, status, error, refresh } = await useLazyFetch('/api/exams', {
   key: 'admin-exams',
 })
 

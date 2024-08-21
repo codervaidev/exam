@@ -20,6 +20,16 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  if (
+    new Date(exam.startTime) > new Date() ||
+    new Date(exam.endTime) < new Date()
+  ) {
+    return createError({
+      statusCode: 403,
+      statusMessage: "Exam is not active",
+    });
+  }
+
   const questions = await db.question.findMany({
     where: { examId: id },
 
