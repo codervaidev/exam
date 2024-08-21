@@ -2,9 +2,9 @@
 
     <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
         <AppContainer>
-            <div class="container flex items-center justify-between px-4 py-4 mx-auto">
-                <h1 class="text-xl font-bold text-gray-800">{{ data.exam.title }}</h1>
-                <div class="flex items-center space-x-4">
+            <div class="container flex items-center justify-between px-2 py-4 mx-auto md:px-4">
+                <h1 class="hidden text-xl font-bold text-gray-800 md:block">{{ data.exam.title }}</h1>
+                <div class="flex items-center justify-between flex-1 space-x-4 md:justify-end">
                     <div v-if="end_time" class="flex gap-4 text-lg font-semibold text-slate-800">
                         <!-- Time Left: -->
                         <ExamTimer :end_time="end_time" />
@@ -19,9 +19,10 @@
         </AppContainer>
         <Progress v-model="progress" class="w-full rounded-none " />
     </header>
-    <div class="max-w-2xl py-10 mx-auto space-y-6" v-if="status === 'success'">
-
-        <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-3 bg-white rounded-lg shadow-md">
+    <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'">
+        <h1 class="text-xl font-bold text-center title_grad md:hidden">{{ data.exam.title }}</h1>
+        <div v-for="(q, i) in data.questions" :key="i"
+            class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
 
             <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
 

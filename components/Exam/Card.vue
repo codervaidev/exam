@@ -57,18 +57,14 @@
                 <div v-if="exam.status == 'upcoming'">
                     <AppTimer :end="exam.startTime" />
                 </div>
-
-
-
             </div>
         </CardContent>
-        <CardFooter class="flex justify-end space-x-2">
+        <CardFooter class="flex justify-center space-x-2">
             <Button v-if="exam.status === 'upcoming'" variant="outline" disabled>Upcoming</Button>
-            <Button v-if="exam.status === 'ongoing'"
-                @click="navigateTo(`/exam/${exam.id}/onboard`)">Participate</Button>
+            <Button v-if="exam.status === 'ongoing'" @click="navigateTo(`/exam/${exam.id}/onboard`)">Start Exam</Button>
             <template v-if="exam.status === 'past'">
                 <Button @click="navigateTo(`/exam/${exam.id}/solution`)" variant="outline">Solution</Button>
-                <Button @click="navigateTo(`/exam/${exam.id}/leaderbaord`)" variant="outline">Leaderboard</Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)" variant="outline">Leaderboard</Button>
             </template>
         </CardFooter>
     </Card>

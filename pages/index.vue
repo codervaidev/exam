@@ -2,7 +2,7 @@
   <AppContainer>
 
     <div v-if="status === 'success'" class="space-y-6">
-      <div class="grid gap-6 md:grid-cols-2">
+      <div class="max-w-2xl mx-auto">
         <ExamCard v-for="exam in data.body.ongoingExams" :key="exam.id" :exam="exam" />
       </div>
       <Tabs default-value="upcoming">
