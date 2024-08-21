@@ -13,7 +13,7 @@ export default defineNuxtConfig({
   ],
   vite: {
     optimizeDeps: {
-      exclude: ["vee-validate", "katex-vue3"],
+      exclude: ["vee-validate"],
     },
   },
   imports: {
