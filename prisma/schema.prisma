@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  phone     String   @unique
+  district  String
+  thana     String
+  institute String
+  role      String   @default("USER")
+  batch     String   @default("Others")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Submissions Submission[]
+  Session     Session[]
+}
+
+model Session {
+  id        String   @id @map("_id")
+  userId    String   @db.ObjectId
+  expiresAt DateTime
+
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+model Option {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  option_text String
+  correct     Boolean
+  questionId  String  @db.ObjectId
+
+  question Question @relation(fields: [questionId], references: [id])
+
+  @@index([questionId], map: "question_id_index")
+}
+
+model Question {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  question   String
+  difficulty String? @default("Medium")
+  subject    String
+  examId     String  @db.ObjectId
+
+  options Option[]
+  exam    Exam?    @relation(fields: [examId], references: [id])
+
+  @@index([examId], map: "exam_id_index")
+}
+
+model Exam {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  title               String
+  subject             String
+  startTime           DateTime
+  endTime             DateTime
+  duration            Int
+  totalMarks          Int
+  resultPublishTime   DateTime
+  solutionPublishTime DateTime
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+
+  submissions Submission[]
+  questions   Question[]
+}
+
+model Submission {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String @db.ObjectId
+  examId   String @db.ObjectId
+  answers  Json
+  attempt  Int    @default(1)
+  marks    Int    @default(0)
+  duration Int
+  status   String @default("pending")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id])
+  exam Exam @relation(fields: [examId], references: [id])
+
+  @@index([userId], map: "user_id_index")
+  @@index([examId], map: "exam_id_index")
+}
