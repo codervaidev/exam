@@ -19,6 +19,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ["./lib"],
   },
+  ssr: false,
   app: {
     head: {
       title: "ACS - Second timer",
