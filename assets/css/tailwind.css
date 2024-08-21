@@ -77,11 +77,49 @@
   }
 }
 
-.hide-scrollbar{
+/* hide scrollbar of a div */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+::-webkit-scrollbar {
+    width: 6px;
+    height: 3px;
+}
 
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #b6b1b0, #87878b);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #0f0905, #070619);
+}
+/* Changes the selected option background in the dropdown */
+.multiselect__option--highlight {
+    background-color: #333!important;  /* Darker shade for highlighted option */
+    color: white!important;
+}
+
+/* hover */
+.multiselect__option--highlight:hover {
+    background-color: #333;  /* Darker shade for highlighted option */
+    color: white;
+}
+
+/* selected item hover color */
+.multiselect__option--selected:hover {
+    background-color: #333;  /* Darker shade for highlighted option */
+    color: white;
+}
+
+/* Changes the input text color */
+.multiselect__input {
+    color: white;
 }
 
 

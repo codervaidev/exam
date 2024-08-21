@@ -27,7 +27,20 @@ export default defineEventHandler(async (event) => {
   }
 
   let duration =
-    new Date(submission?.createdAt).getTime() - new Date().getTime();
+    new Date().getTime() - new Date(submission?.createdAt).getTime();
+
+  const optionIds = answers.map((a) => a.a);
+
+  const marks = await db.option.count({
+    where: {
+      id: {
+        in: optionIds,
+      },
+      correct: true,
+    },
+  });
+
+  const negMarks = (optionIds.length - marks) * 0.25;
 
   await db.submission.update({
     where: {
@@ -37,6 +50,7 @@ export default defineEventHandler(async (event) => {
       answers,
       duration,
       submittedAt: new Date(),
+      marks: marks - negMarks,
       status: "submitted",
     },
   });

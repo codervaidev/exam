@@ -34,31 +34,36 @@
                             </FormItem>
                         </FormField>
 
+
                         <FormField v-slot="{ componentField }" name="district">
                             <FormItem>
-                                <Label>District</Label>
-                                <FormControl>
-                                    <Input placeholder="District" v-bind="componentField" />
-                                </FormControl>
+                                <FormLabel>District</FormLabel>
+                                <MultiSelect v-bind="componentField" :options="districts" :searchable="true"
+                                    :close-on-select="true" @close="getFilterData" :show-labels="false"
+                                    placeholder="Select District">
+                                </MultiSelect>
+
+
                                 <FormMessage />
                             </FormItem>
                         </FormField>
-
                         <FormField v-slot="{ componentField }" name="thana">
                             <FormItem>
-                                <Label>Thana</Label>
-                                <FormControl>
-                                    <Input placeholder="Thana" v-bind="componentField" />
-                                </FormControl>
+                                <FormLabel>Thana</FormLabel>
+
+                                <MultiSelect v-bind="componentField" :options="thanas" :searchable="true"
+                                    :close-on-select="true" :show-labels="false" placeholder="Select Thanas">
+                                </MultiSelect>
+
                                 <FormMessage />
                             </FormItem>
                         </FormField>
 
                         <FormField v-slot="{ componentField }" name="institute">
                             <FormItem>
-                                <Label>Institute</Label>
+                                <FormLabel>Institute Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Institute" v-bind="componentField" />
+                                    <Input type="text" placeholder="Institute name" v-bind="componentField" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -66,10 +71,23 @@
 
                         <FormField v-slot="{ componentField }" name="batch">
                             <FormItem>
-                                <Label>Batch</Label>
-                                <FormControl>
-                                    <Input placeholder="Batch" v-bind="componentField" />
-                                </FormControl>
+                                <FormLabel>HSC Batch</FormLabel>
+
+                                <Select v-bind="componentField">
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select your HSC BATCH" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        <SelectGroup v-for="b in hsc_batches" :key="b">
+                                            <SelectItem :value="b">
+                                                {{ b }}
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+
                                 <FormMessage />
                             </FormItem>
                         </FormField>
@@ -92,13 +110,16 @@
 definePageMeta({
     title: 'Register',
     description: 'Register your account',
-    layout: 'blank'
+    layout: 'blank',
+    middleware: 'guest'
 })
 
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { useToast } from '@/components/ui/toast/use-toast'
-
+import MultiSelect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.ssr.css'
+import axios from 'axios'
 import { RegisterSchema } from '~/schema/register.schema';
 
 const formSchema = toTypedSchema(RegisterSchema);
@@ -132,7 +153,7 @@ const onSubmit = form.handleSubmit(async () => {
     try {
         isLoading.value = true;
 
-        const data= await  $fetch('/api/auth/signup', {
+        const data = await $fetch('/api/auth/signup', {
             method: 'POST',
             body: form.values
         })
@@ -153,4 +174,45 @@ const onSubmit = form.handleSubmit(async () => {
         isLoading.value = false;
     }
 });
+
+
+const hsc_batches = [
+    'HSC 2024',
+    'HSC 2025',
+    'HSC 2026',
+    'HSC 2027'
+]
+
+const districts = ref([])
+const thanas = ref([])
+
+
+
+watch(form.values, (n) => {
+    if (n.district) {
+        getFilterData()
+    }
+})
+const thanaLoading = ref(false)
+const getFilterData = async () => {
+    try {
+        thanaLoading.value = true
+        const { data } = await axios('https://collegeinfobe-production.up.railway.app/api/colleges/filters', {
+            params: {
+                district: form.values.district,
+            }
+        })
+
+        if (data.districts.length > 0) districts.value = data.districts
+        thanas.value = data.thanas
+        thanaLoading.value = false
+    } catch (error) {
+        console.log(error)
+        thanaLoading.value = false
+    }
+}
+
+onMounted(() => {
+    getFilterData()
+})
 </script>

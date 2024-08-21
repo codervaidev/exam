@@ -19,8 +19,8 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  Submissions Submission[]
-  Session     Session[]
+  submissions Submission[]
+  sessions    Session[]
 }
 
 model Session {

@@ -20,6 +20,7 @@
     "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^11.0.1",
     "@vueuse/math": "^11.0.1",
+    "axios": "^1.7.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "h3-zod": "^0.5.3",
@@ -39,6 +40,7 @@
     "vaul-vue": "^0.2.0",
     "vee-validate": "^4.13.2",
     "vue": "latest",
+    "vue-multiselect": "^3.0.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {

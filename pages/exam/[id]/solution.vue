@@ -24,16 +24,16 @@
             <div class="mt-3 space-y-3 ">
 
                 <div v-for="(a, j) in q.options" :key="j"
-                    class="flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+                    class="relative flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
                     :class="{ 'border-green-500': a.correct }">
-
-
+                    <Icon name="lucide:check-circle-2" size="24" class="absolute text-green-500 right-3"
+                        v-if="a.correct" />
                     <div v-katex="a.option_text">
                     </div>
                 </div>
             </div>
 
-            <div v-katex="q.explain">
+            <div v-if="q.explain" v-katex="q.explain" class="p-2 border border-green-600 rounded-md">
             </div>
 
         </div>

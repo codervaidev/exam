@@ -18,32 +18,32 @@
                         <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-blue-500" />
                         Start
                     </div>
-                    <div class="text-xs">{{ formatDate(exam.startTime) }}</div>
+                    <div class="ml-6 text-xs">{{ formatDate(exam.startTime) }}</div>
                 </div>
                 <div class="p-3 rounded-lg bg-secondary">
                     <div class="flex items-center mb-1 text-sm font-medium">
                         <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-red-500" />
                         End
                     </div>
-                    <div class="text-xs">{{ formatDate(exam.endTime) }}</div>
+                    <div class="ml-6 text-xs">{{ formatDate(exam.endTime) }}</div>
                 </div>
                 <div class="p-3 rounded-lg bg-secondary">
                     <div class="flex items-center mb-1 text-sm font-medium">
                         <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-green-500" />
                         Duration
                     </div>
-                    <div class="text-xs">{{ exam.duration }} minutes</div>
+                    <div class="ml-6 text-xs">{{ exam.duration }} minutes</div>
                 </div>
                 <div class="p-3 rounded-lg bg-secondary">
                     <div class="flex items-center mb-1 text-sm font-medium">
                         <Icon name="lucide:award" class="w-4 h-4 mr-2 text-yellow-500" />
                         Total Marks
                     </div>
-                    <div class="text-xs">{{ exam.totalMarks }}</div>
+                    <div class="ml-6 text-xs">{{ exam.totalMarks }} x 1 = 10</div>
                 </div>
             </div>
 
-            <div v-if="exam.status === 'ongoing'" class="flex flex-col items-center p-3 rounded-lg bg-primary/10">
+            <div v-if="exam.status !== 'past'" class="flex flex-col items-center p-3 rounded-lg bg-primary/10">
                 <div class="flex items-center mb-2 text-sm font-medium">
                     <Timer class="w-4 h-4 mr-2 text-primary" />
                     <p class="font-semibold text-center "> পরীক্ষা {{ exam.status === 'ongoing' ? 'শেষ' : 'শুরু' }} হতে
@@ -60,11 +60,17 @@
             </div>
         </CardContent>
         <CardFooter class="flex justify-center space-x-2">
-            <Button v-if="exam.status === 'upcoming'" variant="outline" disabled>Upcoming</Button>
-            <Button v-if="exam.status === 'ongoing'" @click="navigateTo(`/exam/${exam.id}/onboard`)">Start Exam</Button>
+
+            <Button v-if="exam.status === 'ongoing' && (!exam.submission || exam.submission.status === 'pending')"
+                @click="navigateTo(`/exam/${exam.id}/onboard`)">Start Exam</Button>
+            <p v-else-if="exam.status === 'ongoing'" class="font-semibold text-green-500">
+                Thanks for participation.
+            </p>
             <template v-if="exam.status === 'past'">
-                <Button @click="navigateTo(`/exam/${exam.id}/solution`)" variant="outline">Solution</Button>
-                <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)" variant="outline">Leaderboard</Button>
+
+                <Button @click="navigateTo(`/exam/${exam.id}/practice`)">Pratice Exam</Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/solution`)">Solution</Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)">Leaderboard</Button>
             </template>
         </CardFooter>
     </Card>

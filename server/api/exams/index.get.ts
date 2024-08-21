@@ -5,6 +5,17 @@ export default defineEventHandler(async (event) => {
         not: "66c4ca1e4f7234b6f01a4a26",
       },
     },
+    include: {
+      submissions: {
+        where: {
+          userId: event.context.user?.id,
+        },
+        select: {
+          id: true,
+          status: true,
+        },
+      },
+    },
   });
 
   const currentDate = new Date();
@@ -26,6 +37,7 @@ export default defineEventHandler(async (event) => {
     return {
       ...exam,
       status,
+      submission: exam.submissions?.[0],
     };
   });
 

@@ -62,7 +62,7 @@ async function logout() {
         method: 'POST'
     })
     user.value = null
-    navigateTo('/')
+    navigateTo('/login')
 }
 const colorMode = useColorMode()
 const isDark = computed({

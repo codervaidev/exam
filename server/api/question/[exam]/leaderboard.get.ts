@@ -8,23 +8,19 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-
   const examData = await db.exam.findUnique({
     where: {
       id: exam as string,
     },
   });
 
-
-
   // Fetch the leaderboard data
   const leaderboard = await db.submission.findMany({
     where: {
       examId: exam as string,
-      //   status: "completed", // Assuming 'completed' status means the submission is valid for leaderboard
     },
     orderBy: {
-      marks: "desc", // Sort by marks in descending order
+      marks: "desc",
     },
     select: {
       user: {
@@ -37,8 +33,11 @@ export default defineEventHandler(async (event) => {
       duration: true,
       submittedAt: true,
     },
-    take: 10, // Limit to top 10 results, adjust as needed
+    // take: 10,
   });
 
-  return leaderboard;
+  return {
+    examData,
+    leaderboard,
+  };
 });

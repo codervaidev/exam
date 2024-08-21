@@ -51,11 +51,19 @@ export default defineEventHandler(async (event) => {
     },
   });
 
+  if (submission && submission?.status !== "pending") {
+    return createError({
+      statusCode: 403,
+      statusMessage: "Submission is not pending",
+    });
+  }
+
   if (!submission) {
     submission = await db.submission.create({
       data: {
         examId: id,
         userId: userId,
+        status: "pending",
       },
     });
   }

@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="relative flex items-center justify-center px-4 h-dvh lg:max-w-none lg:px-0"
+  <div class="relative flex items-center justify-center md:px-4 h-dvh lg:max-w-none lg:px-0"
     :class="{ 'flex-row-reverse': reverse }">
     <div class="relative flex-col flex-1 hidden h-full bg-muted lg:flex dark:border-r">
       <div class="absolute inset-0 bg-zinc-900" />
@@ -18,7 +18,7 @@ defineProps<{
         <AppTypewrite />
       </div>
     </div>
-    <div class="flex-1 mx-auto overflow-y-scroll h-dvh hide-scrollbar lg:p-8">
+    <div class="flex-1 px-4 mx-auto overflow-y-scroll h-dvh hide-scrollbar lg:p-8">
       <slot />
     </div>
   </div>

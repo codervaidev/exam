@@ -65,7 +65,7 @@ definePageMeta({
 import { useToast } from '@/components/ui/toast/use-toast'
 const route = useRoute()
 
-const { data, status, error, refresh } = await useFetch('/api/question/' + route.params.id, {
+const { data, status, error, refresh } = await useFetch('/api/question/' + route.params.id + '/practice', {
     key: 'questions'
 })
 
@@ -77,11 +77,22 @@ const { toast } = useToast()
 const submitAns = async () => {
 
     try {
-        const answers = data.value.questions.filter(q => q.selected).map(q => ({
-            q: q.id,
-            a: q.selected
-        }))
-        await $fetch('/api/question/' + route.params.id, { method: 'POST', body: { answers } })
+
+
+
+        // calculate score
+        const score = data.value.questions.filter(q => q.selected).reduce((acc, q) => {
+            const ans = q.options.find(o => o.id === q.selected)
+            if (ans.correct) {
+                return acc + 1
+            } else if (ans.correct === false) {
+                return acc - 0.25
+            }
+            return acc
+        }, 0)
+
+
+
         clearTimeout(timer.value)
         timer.value = null
 
@@ -89,7 +100,7 @@ const submitAns = async () => {
 
         toast({
             title: 'Submitted',
-            description: 'Your answers have been submitted successfully',
+            description: 'You have scored ' + score + ' out of ' + data.value.questions.length,
 
         })
     } catch (error) {
@@ -117,7 +128,7 @@ const end_time = ref(null)
 
 onMounted(() => {
 
-    end_time.value = new Date(data.value.submission.createdAt).getTime() + (data.value.exam.duration * 60 * 1000)
+    end_time.value = new Date().getTime() + (data.value.exam.duration * 60 * 1000)
 
     if (!timer.value) {
         timer.value = setInterval(() => {

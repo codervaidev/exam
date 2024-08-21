@@ -12,7 +12,7 @@
                 <Button @click="onEdit(exam)" variant="outline" size="sm">
                     Edit
                 </Button>
-                <Button variant="destructive" size="sm">
+                <Button variant="destructive" size="sm" @click="deleteExam(exam.id)">
                     Delete
                 </Button>
             </div>
@@ -71,6 +71,19 @@ const props = defineProps({
 })
 
 const { onEdit } = useExam()
+
+
+const deleteExam = async (id) => {
+    const confirm = confirm('Are you sure you want to delete this exam?')
+    if (confirm) {
+        await $fetch(`/admin/exam/${id}`, {
+            method: 'DELETE'
+        })
+
+    }
+}
+
+
 
 
 </script>
