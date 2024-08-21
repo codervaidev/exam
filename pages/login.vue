@@ -62,9 +62,7 @@ const form = useForm({
     }
 })
 const isLoading = ref(false);
-const router = useRouter();
 
-const { toast } = useToast();
 const user = useUser();
 const assignUser = async () => {
 

@@ -41,9 +41,18 @@
 </template>
 
 <script setup>
+
+definePageMeta({
+  middleware: ['protected']
+})
+
+
+
 const { data, status, error, refresh } = await useLazyFetch('/api/exams', {
   key: 'admin-exams',
 })
+
+
 
 
 </script>
