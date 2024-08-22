@@ -10,7 +10,6 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@pinia/nuxt",
     "@nuxt/icon",
-    "nuxt-clarity-analytics"
   ],
   vite: {
     optimizeDeps: {
@@ -28,6 +27,7 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
+      
     },
   },
 });
