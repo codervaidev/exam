@@ -13,6 +13,16 @@ export default eventHandler(async (event) => {
   }
 
   const session = await lucia.createSession(existingUser.id, {});
+
+  await db.session.deleteMany({
+    where: {
+      id: {
+        not: session.id,
+      },
+      userId: existingUser.id,
+    },
+  });
+
   appendHeader(
     event,
     "Set-Cookie",

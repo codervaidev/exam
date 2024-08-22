@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     },
   });
 
+
   const currentDate = new Date();
 
   const examsWithStatus = exams.map((exam) => {

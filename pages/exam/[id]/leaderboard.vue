@@ -23,11 +23,13 @@
                     </TableHeader>
                     <TableBody>
 
-                        <TableRow v-for="rank, i in data.leaderboard" :key="rank.id" class="hover:bg-gray-50">
+                        <TableRow v-for="rank, i in leaderboard" :key="rank.id" class="hover:bg-gray-50">
                             <TableCell class="flex items-center font-medium">
-                                {{ i + 1 }}
-                                <Icon name="lucide:medal" size="16" :class="`inline-block ml-1 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : 'text-amber-600'
+                                <div v-if="!search" class="flex items-center">
+                                    {{ i + 1 }}
+                                    <Icon v-if="i < 3" name="lucide:medal" size="16" :class="`inline-block ml-1 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : 'text-amber-600'
                 }`" />
+                                </div>
                             </TableCell>
                             <TableCell>{{ rank.user.name }}</TableCell>
                             <TableCell>{{ rank.user.institute }}</TableCell>
@@ -44,24 +46,79 @@
                     </TableBody>
                 </Table>
             </div>
+            <div class="my-5">
+
+                <AppLoader v-if="status === 'pending' || loadingMore" />
+                <AppEmptyState v-if="status === 'success' && data.leaderboard.length === 0" />
+
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
-
 const search = ref('')
+const page = ref(1)
+const pageSize = 25
+const leaderboard = ref([])
+const loadingMore = ref(false)
 
-const { data, status, error, refresh } = await useFetch('/api/question/' + route.params.id + '/leaderboard', {
+const { data, status, error, refresh } = await useLazyFetch(`/api/question/${route.params.id}/leaderboard`, {
     key: 'leaderboard',
     query: {
-        search
+        page: page.value,
+        pageSize: pageSize,
+        search: search.value
     },
+
     watch: [search]
 })
+
+watch(data, () => {
+    leaderboard.value = [...leaderboard.value, ...data.value.leaderboard]
+})
+
+const onScroll = async () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const clientHeight = window.innerHeight || document.documentElement.clientHeight;
+    const scrollHeight = document.documentElement.scrollHeight;
+
+    if (data.value.pagination.totalPages === page.value) return
+
+    if (scrollTop + clientHeight >= scrollHeight - 10 && !loadingMore.value) {
+        loadingMore.value = true;
+        page.value += 1;
+        await loadMoreLeaderboard();
+        loadingMore.value = false;
+    }
+};
+
+
+const loadMoreLeaderboard = async () => {
+    const response = await fetch(`/api/question/${route.params.id}/leaderboard?page=${page.value}&pageSize=${pageSize}&search=${search.value}`)
+    const moreData = await response.json()
+
+    if (moreData.leaderboard && moreData.leaderboard.length > 0) {
+        leaderboard.value.push(...moreData.leaderboard)
+    }
+}
+
+watch(search, () => {
+    page.value = 1
+    leaderboard.value = []
+    refresh()
+})
+
+
+
+onMounted(() => {
+    window.addEventListener('scroll', onScroll)
+})
+
 </script>
 
 <style lang="scss" scoped></style>

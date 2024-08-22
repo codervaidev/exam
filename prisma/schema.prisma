@@ -79,7 +79,7 @@ model Submission {
   examId      String    @db.ObjectId
   answers     Json?
   attempt     Int       @default(1)
-  marks       Int       @default(0)
+  marks       Float     @default(0)
   duration    Int?
   status      String    @default("pending")
   submittedAt DateTime?
