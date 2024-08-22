@@ -177,10 +177,9 @@ const onSubmit = form.handleSubmit(async () => {
 
 
 const hsc_batches = [
+    'HSC 2022',
+    'HSC 2023',
     'HSC 2024',
-    'HSC 2025',
-    'HSC 2026',
-    'HSC 2027'
 ]
 
 const districts = ref([])
