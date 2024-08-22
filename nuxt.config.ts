@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@pinia/nuxt",
     "@nuxt/icon",
+    "nuxt-clarity-analytics"
   ],
   vite: {
     optimizeDeps: {
