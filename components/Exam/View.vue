@@ -6,6 +6,9 @@
                 <p class="text-muted-foreground">{{ exam.subject }}</p>
             </div>
             <div class="flex gap-2">
+                <Button variant="outline" size="sm" @click="navigateTo(`/admin/leaderboards/${exam.id}`)">
+                    Leaderboard
+                </Button>
                 <Button variant="outline" size="sm" @click="navigateTo(`/admin/exams/${exam.id}`)">
                     Questions
                 </Button>
