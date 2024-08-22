@@ -11,12 +11,14 @@ import {
 } from 'lucide-vue-next'
 
 const perpage = ref('10')
+const search = ref('')
 const currentPage = ref(1)
 const { data, status, error, refresh } = await useFetch('/api/admin/users', {
     key: 'users',
     query: {
         limit: perpage,
-        page: currentPage
+        page: currentPage,
+        search: search
     }
 })
 
@@ -77,6 +79,13 @@ const paginate = (page: number) => {
     currentPage.value = page
 }
 
+const presearch = ref('')
+
+
+debouncedWatch(presearch, (value) => {
+    search.value = value
+}, { debounce: 500 })
+
 
 </script>
 
@@ -89,7 +98,7 @@ const paginate = (page: number) => {
                 <div class="flex items-end justify-between ">
                     <div class="relative">
                         <Search class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input type="search" placeholder="Search..."
+                        <Input v-model="presearch" type="search" placeholder="Search..."
                             class="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[320px]" />
                     </div>
                     <div class="flex items-end gap-3" v-if="status == 'success'">

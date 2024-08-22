@@ -8,12 +8,25 @@ export default defineEventHandler(async (event) => {
   const users = await db.user.findMany({
     skip,
     take: limit,
+    where: {
+      name: {
+        contains: query.search as string,
+        mode: "insensitive",
+      },
+    },
     include: {
       sessions: true,
     },
   });
 
-  const totalUsers = await db.user.count();
+  const totalUsers = await db.user.count({
+    where: {
+      name: {
+        contains: query.search as string,
+        mode: "insensitive",
+      },
+    },
+  });
 
   return {
     page,

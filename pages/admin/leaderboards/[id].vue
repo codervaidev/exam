@@ -6,7 +6,7 @@
                 :subtitle="status === 'success' ? data.examData.title : ''" />
 
             <div class="relative mt-4 mb-4">
-                <Input type="text" placeholder="Search by name or institute..." class="pl-10" v-model="search" />
+                <Input type="text" placeholder="Search by name or institute..." class="pl-10" v-model="presearch" />
                 <Icon name="lucide:search" class="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                     size="20" />
             </div>
@@ -37,7 +37,7 @@
                             <TableCell class="text-right">
                                 <span class="flex items-center justify-end">
                                     <Icon name="lucide:clock" class="mr-1" size="14" />
-                                    {{ millisecToTime(rank.duration) }}
+                                    {{ millisecToTime(rank.duration, data.examData.duration) }}
                                 </span>
                             </TableCell>
 
@@ -71,16 +71,16 @@ const loadingMore = ref(false)
 const { data, status, error, refresh } = await useLazyFetch(`/api/question/${route.params.id}/leaderboard`, {
     key: 'leaderboard',
     query: {
-        page: page.value,
-        pageSize: pageSize,
-        search: search.value
+        search: search
     },
-
-    watch: [search]
 })
 
 watch(data, () => {
-    leaderboard.value = [...leaderboard.value, ...data.value.leaderboard]
+    if (!search) {
+        leaderboard.value = [...leaderboard.value, ...data.value.leaderboard]
+    } else {
+        leaderboard.value = data.value.leaderboard
+    }
 })
 
 const onScroll = async () => {
@@ -108,12 +108,13 @@ const loadMoreLeaderboard = async () => {
     }
 }
 
-watch(search, () => {
-    page.value = 1
-    leaderboard.value = []
-    refresh()
-})
 
+const presearch = ref('')
+debouncedWatch(presearch, (value) => {
+    search.value = value
+    page.value = 1
+    refresh()
+}, { debounce: 500 })
 
 
 onMounted(() => {
