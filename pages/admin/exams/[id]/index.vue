@@ -13,16 +13,28 @@
 
             <div v-for="(q, j) in data.body.questions" :key="q._id" class="p-5 bg-white border rounded-2xl">
 
-                <div class="flex gap-3">
-                    <Badge color="amber">
-                        Q. {{ j + 1 }}
-                    </Badge>
-                    <Badge color="blue">
-                        {{ q.subject }}
-                    </Badge>
-                    <Badge color="orange">
-                        {{ q.difficulty }}
-                    </Badge>
+                <div class="flex items-center justify-between">
+                    <div class="inline-block space-x-3">
+                        <Badge color="amber">
+                            Q. {{ j + 1 }}
+                        </Badge>
+                        <Badge color="blue">
+                            {{ q.subject }}
+                        </Badge>
+                        <Badge color="orange">
+                            {{ q.difficulty }}
+                        </Badge>
+                    </div>
+                    <div class="flex items-center gap-3 mt-3 print:hidden">
+                        <Button @click="onEdit(q)" variant="outline">
+                            <Icon name="bx:bx-edit" class="mr-2" />
+                            Edit
+                        </Button>
+                        <Button @click="deleteMCQ(q.id)" variant="destructive">
+                            <Icon name="lucide:trash" class="mr-2" />
+                            Delete
+                        </Button>
+                    </div>
                 </div>
 
                 <div class="mt-3 text-lg font-semibold" v-katex="q.question"></div>
@@ -49,16 +61,7 @@
 
                 </div>
 
-                <div class="flex items-center gap-3 mt-3 print:hidden">
-                    <Button @click="onEdit(q)" color="blue">
-                        <Icon name="bx:bx-edit" />
-                        Edit
-                    </Button>
-                    <Button @click="deleteMCQ(q.id)" color="red">
-                        <Icon name="lucide:trash" />
-                        Delete
-                    </Button>
-                </div>
+
             </div>
         </div>
         <div v-else>

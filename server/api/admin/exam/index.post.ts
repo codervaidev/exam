@@ -2,6 +2,7 @@ import { zh } from "h3-zod";
 import { ExamSchema } from "~/schema/exam.schema";
 
 export default defineEventHandler(async (event) => {
+  await validateRequest(event, ["ADMIN"]);
   const { data, error } = await zh.useSafeValidatedBody(event, ExamSchema);
 
   if (error) {

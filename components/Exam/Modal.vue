@@ -161,7 +161,7 @@ const onSubmit = form.handleSubmit(async (data) => {
             })
         }
 
-        refreshNuxtData('coupons')
+        refreshNuxtData('admin-exams')
         return onClose()
 
     } catch (error) {

@@ -1,4 +1,5 @@
 export default defineEventHandler(async (event) => {
+  await validateRequest(event, ["ADMIN"]);
   const examId = event.context.params?.id;
 
   await db.exam.delete({

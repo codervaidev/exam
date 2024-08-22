@@ -39,7 +39,7 @@
                         <Icon name="lucide:award" class="w-4 h-4 mr-2 text-yellow-500" />
                         Total Marks
                     </div>
-                    <div class="ml-6 text-xs">{{ exam.totalMarks }} x 1 = 10</div>
+                    <div class="ml-6 text-xs">{{ exam.totalMarks }} x 1 = {{ exam.totalMarks }}</div>
                 </div>
             </div>
 

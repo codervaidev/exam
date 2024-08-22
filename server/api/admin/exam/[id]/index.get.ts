@@ -1,4 +1,5 @@
 export default defineEventHandler(async (event) => {
+  await validateRequest(event, ["ADMIN"]);
   const id = event.context.params?.id;
 
   const exam = await db.exam.findUnique({
