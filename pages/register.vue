@@ -38,23 +38,18 @@
                         <FormField v-slot="{ componentField }" name="district">
                             <FormItem>
                                 <FormLabel>District</FormLabel>
-                                <MultiSelect v-bind="componentField" :options="districts" :searchable="true"
-                                    :close-on-select="true" @close="getFilterData" :show-labels="false"
-                                    placeholder="Select District">
-                                </MultiSelect>
-
-
+                                <FormControl>
+                                    <Input type="text" placeholder="District" v-bind="componentField" />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         </FormField>
                         <FormField v-slot="{ componentField }" name="thana">
                             <FormItem>
                                 <FormLabel>Thana</FormLabel>
-
-                                <MultiSelect v-bind="componentField" :options="thanas" :searchable="true"
-                                    :close-on-select="true" :show-labels="false" placeholder="Select Thanas">
-                                </MultiSelect>
-
+                                <FormControl>
+                                    <Input type="text" placeholder="Thana" v-bind="componentField" />
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         </FormField>
