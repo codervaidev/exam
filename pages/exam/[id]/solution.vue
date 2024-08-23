@@ -1,6 +1,7 @@
 <template>
 
 
+
     <div class="max-w-2xl py-5 mx-auto space-y-3" v-if="status === 'success'">
 
         <div>
@@ -12,6 +13,7 @@
         </div>
 
 
+
         <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-3 bg-white border rounded-lg shadow-md">
 
             <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
@@ -20,12 +22,13 @@
                 <Badge> Q no. {{ i + 1 }}</Badge>
                 <Badge> {{ q.subject }}</Badge>
                 <Badge> 1 Marks</Badge>
+                <Badge v-if="notAnswered(q.id)" class="bg-red-500">Not Answered</Badge>
             </div>
             <div class="mt-3 space-y-3 ">
 
                 <div v-for="(a, j) in q.options" :key="j"
                     class="relative flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
-                    :class="{ 'border-green-500': a.correct }">
+                    :class="{ 'border-green-500': a.correct, 'border-red-500': wrongAnswer(a.id) && !a.correct }">
                     <Icon name="lucide:check-circle-2" size="24" class="absolute text-green-500 right-3"
                         v-if="a.correct" />
                     <AppMath v-model="a.option_text">
@@ -46,18 +49,21 @@
 </template>
 
 <script setup>
-
-
 const route = useRoute()
-
 const { data, status, error, refresh } = await useFetch('/api/question/' + route.params.id + '/solution', {
     key: 'solution'
 })
 
 
+const wrongAnswer = (o) => {
+    // if exists
+    return data.value.submission.find(s => s.a == o)
+}
 
-
-
+const notAnswered = (o) => {
+    // if exists
+    return !(data.value.submission.find(s => s.q == o))
+}
 
 
 

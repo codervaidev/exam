@@ -240,7 +240,8 @@ const onSubmit = async () => {
                 method: 'PUT',
                 body: {
                     examId: route.params.id,
-                    ...model.value
+                    ...model.value,
+                    options: model.value.options.map(o => ({ ...o, option_text: o.option_text, correct: o.correct, type: 'update' }))
                 }
             })
 
