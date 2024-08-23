@@ -136,7 +136,13 @@ const onSubmit = form.handleSubmit(async (data) => {
         if (initialExam.value.id) {
             const { error } = await useFetch(`/api/admin/exam/${initialExam.value.id}`, {
                 method: 'PUT',
-                body: data
+                body: {
+                    ...data,
+                    startTime: dateFieldFormat(data.startTime),
+                    endTime: dateFieldFormat(data.endTime),
+                    resultPublishTime: dateFieldFormat(data.resultPublishTime),
+                    solutionPublishTime: dateFieldFormat(data.solutionPublishTime)
+                }
             })
             if (error.value) {
                 return toast({
