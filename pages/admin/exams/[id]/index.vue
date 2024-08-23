@@ -37,7 +37,7 @@
                     </div>
                 </div>
 
-                <div class="mt-3 text-lg font-semibold" v-katex="q.question"></div>
+                <AppMath class="mt-3 text-lg font-semibold" v-model="q.question"></AppMath>
 
 
                 <div class="flex flex-wrap gap-3 mt-4">
@@ -45,7 +45,7 @@
                         <div class="p-2 border rounded-lg"
                             :class="{ 'border-2 border-black': a.correct, 'bg-white': !a.correct }">
 
-                            <div v-katex="a.option_text"></div>
+                            <AppMath v-model="a.option_text"></AppMath>
 
                         </div>
 
@@ -56,7 +56,7 @@
 
                     <div class="mt-3 text-lg font-semibold">Explanation</div>
 
-                    <div v-katex="q.explain"></div>
+                    <AppMath v-model="q.explain"></AppMath>
 
 
                 </div>
@@ -84,7 +84,7 @@ definePageMeta({
 
 const route = useRoute()
 
-const { data, status, error, refresh } = await useFetch('/api/admin/exam/' + route.params.id, {
+const { data, status, error, refresh } = await useLazyFetch('/api/admin/exam/' + route.params.id, {
     key: 'exam-questions'
 })
 

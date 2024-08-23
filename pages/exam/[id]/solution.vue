@@ -28,13 +28,13 @@
                     :class="{ 'border-green-500': a.correct }">
                     <Icon name="lucide:check-circle-2" size="24" class="absolute text-green-500 right-3"
                         v-if="a.correct" />
-                    <div v-katex="a.option_text">
-                    </div>
+                    <AppMath v-model="a.option_text">
+                    </AppMath>
                 </div>
             </div>
 
-            <div v-if="q.explain" v-katex="q.explain" class="p-2 border border-green-600 rounded-md">
-            </div>
+            <AppMath v-if="q.explain" v-model="q.explain" class="p-2 border border-green-600 rounded-md">
+            </AppMath>
 
         </div>
     </div>

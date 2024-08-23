@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/icon",
   ],
+
   vite: {
     optimizeDeps: {
       exclude: ["vee-validate"],
@@ -27,7 +28,6 @@ export default defineNuxtConfig({
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
-      
     },
   },
 });

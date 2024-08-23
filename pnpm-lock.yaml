@@ -98,6 +98,9 @@ dependencies:
   vue:
     specifier: latest
     version: 3.4.38(typescript@5.5.4)
+  vue-mathjax-next:
+    specifier: ^0.0.6
+    version: 0.0.6
   vue-multiselect:
     specifier: ^3.0.0
     version: 3.0.0
@@ -8387,6 +8390,10 @@ packages:
 
   /vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
+
+  /vue-mathjax-next@0.0.6:
+    resolution: {integrity: sha512-H4nZ8t31TmBJgiR6pHrOGz+RWhlw34d0yhD8fi8CnXoGOydGFreNH/Crd/9Jfd2IMSu/I0AC3ymT9D09JRMIrw==}
+    dev: false
 
   /vue-multiselect@3.0.0:
     resolution: {integrity: sha512-uupKdINgz7j83lQToCL7KkgQQxvG43el++hsR39YT9pCe1DwzUGmKzPxjVP6rqskXed5P6DtUASYAlCliW740Q==}

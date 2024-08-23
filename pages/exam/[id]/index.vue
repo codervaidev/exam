@@ -38,8 +38,8 @@
                     :class="{ 'border-slate-500': data.questions[i].selected == a.id }" @click="selectOption(i, a.id)">
 
 
-                    <div v-katex="a.option_text">
-                    </div>
+                    <AppMath v-model="a.option_text">
+                    </AppMath>
                 </div>
             </div>
             <p class="flex items-center mt-4 text-green-600" v-if="q.selected">

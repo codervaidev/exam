@@ -45,7 +45,7 @@
 
             <div v-if="exam.status !== 'past'" class="flex flex-col items-center p-3 rounded-lg bg-primary/10">
                 <div class="flex items-center mb-2 text-sm font-medium">
-                    <Timer class="w-4 h-4 mr-2 text-primary" />
+                    <Icon name="lucide:timer" class="w-4 h-4 mr-2 text-primary" />
                     <p class="font-semibold text-center "> পরীক্ষা {{ exam.status === 'ongoing' ? 'শেষ' : 'শুরু' }} হতে
                         সময় বাকি
                     </p>
