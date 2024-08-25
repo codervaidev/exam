@@ -13,14 +13,12 @@ export default defineEventHandler(async (event) => {
     where: { id: id },
   });
 
-  if (!exam || new Date(exam.solutionPublishTime) < new Date()) {
+  if (!exam) {
     return createError({
       statusCode: 404,
       statusMessage: "Exam not found",
     });
   }
-
-  
 
   const questions = await db.question.findMany({
     where: { examId: id },
@@ -39,6 +37,6 @@ export default defineEventHandler(async (event) => {
   return {
     statusCode: 200,
     exam,
-    questions
+    questions,
   };
 });
