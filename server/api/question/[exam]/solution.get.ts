@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     where: { id: id },
   });
 
-  if (!exam || new Date(exam.solutionPublishTime) < new Date()) {
+  if (!exam) {
     return createError({
       statusCode: 404,
       statusMessage: "Exam not found",
