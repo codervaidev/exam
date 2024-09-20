@@ -5,7 +5,6 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 export const db = new PrismaClient();
 
-
 const retryMiddleware = (maxRetries: number = 3, delay: number = 1000) => {
   return async (
     params: Prisma.MiddlewareParams,
@@ -42,8 +41,6 @@ function isTransientError(error: any): boolean {
 // Add the middleware to the Prisma client
 db.$use(retryMiddleware(3, 1000));
 
-
-
 const adapter = new PrismaAdapter(db.session, db.user);
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -56,6 +53,7 @@ export const lucia = new Lucia(adapter, {
       name: attributes.name,
       phone: attributes.phone,
       role: attributes.role,
+      institute: attributes.institute,
     };
   },
 });
@@ -70,6 +68,7 @@ declare module "lucia" {
 interface DatabaseUserAttributes {
   name: string;
   phone: string;
+  institute: string;
   role: string;
 }
 

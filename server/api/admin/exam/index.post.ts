@@ -1,5 +1,6 @@
 import { zh } from "h3-zod";
 import { ExamSchema } from "~/schema/exam.schema";
+import { formatDate } from "~/server/utils/format";
 
 export default defineEventHandler(async (event) => {
   await validateRequest(event, ["ADMIN"]);
@@ -15,9 +16,9 @@ export default defineEventHandler(async (event) => {
   await db.exam.create({
     data: {
       ...data,
-      startTime: new Date(data.startTime),
-      endTime: new Date(data.endTime),
-      resultPublishTime: new Date(data.resultPublishTime),
+      startTime: formatDate(data.startTime),
+      endTime: formatDate(data.endTime),
+      resultPublishTime: formatDate(data.resultPublishTime),
       solutionPublishTime: new Date(data.solutionPublishTime),
     },
   });

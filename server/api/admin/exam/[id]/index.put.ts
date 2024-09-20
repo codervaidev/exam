@@ -1,5 +1,6 @@
 import { zh } from "h3-zod";
 import { ExamSchema } from "~/schema/exam.schema";
+import { formatDate } from "~/server/utils/format";
 export default defineEventHandler(async (event) => {
   await validateRequest(event, ["ADMIN"]);
   const { data, error } = await zh.useSafeValidatedBody(event, ExamSchema);
@@ -19,9 +20,9 @@ export default defineEventHandler(async (event) => {
     },
     data: {
       ...data,
-      startTime: new Date(data.startTime),
-      endTime: new Date(data.endTime),
-      resultPublishTime: new Date(data.resultPublishTime),
+      startTime: formatDate(data.startTime),
+      endTime: formatDate(data.endTime),
+      resultPublishTime: formatDate(data.resultPublishTime),
       solutionPublishTime: new Date(data.solutionPublishTime),
     },
   });
