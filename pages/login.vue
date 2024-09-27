@@ -4,7 +4,7 @@
             <div class="grid gap-2 ">
                 <img src="/logo.svg" alt="logo" class="h-16 mx-auto mb-10" />
                 <h3 class="text-xl font-bold lg:hidden text-slate-800">
-                    Road to <span class="text-green-400">Public</span> University
+                    Road to Public <span class="text-green-400">University</span> 
                 </h3>
                 <h1 class="hidden text-2xl font-semibold tracking-tight lg:block">
                     Login
