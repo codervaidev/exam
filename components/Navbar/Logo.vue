@@ -1,7 +1,6 @@
 <template>
     <div @click="navigateTo('/')">
-
-        <img src="/acs.png" alt="Second Timer" class="h-10 cursor-pointer" />
+        <img src="/logo.svg" alt="Road to Public University" class="h-10 cursor-pointer" />
     </div>
 
 </template>

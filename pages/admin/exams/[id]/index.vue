@@ -3,10 +3,14 @@
 
         <div class="flex justify-between print:hidden">
             <h1 class="text-2xl font-semibold">Questions</h1>
-            <Button @click="onOpen">
-                <Icon name="bx:bx-plus" />
-                Add Question
-            </Button>
+
+            <div class="flex items-center gap-3">
+                <ExamImport :examId="route.params.id" />
+                <Button @click="onOpen">
+                    <Icon name="bx:bx-plus" />
+                    Add Question
+                </Button>
+            </div>
         </div>
 
         <div v-if="status === 'success'" class="mt-5 space-y-5">

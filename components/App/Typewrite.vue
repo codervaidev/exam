@@ -18,14 +18,12 @@ const typeStatus = ref(false);
 const displayTextArray = ref([
     "Redefine Your Path, Reclaim Your Future.",
     "Stronger, Wiser, Ready to Rise.",
-    "Second Chances, Unlimited Possibilities.",
     "The Test Isn't Over Until You Win.",
     "Resilience is Your Superpower—Conquer It!",
     "Fuel Your Comeback with Determination.",
     "The Next Chapter Starts with You.",
     "Rewrite the Script, Ace the Test.",
     "Persistence Pays Off—This Time is Yours.",
-    "Second Time's the Charm—Own Your Success."
 ]);
 const typingSpeed = ref(100);
 const erasingSpeed = ref(100);

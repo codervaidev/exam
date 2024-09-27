@@ -13,7 +13,7 @@ defineProps<{
       <div class="relative z-20 flex flex-col items-center justify-center h-full gap-6 mt-auto ">
 
         <h3 class="text-3xl font-bold text-white">
-          Second Timer <span class="text-green-400">Grooming</span> Hub
+          Road to Public <span class="text-green-400">University</span>
         </h3>
         <AppTypewrite />
       </div>

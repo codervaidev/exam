@@ -2,9 +2,9 @@
     <LayoutAuth>
         <div class="grid items-center max-w-sm min-h-screen gap-6 mx-auto">
             <div class="grid gap-2 ">
-                <img src="/acs.png" alt="logo" class="h-16 mx-auto mb-10" />
+                <img src="/logo.svg" alt="logo" class="h-16 mx-auto mb-10" />
                 <h3 class="text-xl font-bold lg:hidden text-slate-800">
-                    Second Timer <span class="text-green-400">Grooming</span> Hub
+                    Road to <span class="text-green-400">Public</span> University
                 </h3>
                 <h1 class="hidden text-2xl font-semibold tracking-tight lg:block">
                     Login
