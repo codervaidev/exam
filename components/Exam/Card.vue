@@ -39,7 +39,8 @@
                         <Icon name="lucide:award" class="w-4 h-4 mr-2 text-yellow-500" />
                         Total Marks
                     </div>
-                    <div class="ml-6 text-xs">{{ exam.totalMarks }} x 1 = {{ exam.totalMarks }}</div>
+                    <div class="ml-6 text-xs">{{ exam.totalMarks }} x 1 = {{ exam.totalMarks }} (-0.25/Wrong Answer)
+                    </div>
                 </div>
             </div>
 
@@ -63,8 +64,8 @@
 
             <Button v-if="exam.status === 'ongoing' && (!exam.submission || exam.submission.status === 'pending')"
                 @click="navigateTo(`/exam/${exam.id}/onboard`)">Start Exam</Button>
-            <p v-else-if="exam.status === 'ongoing'" class="font-semibold text-green-500">
-                Thanks for participation.
+            <p v-else-if="exam.status === 'ongoing'" class="text-lg font-semibold text-red-500">
+                অংশগ্রহণের জন্য ধন্যবাদ।
             </p>
             <template v-if="exam.status === 'past'">
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="text-sm">
+    <div class="text-lg ">
         {{ formatTime(hour) }}
         <span class="text-xs font-thin">h</span>
         {{ formatTime(minute) }}

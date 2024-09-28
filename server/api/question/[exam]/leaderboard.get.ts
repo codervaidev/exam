@@ -44,6 +44,7 @@ export default defineEventHandler(async (event) => {
       },
     ],
     select: {
+      id: true,
       user: {
         select: {
           name: true,

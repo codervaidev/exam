@@ -43,6 +43,9 @@
 
 <script setup>
 
+definePageMeta({
+    middleware: 'protected'
+})
 
 const route = useRoute()
 

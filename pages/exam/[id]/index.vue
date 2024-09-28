@@ -8,10 +8,9 @@
                     <div v-if="end_time" class="flex gap-4 text-lg font-semibold text-slate-800">
                         <!-- Time Left: -->
                         <ExamTimer :end_time="end_time" />
-
                     </div>
                     <Button @click="submitAns"
-                        class="px-3 py-3 font-semibold text-white transition-all duration-300 transform rounded-xl bg-gradient-to-r from-green-600 to-teal-500 hover:from-green-700 hover:to-teal-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                        class="px-3 py-3 font-semibold text-white transition-all duration-300 transform rounded-xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
                         Submit Exam
                     </Button>
                 </div>

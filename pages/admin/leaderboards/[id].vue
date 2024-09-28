@@ -5,10 +5,21 @@
             <AppHeading :center="true" title="Leaderboard"
                 :subtitle="status === 'success' ? data.examData.title : ''" />
 
+            <h3 class="text-lg font-semibold text-center text-gray-600">
+                Total Participants: {{ data.pagination.total }}
+            </h3>
+
             <div class="relative mt-4 mb-4">
                 <Input type="text" placeholder="Search by name or institute..." class="pl-10" v-model="presearch" />
                 <Icon name="lucide:search" class="absolute text-gray-400 transform -translate-y-1/2 left-3 top-1/2"
                     size="20" />
+
+            </div>
+            <div class="flex justify-end mb-3">
+                <Button @click="exportAsCsv">
+                    <Icon name="lucide:download" class="mr-1" size="16" />
+                    Export as CSV
+                </Button>
             </div>
             <div v-if="status === 'success'" class="overflow-hidden bg-white border rounded-lg shadow-md">
                 <Table>
@@ -19,6 +30,7 @@
                             <TableHead>Institute</TableHead>
                             <TableHead class="text-right">Marks</TableHead>
                             <TableHead class="text-right">Duration</TableHead>
+                            <TableHead class="text-right">Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -40,7 +52,11 @@
                                     {{ millisecToTime(rank.duration, data.examData.duration) }}
                                 </span>
                             </TableCell>
-
+                            <TableCell class="text-right">
+                                <Button variant="ghost" size="icon" @click="deleteSubmission(rank.id)">
+                                    <Icon name="lucide:trash" size="16" />
+                                </Button>
+                            </TableCell>
                         </TableRow>
 
                     </TableBody>
@@ -120,6 +136,43 @@ debouncedWatch(presearch, (value) => {
 onMounted(() => {
     window.addEventListener('scroll', onScroll)
 })
+
+const deleteSubmission = async (id) => {
+    const response = await fetch(`/api/question/${route.params.id}/${id}`, {
+        method: 'DELETE',
+    })
+    const data = await response.json()
+
+    refresh()
+}
+
+
+
+const exportAsCsv = async () => {
+
+
+    let csv = "Rank,Name,Institute,Marks,Duration\n"
+
+    leaderboard.value.forEach((rank, i) => {
+        csv += `${i + 1},${rank.user.name},${rank.user.institute},${rank.marks},${millisecToTime(rank.duration, data.value.examData.duration)}\n`
+    })
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'leaderboard.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
+
+
+}
+
 
 </script>
 

@@ -76,13 +76,13 @@ const props = defineProps({
 const { onEdit } = useExam()
 
 
+
 const deleteExam = async (id) => {
-    const confirm = confirm('Are you sure you want to delete this exam?')
-    if (confirm) {
-        await $fetch(`/admin/exam/${id}`, {
+    if (confirm('Are you sure you want to delete this exam?')) {
+        await $fetch(`/api/admin/exam/${id}`, {
             method: 'DELETE'
         })
-
+        refreshNuxtData('admin-exams')
     }
 }
 
