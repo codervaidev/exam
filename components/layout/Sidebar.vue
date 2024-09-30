@@ -21,9 +21,9 @@ function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
 
 <template>
   <aside
-    class="inset-y fixed left-0 z-20 hidden h-full flex-col items-center border-r bg-background transition-width duration-300 sm:flex"
+    class="fixed print:hidden left-0 z-20 flex-col items-center hidden h-full duration-300 border-r inset-y bg-background transition-width sm:flex"
     :class="cn('w-20 lg:w-64', isOpen ? 'lg:w-64' : 'lg:w-20')">
-    <div class="relative border-b px-3 py-2 text-center" :class="cn('w-20 lg:w-64', isOpen ? 'lg:w-64' : 'lg:w-20')">
+    <div class="relative px-3 py-2 text-center border-b" :class="cn('w-20 lg:w-64', isOpen ? 'lg:w-64' : 'lg:w-20')">
       <div class="flex items-center gap-3"
         :class="cn('justify-center lg:justify-start', isOpen ? 'lg:justify-start' : 'lg:justify-center')">
         <Button variant="outline" size="icon" aria-label="Home">
@@ -32,7 +32,7 @@ function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
         <span v-if="isOpen" class="hidden text-xl font-semibold lg:inline-block">Dashboard</span>
       </div>
 
-      <Button variant="outline" class="absolute top-4 hidden size-6 rounded-full p-0 -right-3 lg:inline-flex"
+      <Button variant="outline" class="absolute hidden p-0 rounded-full top-4 size-6 -right-3 lg:inline-flex"
         @click="toggle">
         <Icon :name="isOpen ? 'radix-icons:chevron-left' : 'radix-icons:chevron-right'" />
       </Button>
@@ -42,7 +42,7 @@ function resolveNavItemComponent(item: NavLink | NavGroup | NavSectionTitle) {
         <component :is="resolveNavItemComponent(item)" v-for="(item, index) in navMenu" :key="index" :item="item" />
       </nav>
     </ScrollArea>
-    <nav class="grid mt-auto w-full gap-1 p-2">
+    <nav class="grid w-full gap-1 p-2 mt-auto">
       <component :is="resolveNavItemComponent(item)" v-for="(item, index) in navMenuBottom" :key="index" :item="item" />
     </nav>
   </aside>

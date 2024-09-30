@@ -22,8 +22,8 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
 </script>
 
 <template>
-  <header class="sticky top-0 z-10 h-[53px] flex items-center gap-4 border-b bg-background px-4 md:px-6">
-    <div class="w-full flex items-center gap-4">
+  <header class="sticky print:hidden top-0 z-10 h-[53px] flex items-center gap-4 border-b bg-background px-4 md:px-6">
+    <div class="flex items-center w-full gap-4">
       <Sheet>
         <SheetTrigger as-child>
           <Button size="icon" variant="outline" class="sm:hidden">
@@ -56,13 +56,13 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
 
       <Search />
 
-      <div class="ml-auto flex items-center gap-4">
+      <div class="flex items-center gap-4 ml-auto">
         <ThemePopover v-if="isMediumScreen" />
         <ThemeDrawer v-else />
         <DropdownMenu>
           <DropdownMenuTrigger as-child>
             <Button id="radix-vue-dropdown-menu-trigger-1" variant="secondary" size="icon" class="rounded-full">
-              <CircleUser class="h-5 w-5" />
+              <CircleUser class="w-5 h-5" />
               <span class="sr-only">Toggle user menu</span>
             </Button>
           </DropdownMenuTrigger>
@@ -72,7 +72,7 @@ const isMediumScreen = useMediaQuery('(min-width: 768px)')
                 <p class="text-sm font-medium leading-none">
                   John Doe
                 </p>
-                <p class="text-xs text-muted-foreground leading-none">
+                <p class="text-xs leading-none text-muted-foreground">
                   demo@gmail.com
                 </p>
               </div>

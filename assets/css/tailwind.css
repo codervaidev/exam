@@ -126,3 +126,9 @@
 .title_grad{
   @apply text-transparent bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text;
 }
+
+ * {
+    -webkit-print-color-adjust: exact !important;   /* Chrome, Safari 6 – 15.3, Edge */
+    color-adjust: exact !important;                 /* Firefox 48 – 96 */
+    print-color-adjust: exact !important;           /* Firefox 97+, Safari 15.4+ */
+}

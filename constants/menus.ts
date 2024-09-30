@@ -11,11 +11,11 @@ export const navMenu: NavMenuItems = [
     icon: "i-lucide-clipboard",
     link: "/admin/exams",
   },
-  // {
-  //   title: "Questions",
-  //   icon: "i-lucide-file-question",
-  //   link: "/admin/questions",
-  // },
+  {
+    title: "Questions",
+    icon: "i-lucide-file-question",
+    link: "/admin/questions",
+  },
   // {
   //   title: "Subjects",
   //   icon: "i-lucide-book",
