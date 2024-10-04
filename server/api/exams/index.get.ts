@@ -11,8 +11,10 @@ export default defineEventHandler(async (event) => {
         },
       },
     },
+    orderBy: {
+      startTime: "asc",
+    },
   });
-
 
   const currentDate = new Date();
 
