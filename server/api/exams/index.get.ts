@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
 
   const ongoingExams = examsWithStatus.filter((e) => e.status === "ongoing");
   const upcomingExams = examsWithStatus.filter((e) => e.status === "upcoming");
-  const pastExams = examsWithStatus.filter((e) => e.status === "past");
+  const pastExams = examsWithStatus.filter((e) => e.status === "past").reverse();
 
   return {
     statusCode: 200,

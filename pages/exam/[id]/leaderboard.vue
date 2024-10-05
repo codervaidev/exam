@@ -18,7 +18,7 @@
                             <TableHead>Name</TableHead>
                             <TableHead>Institute</TableHead>
                             <TableHead class="text-right">Marks</TableHead>
-                            <TableHead class="text-right">Duration</TableHead>
+                            <!-- <TableHead class="text-right">Duration</TableHead> -->
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -34,12 +34,12 @@
                             <TableCell>{{ rank.user.name }}</TableCell>
                             <TableCell>{{ rank.user.institute }}</TableCell>
                             <TableCell class="font-semibold text-right">{{ rank.marks }}</TableCell>
-                            <TableCell class="text-right">
+                            <!-- <TableCell class="text-right">
                                 <span class="flex items-center justify-end">
                                     <Icon name="lucide:clock" class="mr-1" size="14" />
                                     {{ millisecToTime(rank.duration, data.examData.duration) }}
                                 </span>
-                            </TableCell>
+                            </TableCell> -->
 
                         </TableRow>
 
