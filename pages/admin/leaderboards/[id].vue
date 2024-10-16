@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="status === 'success'">
         <div class="max-w-3xl p-4 mx-auto ">
 
             <AppHeading :center="true" title="Leaderboard"
@@ -40,7 +40,7 @@
                                 <div v-if="!search" class="flex items-center">
                                     {{ i + 1 }}
                                     <Icon v-if="i < 3" name="lucide:medal" size="16" :class="`inline-block ml-1 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : 'text-amber-600'
-                }`" />
+                                        }`" />
                                 </div>
                             </TableCell>
                             <TableCell>{{ rank.user.name }}</TableCell>

@@ -59,6 +59,7 @@ model Question {
 model Exam {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   title               String
+  course              String?
   subject             String
   startTime           DateTime
   endTime             DateTime

@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
   await db.exam.create({
     data: {
       ...data,
+      course: data.course,
       startTime: formatDate(data.startTime),
       endTime: formatDate(data.endTime),
       resultPublishTime: formatDate(data.resultPublishTime),

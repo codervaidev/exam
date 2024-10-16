@@ -2,8 +2,12 @@
     <div class="w-full px-4 py-8 mx-auto sm:px-6 lg:px-8">
         <div class="flex items-center justify-between mb-6">
             <div>
-                <h1 class="text-2xl font-bold">{{ exam.title }}</h1>
+                <h1 class="text-xl font-bold">{{ exam.title }}</h1>
                 <p class="text-muted-foreground">{{ exam.subject }}</p>
+
+                <p class="px-2 py-1 text-sm bg-red-100 rounded-md text-muted-foreground">
+                    {{
+                        exam.course ? exam.course : 'Free' }}</p>
             </div>
             <div class="flex gap-2">
                 <Button variant="outline" size="sm" @click="navigateTo(`/admin/leaderboards/${exam.id}`)">

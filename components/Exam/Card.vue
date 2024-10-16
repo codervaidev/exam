@@ -4,10 +4,16 @@
         <CardHeader>
             <div class="flex items-center justify-between">
                 <CardTitle class="text-xl">{{ exam.title }}</CardTitle>
-                <Badge
-                    :variant="exam.status === 'ongoing' ? 'destructive' : exam.status === 'upcoming' ? 'secondary' : 'outline'">
-                    {{ exam.status.charAt(0).toUpperCase() + exam.status.slice(1) }}
-                </Badge>
+
+                <div class="flex gap-2">
+
+                    <Badge>{{
+                        exam.course ? exam.course : 'Free' }}</Badge>
+                    <Badge
+                        :variant="exam.status === 'ongoing' ? 'destructive' : exam.status === 'upcoming' ? 'secondary' : 'outline'">
+                        {{ exam.status.charAt(0).toUpperCase() + exam.status.slice(1) }}
+                    </Badge>
+                </div>
             </div>
             <p class="mt-1 text-sm text-muted-foreground">{{ exam.subject }}</p>
         </CardHeader>
