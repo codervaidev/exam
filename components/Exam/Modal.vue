@@ -23,6 +23,15 @@
                     <FormMessage />
                 </FormItem>
             </FormField>
+            <FormField v-slot="{ componentField }" name="course">
+                <FormItem>
+                    <FormLabel>Course</FormLabel>
+                    <FormControl>
+                        <Input type="text" placeholder="Course Name" v-bind="componentField" />
+                    </FormControl>
+                    <FormMessage />
+                </FormItem>
+            </FormField>
             <div class="grid grid-cols-2 gap-4">
 
                 <FormField v-slot="{ componentField }" name="startTime">
