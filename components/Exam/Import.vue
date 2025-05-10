@@ -35,6 +35,7 @@
                 </div>
 
                 <div v-if="questions.length > 0">
+                   
                     <div v-for="q, i in questions" :key="i">
                         <div class="mt-3 text-lg font-semibold" v-html="q.question"></div>
                         <div class="grid gap-3 mt-4">

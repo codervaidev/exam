@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
   // Fetch the leaderboard data with search, pagination, and sorting
   const leaderboard = await db.submission.findMany({
     where: {
-      examId: exam as string,
+      exam_id: exam as string,
       user: {
         name: {
           contains: search,
@@ -53,7 +53,7 @@ export default defineEventHandler(async (event) => {
       },
       marks: true,
       duration: true,
-      submittedAt: true,
+      submitted_at: true,
     },
     skip: skip, // Skip the records for pagination
     take: pageSize, // Limit the number of records

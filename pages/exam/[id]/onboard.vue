@@ -19,11 +19,11 @@
                     <div class="flex items-center justify-center space-x-3 ">
                         <Icon name="lucide:calendar" class="w-6 h-6" />
                         <h2 class="text-xl font-semibold">
-                            এক্সাম শুরু হবে:
+                            এক্সাম শুরু:
                         </h2>
                     </div>
                     <p class="text-2xl font-medium ">
-                        {{ formatDate(data.exam.startTime) }}
+                        {{ formatDate(data.exam.start_time) }}
                     </p>
                 </div>
 

@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
         question,
         subject,
         difficulty: difficulty || "Medium",
-        examId,
+        exam_id: examId,
         explain,
       },
     });

@@ -13,14 +13,18 @@ export default defineEventHandler(async (event) => {
     };
   }
 
+  console.log(data);
+
   await db.exam.create({
     data: {
-      ...data,
-      course: data.course,
-      startTime: formatDate(data.startTime),
-      endTime: formatDate(data.endTime),
-      resultPublishTime: formatDate(data.resultPublishTime),
-      solutionPublishTime: new Date(data.solutionPublishTime),
+      title: data.title,
+      subject: data.subject,
+      start_time: formatDate(data.startTime),
+      end_time: formatDate(data.endTime),
+      result_publish_time: formatDate(data.resultPublishTime),
+      solution_publish_time: new Date(data.solutionPublishTime),
+      duration: data.duration,
+      total_marks: data.totalMarks,
     },
   });
 

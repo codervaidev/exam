@@ -22,8 +22,8 @@ export default defineEventHandler(async (event) => {
 
   let submission = await db.submission.findFirst({
     where: {
-      examId: id,
-      userId: userId,
+      exam_id: id,
+      user_id: userId,
     },
 
     select: {

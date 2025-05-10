@@ -3,16 +3,19 @@ export default defineEventHandler(async (event) => {
     include: {
       submissions: {
         where: {
-          userId: event.context.user?.id,
+          user_id: event.context.user?.id,
         },
         select: {
           id: true,
           status: true,
+          marks: true,
+          duration: true,
+          submitted_at: true,
         },
       },
     },
     orderBy: {
-      startTime: "asc",
+      start_time: "asc",
     },
   });
 
@@ -21,14 +24,14 @@ export default defineEventHandler(async (event) => {
   const examsWithStatus = exams.map((exam) => {
     let status = "";
 
-    if (currentDate < new Date(exam.startTime)) {
+    if (currentDate < new Date(exam.start_time)) {
       status = "upcoming";
     } else if (
-      currentDate >= new Date(exam.startTime) &&
-      currentDate <= new Date(exam.endTime)
+      currentDate >= new Date(exam.start_time) &&
+      currentDate <= new Date(exam.end_time)
     ) {
       status = "ongoing";
-    } else if (currentDate > new Date(exam.startTime)) {
+    } else if (currentDate > new Date(exam.start_time)) {
       status = "past";
     }
 
@@ -41,7 +44,9 @@ export default defineEventHandler(async (event) => {
 
   const ongoingExams = examsWithStatus.filter((e) => e.status === "ongoing");
   const upcomingExams = examsWithStatus.filter((e) => e.status === "upcoming");
-  const pastExams = examsWithStatus.filter((e) => e.status === "past").reverse();
+  const pastExams = examsWithStatus
+    .filter((e) => e.status === "past")
+    .reverse();
 
   return {
     statusCode: 200,

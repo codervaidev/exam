@@ -24,14 +24,14 @@
                         <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-blue-500" />
                         Start
                     </div>
-                    <div class="ml-6 text-xs">{{ formatDate(exam.startTime) }}</div>
+                    <div class="ml-6 text-xs">{{ formatDate(exam.start_time) }}</div>
                 </div>
                 <div class="p-3 rounded-lg bg-secondary">
                     <div class="flex items-center mb-1 text-sm font-medium">
                         <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-red-500" />
                         End
                     </div>
-                    <div class="ml-6 text-xs">{{ formatDate(exam.endTime) }}</div>
+                    <div class="ml-6 text-xs">{{ formatDate(exam.end_time) }}</div>
                 </div>
                 <div class="p-3 rounded-lg bg-secondary">
                     <div class="flex items-center mb-1 text-sm font-medium">
@@ -45,7 +45,7 @@
                         <Icon name="lucide:award" class="w-4 h-4 mr-2 text-yellow-500" />
                         Total Marks
                     </div>
-                    <div class="ml-6 text-xs">{{ exam.totalMarks }} x 1 = {{ exam.totalMarks }} (-0.25/Wrong Answer)
+                    <div class="ml-6 text-xs">{{ exam.total_marks }} x 1 = {{ exam.total_marks }} (-0.25/Wrong Answer)
                     </div>
                 </div>
             </div>
@@ -59,10 +59,10 @@
                 </div>
 
                 <div v-if="exam.status == 'ongoing'">
-                    <AppTimer :end="exam.endTime" />
+                    <AppTimer :end="exam.end_time" />
                 </div>
                 <div v-if="exam.status == 'upcoming'">
-                    <AppTimer :end="exam.startTime" />
+                    <AppTimer :end="exam.start_time" />
                 </div>
             </div>
         </CardContent>

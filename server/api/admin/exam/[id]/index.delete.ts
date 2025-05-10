@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   // Delete related options and questions
   const questions = await db.question.findMany({
     where: {
-      examId: id,
+      exam_id: id,
     },
     select: {
       id: true,
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   await db.option.deleteMany({
     where: {
-      questionId: {
+      question_id: {
         in: questionIds,
       },
     },
@@ -23,20 +23,20 @@ export default defineEventHandler(async (event) => {
 
   await db.question.deleteMany({
     where: {
-      examId: id,
+      exam_id: id,
     },
   });
 
   // Delete related submissions
   await db.submission.deleteMany({
     where: {
-      examId: id,
+      exam_id: id,
     },
   });
 
   // Delete the exam
   await db.exam.delete({
-    where: { id },
+    where: { id: id },
   });
 
   return {

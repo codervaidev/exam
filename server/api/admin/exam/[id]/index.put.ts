@@ -14,16 +14,21 @@ export default defineEventHandler(async (event) => {
 
   const examId = event.context.params?.id;
 
+  console.log(data);
+
   const exam = await db.exam.update({
     where: {
       id: examId,
     },
     data: {
-      ...data,
-      startTime: formatDate(data.startTime),
-      endTime: formatDate(data.endTime),
-      resultPublishTime: formatDate(data.resultPublishTime),
-      solutionPublishTime: new Date(data.solutionPublishTime),
+      title: data.title,
+      subject: data.subject,
+      start_time: formatDate(data.startTime),
+      end_time: formatDate(data.endTime),
+      result_publish_time: formatDate(data.resultPublishTime),
+      solution_publish_time: new Date(data.solutionPublishTime),
+      duration: data.duration,
+      total_marks: data.totalMarks,
     },
   });
 

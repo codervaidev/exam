@@ -1,8 +1,16 @@
+import { Client } from "@upstash/qstash";
+
+// Initialize QStash client
+const client = new Client({
+  
+  token: process.env.QSTASH_TOKEN!,
+});
+
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.exam;
   const userId = event.context.user?.id;
 
-  const { answers } = await readBody(event);
+  const { answers, submission_id } = await readBody(event);
 
   if (!userId || !id) {
     return createError({
@@ -11,52 +19,20 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  let submission = await db.submission.findFirst({
-    where: {
-      examId: id,
-      userId: userId,
-      status: "pending",
-    },
-  });
-
-  if (!submission) {
-    return createError({
-      statusCode: 404,
-      statusMessage: "Submission not found",
-    });
-  }
-
-  let duration =
-    new Date().getTime() - new Date(submission?.createdAt).getTime();
-
-  const optionIds = answers.map((a) => a.a);
-
-  const marks = await db.option.count({
-    where: {
-      id: {
-        in: optionIds,
-      },
-      correct: true,
-    },
-  });
-
-  const negMarks = (optionIds.length - marks) * 0.25;
-
-  await db.submission.update({
-    where: {
-      id: submission.id,
-    },
-    data: {
+  // Publish to QStash
+  await client.publishJSON({
+    url: `${process.env.BASE_URL}/api/queues/process`,
+    body: {
+      submission_id,
       answers,
-      duration,
-      submittedAt: new Date(),
-      marks: marks - negMarks,
-      status: "submitted",
     },
+    retries: 3,
+    notBefore: 0,
+    deduplicationId: submission_id, // Prevent duplicate processing
   });
 
   return {
-    statusCode: 200,
-    statusMessage: "Submitted successfully",
+    statusCode: 202,
+    statusMessage: "Submission queued successfully",
   };
 });

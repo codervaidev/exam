@@ -1,6 +1,6 @@
 <template>
     <div @click="navigateTo('/')">
-        <img src="/logo.svg" alt="Road to Public University" class="h-10 cursor-pointer" />
+        <img src="/logo.png" alt="Rhombus Parallel" class="h-10 cursor-pointer" />
     </div>
 
 </template>

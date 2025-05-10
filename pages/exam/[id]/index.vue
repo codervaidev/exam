@@ -76,16 +76,10 @@ const { toast } = useToast()
 const submitAns = async () => {
 
     try {
-        const answers = data.value.questions.filter(q => q.selected).map(q => ({
-            q: q.id,
-            a: q.selected
-        }))
-        await $fetch('/api/question/' + route.params.id, { method: 'POST', body: { answers } })
+        const answers = data.value.questions.filter(q => q.selected).map(q => q.selected)
+        await $fetch('/api/question/' + route.params.id, { method: 'POST', body: { answers, submission_id: data.value.submission.id } })
         clearTimeout(timer.value)
         timer.value = null
-
-
-
         toast({
             title: 'Submitted',
             description: 'Your answers have been submitted successfully',
@@ -116,7 +110,7 @@ const end_time = ref(null)
 
 onMounted(() => {
 
-    end_time.value = new Date(data.value.submission.createdAt).getTime() + (data.value.exam.duration * 60 * 1000)
+    end_time.value = new Date(data.value.exam.end_time).getTime()
 
     if (!timer.value) {
         timer.value = setInterval(() => {

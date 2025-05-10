@@ -2,9 +2,9 @@
     <LayoutAuth>
         <div class="grid items-center max-w-sm min-h-screen gap-6 mx-auto">
             <div class="grid gap-2 ">
-                <img src="/logo.svg" alt="logo" class="h-16 mx-auto mb-10" />
+                <img src="/logo.png" alt="logo" class="h-16 mx-auto mb-10" />
                 <h3 class="text-xl font-bold lg:hidden text-slate-800">
-                    Road to Public <span class="text-green-400">University</span> 
+                    Rhombus <span class="text-red-400">Parallel</span>
                 </h3>
                 <h1 class="hidden text-2xl font-semibold tracking-tight lg:block">
                     Login

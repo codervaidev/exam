@@ -21,8 +21,8 @@ export default defineEventHandler(async (event) => {
   }
 
   if (
-    new Date(exam.startTime) > new Date() ||
-    new Date(exam.endTime) < new Date()
+    new Date(exam.start_time) > new Date() ||
+    new Date(exam.end_time) < new Date()
   ) {
     return createError({
       statusCode: 403,
@@ -31,8 +31,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const questions = await db.question.findMany({
-    where: { examId: id },
-
+    where: { exam_id: id },
     include: {
       options: {
         select: {
@@ -46,8 +45,8 @@ export default defineEventHandler(async (event) => {
 
   let submission = await db.submission.findFirst({
     where: {
-      examId: id,
-      userId: userId,
+      exam_id: id,
+      user_id: userId,
     },
   });
 
@@ -61,8 +60,8 @@ export default defineEventHandler(async (event) => {
   if (!submission) {
     submission = await db.submission.create({
       data: {
-        examId: id,
-        userId: userId,
+        exam_id: id,
+        user_id: userId,
         status: "pending",
       },
     });

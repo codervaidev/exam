@@ -5,9 +5,6 @@
                 <h1 class="text-xl font-bold">{{ exam.title }}</h1>
                 <p class="text-muted-foreground">{{ exam.subject }}</p>
 
-                <p class="px-2 py-1 text-sm bg-red-100 rounded-md text-muted-foreground">
-                    {{
-                        exam.course ? exam.course : 'Free' }}</p>
             </div>
             <div class="flex gap-2">
                 <Button variant="outline" size="sm" @click="navigateTo(`/admin/leaderboards/${exam.id}`)">
@@ -29,11 +26,11 @@
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                     <div class="grid gap-1">
                         <Label>Start Time</Label>
-                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.startTime) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.start_time) }}</p>
                     </div>
                     <div class="grid gap-1">
                         <Label>End Time</Label>
-                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.endTime) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.end_time) }}</p>
                     </div>
                     <div class="grid gap-1">
                         <Label>Duration</Label>
@@ -41,26 +38,26 @@
                     </div>
                     <div class="grid gap-1">
                         <Label>Total Marks</Label>
-                        <p class="text-xs text-muted-foreground">{{ exam.totalMarks }} Marks</p>
+                        <p class="text-xs text-muted-foreground">{{ exam.total_marks }} Marks</p>
                     </div>
                     <div class="grid gap-1">
                         <Label>Result Publish Time</Label>
-                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.resultPublishTime) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.result_publish_time) }}</p>
                     </div>
                     <div class="grid gap-1">
                         <Label>Solution Publish Time</Label>
-                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.solutionPublishTime) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.solution_publish_time) }}</p>
                     </div>
                 </div>
                 <Separator />
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
                     <div class="grid gap-1">
                         <Label>Created At</Label>
-                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.createdAt) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.created_at) }}</p>
                     </div>
                     <div class="grid gap-1">
                         <Label>Updated At</Label>
-                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.updatedAt) }}</p>
+                        <p class="text-xs text-muted-foreground">{{ formatTime(exam.updated_at) }}</p>
                     </div>
                 </div>
             </CardContent>
