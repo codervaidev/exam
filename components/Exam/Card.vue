@@ -107,11 +107,11 @@
                     </Button>
                     </div>
                    <div class="grid grid-cols-2 gap-3 w-full">
-                     <Button @click="navigateTo(`/exam/${exam.id}/solution`)"
+                     <Button @click="navigateTo(`/exam/${exam.id}/solution`)" v-if="new Date(exam.solution_publish_time) < new Date()"
                         class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
                         Solution
                     </Button>
-                    <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
+                    <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)" v-if="new Date(exam.result_publish_time) < new Date()"
                         class="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
                         Leaderboard
                     </Button>
