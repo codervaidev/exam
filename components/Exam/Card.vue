@@ -75,28 +75,48 @@
                 </div>
             </div>
         </CardContent>
-        <CardFooter class="flex flex-col sm:flex-row justify-center gap-2 sm:space-x-3 pt-0">
+        <CardFooter class="flex flex-col gap-3 pt-0">
             <Button v-if="exam.status === 'ongoing' && (!exam.submission || exam.submission.status === 'pending')"
                 @click="navigateTo(`/exam/${exam.id}/onboard`)"
-                class="w-full sm:w-auto bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                class="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
                 Start Exam
             </Button>
-            <p v-else-if="exam.status === 'ongoing'" class="text-base sm:text-lg font-bold text-red-500">
+            <p v-else-if="exam.status === 'ongoing'" class="text-base sm:text-lg font-bold text-red-500 text-center">
                 অংশগ্রহণের জন্য ধন্যবাদ।
             </p>
             <template v-if="exam.status === 'past'">
-                <Button @click="navigateTo(`/exam/${exam.id}/practice`)"
-                    class="w-full sm:w-auto bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    Practice Exam
-                </Button>
-                <Button @click="navigateTo(`/exam/${exam.id}/solution`)"
-                    class="w-full sm:w-auto bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    Solution
-                </Button>
-                <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
-                    class="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
-                    Leaderboard
-                </Button>
+                <div class="sm:grid hidden grid-cols-3 w-full gap-3">
+                    <Button @click="navigateTo(`/exam/${exam.id}/practice`)"
+                        class="w-full bg-gradient-to-r col-span-3  from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        Practice Exam
+                    </Button>
+                    <Button @click="navigateTo(`/exam/${exam.id}/solution`)"
+                        class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        Solution
+                    </Button>
+                    <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
+                        class="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        Leaderboard
+                    </Button>
+                </div>
+                 <div class="sm:hidden w-full gap-3">
+                    <div class="w-full mb-3">
+                        <Button @click="navigateTo(`/exam/${exam.id}/practice`)"
+                        class="w-full bg-gradient-to-r  from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        Practice Exam
+                    </Button>
+                    </div>
+                   <div class="grid grid-cols-2 gap-3 w-full">
+                     <Button @click="navigateTo(`/exam/${exam.id}/solution`)"
+                        class="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        Solution
+                    </Button>
+                    <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
+                        class="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        Leaderboard
+                    </Button>
+                   </div>
+                </div>
             </template>
         </CardFooter>
     </Card>
