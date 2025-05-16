@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
   });
 
   const questions = await db.question.findMany({
-    where: { examId: id },
+    where: { exam_id: id },
 
     include: {
       options: {

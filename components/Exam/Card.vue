@@ -1,99 +1,123 @@
 <template>
-    <Card class="flex flex-col">
-
-        <CardHeader>
+    <Card class="flex flex-col hover:shadow-lg transition-all duration-300 border-2">
+        <CardHeader class="bg-gradient-to-r from-primary/5 to-secondary/5 pb-4">
             <div class="flex items-center justify-between">
-                <CardTitle class="text-xl">{{ exam.title }}</CardTitle>
+                <CardTitle
+                    class="text-2xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+                    {{ exam.title }}
+                </CardTitle>
 
                 <div class="flex gap-2">
-
-                    <Badge>{{
-                        exam.course ? exam.course : 'Free' }}</Badge>
-                    <Badge
-                        :variant="exam.status === 'ongoing' ? 'destructive' : exam.status === 'upcoming' ? 'secondary' : 'outline'">
+                    <Badge :class="[
+                        exam.status === 'ongoing' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
+                            exam.status === 'upcoming' ? 'bg-blue-500/10 text-blue-500 border-blue-500/20' :
+                                'bg-gray-500/10 text-gray-500 border-gray-500/20'
+                    ]" class="px-3 py-1 rounded-full text-sm font-medium border">
                         {{ exam.status.charAt(0).toUpperCase() + exam.status.slice(1) }}
                     </Badge>
                 </div>
             </div>
-            <p class="mt-1 text-sm text-muted-foreground">{{ exam.subject }}</p>
+            <p class="mt-2 text-sm font-medium text-muted-foreground/80">{{ exam.subject }}</p>
         </CardHeader>
-        <CardContent class="flex-grow">
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <div class="p-3 rounded-lg bg-secondary">
-                    <div class="flex items-center mb-1 text-sm font-medium">
-                        <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-blue-500" />
+        <CardContent class="flex-grow p-6">
+            <div class="grid grid-cols-2 gap-4 mb-6">
+                <div
+                    class="p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200/50 dark:border-blue-800/30">
+                    <div class="flex items-center mb-2 text-sm font-semibold text-blue-700 dark:text-blue-300">
+                        <Icon name="lucide:calendar" class="w-4 h-4 mr-2" />
                         Start
                     </div>
-                    <div class="ml-6 text-xs">{{ formatDate(exam.start_time) }}</div>
+                    <div class="ml-6 text-sm font-medium text-blue-600 dark:text-blue-400">{{
+                        formatDate(exam.start_time) }}</div>
                 </div>
-                <div class="p-3 rounded-lg bg-secondary">
-                    <div class="flex items-center mb-1 text-sm font-medium">
-                        <Icon name="lucide:calendar" class="w-4 h-4 mr-2 text-red-500" />
+                <div
+                    class="p-4 rounded-xl bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-950/50 dark:to-red-900/30 border border-red-200/50 dark:border-red-800/30">
+                    <div class="flex items-center mb-2 text-sm font-semibold text-red-700 dark:text-red-300">
+                        <Icon name="lucide:calendar" class="w-4 h-4 mr-2" />
                         End
                     </div>
-                    <div class="ml-6 text-xs">{{ formatDate(exam.end_time) }}</div>
+                    <div class="ml-6 text-sm font-medium text-red-600 dark:text-red-400">{{ formatDate(exam.end_time) }}
+                    </div>
                 </div>
-                <div class="p-3 rounded-lg bg-secondary">
-                    <div class="flex items-center mb-1 text-sm font-medium">
-                        <Icon name="lucide:clock" class="w-4 h-4 mr-2 text-green-500" />
+                <div
+                    class="p-4 rounded-xl bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-950/50 dark:to-green-900/30 border border-green-200/50 dark:border-green-800/30">
+                    <div class="flex items-center mb-2 text-sm font-semibold text-green-700 dark:text-green-300">
+                        <Icon name="lucide:clock" class="w-4 h-4 mr-2" />
                         Duration
                     </div>
-                    <div class="ml-6 text-xs">{{ exam.duration }} minutes</div>
+                    <div class="ml-6 text-sm font-medium text-green-600 dark:text-green-400">{{ exam.duration }} minutes
+                    </div>
                 </div>
-                <div class="p-3 rounded-lg bg-secondary">
-                    <div class="flex items-center mb-1 text-sm font-medium">
-                        <Icon name="lucide:award" class="w-4 h-4 mr-2 text-yellow-500" />
+                <div
+                    class="p-4 rounded-xl bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-950/50 dark:to-yellow-900/30 border border-yellow-200/50 dark:border-yellow-800/30">
+                    <div class="flex items-center mb-2 text-sm font-semibold text-yellow-700 dark:text-yellow-300">
+                        <Icon name="lucide:award" class="w-4 h-4 mr-2" />
                         Total Marks
                     </div>
-                    <div class="ml-6 text-xs">{{ exam.total_marks }} x 1 = {{ exam.total_marks }} (-0.25/Wrong Answer)
+                    <div class="ml-6 text-sm font-medium text-yellow-600 dark:text-yellow-400">
+                        {{ exam.total_marks }} x 1 = {{ exam.total_marks }}
+                        <span class="text-xs text-yellow-500/80">(-0.25/Wrong Answer)</span>
                     </div>
                 </div>
             </div>
 
-            <div v-if="exam.status !== 'past'" class="flex flex-col items-center p-3 rounded-lg bg-primary/10">
-                <div class="flex items-center mb-2 text-sm font-medium">
-                    <Icon name="lucide:timer" class="w-4 h-4 mr-2 text-primary" />
-                    <p class="font-semibold text-center "> পরীক্ষা {{ exam.status === 'ongoing' ? 'শেষ' : 'শুরু' }} হতে
-                        সময় বাকি
-                    </p>
+            <div v-if="exam.status !== 'past'"
+                class="flex flex-col items-center p-4 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
+                <div class="flex items-center mb-3 text-sm font-semibold text-primary">
+                    <Icon name="lucide:timer" class="w-5 h-5 mr-2" />
+                    <p class="font-bold">পরীক্ষা {{ exam.status === 'ongoing' ? 'শেষ' : 'শুরু' }} হতে সময় বাকি</p>
                 </div>
 
-                <div v-if="exam.status == 'ongoing'">
+                <div v-if="exam.status == 'ongoing'" class="text-lg font-bold text-primary">
                     <AppTimer :end="exam.end_time" />
                 </div>
-                <div v-if="exam.status == 'upcoming'">
+                <div v-if="exam.status == 'upcoming'" class="text-lg font-bold text-primary">
                     <AppTimer :end="exam.start_time" />
                 </div>
             </div>
         </CardContent>
-        <CardFooter class="flex justify-center space-x-2">
-
+        <CardFooter class="flex justify-center space-x-3 p-6 pt-0">
             <Button v-if="exam.status === 'ongoing' && (!exam.submission || exam.submission.status === 'pending')"
-                @click="navigateTo(`/exam/${exam.id}/onboard`)">Start Exam</Button>
-            <p v-else-if="exam.status === 'ongoing'" class="text-lg font-semibold text-red-500">
+                @click="navigateTo(`/exam/${exam.id}/onboard`)"
+                class="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                Start Exam
+            </Button>
+            <p v-else-if="exam.status === 'ongoing'" class="text-lg font-bold text-red-500">
                 অংশগ্রহণের জন্য ধন্যবাদ।
             </p>
             <template v-if="exam.status === 'past'">
-
-                <Button @click="navigateTo(`/exam/${exam.id}/practice`)">Pratice Exam</Button>
-                <Button @click="navigateTo(`/exam/${exam.id}/solution`)">Solution</Button>
-                <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)">Leaderboard</Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/practice`)"
+                    class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    Practice Exam
+                </Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/solution`)"
+                    class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    Solution
+                </Button>
+                <Button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
+                    class="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                    Leaderboard
+                </Button>
             </template>
         </CardFooter>
     </Card>
 </template>
 
 <script setup>
-
-
 const { exam } = defineProps({
     exam: {
         type: Object,
         required: true,
     },
 })
-
-
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.card {
+    @apply transition-all duration-300;
+
+    &:hover {
+        @apply transform -translate-y-1;
+    }
+}
+</style>

@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.exam;
   const userId = event.context.user?.id;
@@ -30,47 +32,82 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const questions = await db.question.findMany({
-    where: { exam_id: id },
-    include: {
+  const cacheKey = `questions:${id}`;
+  const cachedQuestions = await getCache(cacheKey);
+
+  let questions;
+  if (cachedQuestions) {
+    questions = cachedQuestions;
+  } else {
+    questions = await query<{
+      id: string;
+      question: string;
       options: {
-        select: {
-          id: true,
-          option_text: true,
-        },
-      },
-      explain: false,
-    },
-  });
+        id: string;
+        option_text: string;
+      }[];
+    }>(
+      `
+    SELECT 
+      q.id,
+      q.question,
+      json_agg(
+        json_build_object(
+          'id', o.id,
+          'option_text', o.option_text
+        )
+      ) as options
+    FROM questions q
+    LEFT JOIN question_options o ON q.id = o.question_id
+    WHERE q.exam_id = $1
+    GROUP BY q.id, q.question
+  `,
+      [id]
+    );
+  }
 
-  let submission = await db.submission.findFirst({
-    where: {
-      exam_id: id,
-      user_id: userId,
-    },
-  });
+  let submission = await query<{
+    id: string;
+    user_id: string;
+    exam_id: string;
+    status: string;
+    created_at: string;
+  }>(`SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2`, [
+    id,
+    userId,
+  ]);
 
-  if (submission && submission?.status !== "pending") {
+  if (
+    submission &&
+    submission.data &&
+    submission.data.length > 0 &&
+    submission.data[0]?.status !== "pending"
+  ) {
     return createError({
       statusCode: 403,
       statusMessage: "Submission is not pending",
     });
   }
 
-  if (!submission) {
-    submission = await db.submission.create({
-      data: {
-        exam_id: id,
-        user_id: userId,
-        status: "pending",
-      },
-    });
+  if (!submission || !submission.data || submission.data.length === 0) {
+    submission = await query<{
+      id: string;
+      user_id: string;
+      exam_id: string;
+      status: string;
+      created_at: string;
+      updated_at: string;
+    }>(
+      `INSERT INTO submissions (id,exam_id, user_id, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
+      [uuidv4(), id, userId, "pending", new Date(), new Date()]
+    );
   }
 
   return {
     statusCode: 200,
     exam,
-    questions,
-    submission,
+    questions: questions?.data,
+    // @ts-ignore
+    submission: submission?.data[0],
   };
 });

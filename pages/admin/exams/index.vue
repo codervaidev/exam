@@ -2,7 +2,7 @@
     <div>
         <div class="flex justify-between">
             <AppHeading title="Scheduled Exams" />
-            <Button @click="onOpen">
+            <Button @click="navigateTo('/admin/exams/create')">
                 <Icon name="lucide:plus" />
                 Schedule Exam
             </Button>

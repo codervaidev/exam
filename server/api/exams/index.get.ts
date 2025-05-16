@@ -52,8 +52,7 @@ export default defineEventHandler(async (event) => {
     statusCode: 200,
     body: {
       ongoingExams,
-      upcomingExams,
-      pastExams,
+      upcomingExams: [...upcomingExams, ...pastExams],
     },
   };
 });

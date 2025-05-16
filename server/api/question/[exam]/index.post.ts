@@ -14,12 +14,7 @@ export default defineEventHandler(async (event) => {
   const submission = await query<{
     id: string;
     created_at: string;
-  }>(
-    `
-    SELECT * FROM submissions WHERE id = $1
-  `,
-    [submission_id]
-  );
+  }>(`SELECT * FROM submissions WHERE id = $1`, [submission_id]);
 
   if (!submission || !submission.data || submission.data.length === 0) {
     return createError({
@@ -50,8 +45,8 @@ export default defineEventHandler(async (event) => {
   const totalMarks = marks?.data[0].marks - negMarks;
 
   await query(
-    `
-    UPDATE submissions SET
+    `UPDATE
+    submissions SET
       answers = $1,
       duration = $2,
       submitted_at = $3,

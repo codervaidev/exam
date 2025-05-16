@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
   // Fetch the total count of submissions for the exam with the search filter applied
   const totalSubmissions = await db.submission.count({
     where: {
-      examId: exam as string,
+      exam_id: exam as string,
     },
   });
 

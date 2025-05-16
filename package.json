@@ -43,6 +43,7 @@
     "shadcn-nuxt": "^0.10.4",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "uuid": "^11.1.0",
     "vaul-vue": "^0.2.0",
     "vee-validate": "^4.13.2",
     "vue": "latest",

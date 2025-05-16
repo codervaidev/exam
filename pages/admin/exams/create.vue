@@ -1,6 +1,14 @@
 <template>
-    <AppModal size="sm:min-w-3xl" :isOpen="isOpen" title="Exam Management"
-        description="Create and update exams for your institution" @onClose="onClose" v-if="isOpen">
+
+    <div>
+
+
+        <div class="flex justify-between mb-2">
+            <h1 class="text-2xl font-bold">
+                Schedule An Exam
+            </h1>
+        </div>
+
         <AppLoader v-if="isLoading" />
         <form @submit="onSubmit" class="space-y-6">
 
@@ -100,8 +108,9 @@
             </div>
 
         </form>
+    </div>
 
-    </AppModal>
+
 </template>
 
 <script setup>
@@ -110,7 +119,11 @@ import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { ExamSchema } from '~/schema/exam.schema';
-const { isOpen, onClose, initialExam } = useExam()
+
+
+definePageMeta({
+    layout: 'admin',
+})
 
 const isLoading = ref(false)
 const { toast } = useToast()
@@ -134,28 +147,7 @@ const onSubmit = form.handleSubmit(async (data) => {
 
     try {
         isLoading.value = true
-        if (initialExam.value.id) {
-            const { error } = await useFetch(`/api/admin/exam/${initialExam.value.id}`, {
-                method: 'PUT',
-                body: {
-                    ...data,
-                    startTime: dateFieldFormat(data.startTime),
-                    endTime: dateFieldFormat(data.endTime),
-                    resultPublishTime: dateFieldFormat(data.resultPublishTime),
-                    solutionPublishTime: dateFieldFormat(data.solutionPublishTime)
-                }
-            })
-            if (error.value) {
-                return toast({
-                    title: error.value.statusCode.toString(),
-                    description: error.value.statusMessage,
-                    variant: 'destructive'
-                })
-            }
 
-            refreshNuxtData('admin-exams')
-            return onClose()
-        }
         const { error } = await useAsyncData(() => $fetch('/api/admin/exam', {
             method: 'POST',
             body: data
@@ -168,8 +160,7 @@ const onSubmit = form.handleSubmit(async (data) => {
             })
         }
 
-        refreshNuxtData('admin-exams')
-        return onClose()
+        navigateTo('/admin/exams')
 
     } catch (error) {
         return toast({
@@ -180,24 +171,6 @@ const onSubmit = form.handleSubmit(async (data) => {
         isLoading.value = false
     }
 })
-
-
-watch(() => initialExam.value, (value) => {
-
-    if (value) {
-        form.setValues({
-            title: value.title,
-            subject: value.subject,
-            startTime: dateFieldFormat(value.start_time),
-            endTime: dateFieldFormat(value.end_time),
-            duration: value.duration,
-            totalMarks: value.total_marks,
-            resultPublishTime: dateFieldFormat(value.result_publish_time),
-            solutionPublishTime: dateFieldFormat(value.solution_publish_time)
-        })
-    }
-}, { immediate: true })
-
 
 
 

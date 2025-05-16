@@ -6,7 +6,7 @@
                 <div class="flex items-center justify-center px-6 py-4 space-x-3 text-white rounded-lg bg-rose-500">
                     <Icon name="lucide:alert-circle" size="24" />
                     <p class="text-sm font-medium">
-                        একবার এক্সাম দিতে ঢুকলেই তোমার সময় শুরু হয়ে যাবে। ভুলে বা নেটের সমস্যায় বা
+                        ভুলে বা নেটের সমস্যায় বা
                         অন্য যেকোনো কারণে একাধিকবার এক্সাম দেয়ার চেষ্টা করলে র‍্যাংকিং এ তোমার নাম
                         সবার নিচে চলে যাবে।
                     </p>
@@ -24,6 +24,15 @@
                     </div>
                     <p class="text-2xl font-medium ">
                         {{ formatDate(data.exam.start_time) }}
+                    </p>
+                    <div class="flex items-center justify-center space-x-3 ">
+                        <Icon name="lucide:calendar" class="w-6 h-6" />
+                        <h2 class="text-xl font-semibold">
+                            এক্সাম শেষ:
+                        </h2>
+                    </div>
+                    <p class="text-2xl font-medium ">
+                        {{ formatDate(data.exam.end_time) }}
                     </p>
                 </div>
 
