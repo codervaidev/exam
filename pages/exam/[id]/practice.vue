@@ -1,4 +1,8 @@
 <template>
+<div>
+    <div
+            class="fixed inset-0 -z-10 h-full  w-screen bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        </div>
 
     <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
         <AppContainer>
@@ -19,7 +23,8 @@
         </AppContainer>
         <Progress v-model="progress" class="w-full rounded-none " />
     </header>
-    <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'">
+    <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'"> 
+        
         <h1 class="text-xl font-bold text-center title_grad md:hidden">{{ data.exam.title }}</h1>
         <div v-for="(q, i) in data.questions" :key="i"
             class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
@@ -52,7 +57,7 @@
     <div v-else>
         <AppLoader />
     </div>
-
+</div>
 </template>
 
 <script setup>
