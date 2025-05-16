@@ -11,6 +11,8 @@ export default defineEventHandler(async (event) => {
     };
   }
 
+  // email excluded
+
   const user = await db.user.upsert({
     where: { phone: data.phone },
     create: {
