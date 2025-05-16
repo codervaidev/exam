@@ -87,7 +87,7 @@
             <template v-if="exam.status === 'past'">
                 <div class="sm:grid hidden grid-cols-3 w-full gap-3">
                     <Button @click="navigateTo(`/exam/${exam.id}/practice`)"
-                        class="w-full bg-gradient-to-r col-span-3  from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
+                        class="w-full bg-gradient-to-r  from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-sm sm:text-base font-semibold px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
                         Practice Exam
                     </Button>
                     <Button @click="navigateTo(`/exam/${exam.id}/solution`)"
