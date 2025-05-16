@@ -13,7 +13,7 @@ defineProps<{
       <div class="relative z-20 flex flex-col items-center justify-center h-full gap-6 mt-auto ">
 
         <h3 class="text-3xl font-bold text-white">
-          Rhombus <span class="text-red-400">Parallel</span>
+          Rhombus <span class="text-red-400">Parallel</span> Science Hub
         </h3>
         <AppTypewrite />
       </div>

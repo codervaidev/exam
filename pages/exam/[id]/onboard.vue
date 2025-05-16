@@ -1,46 +1,95 @@
 <template>
-    <div v-if="status === 'success'" class="container p-4 mx-auto">
-        <div
-            class="max-w-2xl p-8 mx-auto my-10 transition-all duration-300 border shadow-lg rounded-xl hover:shadow-xl">
-            <div class="space-y-8 text-center">
-                <div class="flex items-center justify-center px-6 py-4 space-x-3 text-white rounded-lg bg-rose-500">
-                    <Icon name="lucide:alert-circle" size="24" />
-                    <p class="text-sm font-medium">
-                        ভুলে বা নেটের সমস্যায় বা
-                        অন্য যেকোনো কারণে একাধিকবার এক্সাম দেয়ার চেষ্টা করলে র‍্যাংকিং এ তোমার নাম
-                        সবার নিচে চলে যাবে।
-                    </p>
-                </div>
+    <div v-if="status === 'success'" class="container relative p-4 mx-auto">
+        <div class="max-w-2xl bg-white/80 p-6 mx-auto my-8 transition-all duration-300 border rounded-xl">
+            <div class="space-y-6">
 
-                <div class="space-y-4">
-                    <h1 class="text-4xl font-bold ">
+
+                <!-- Exam Title -->
+                <div class="text-center">
+                    <h1 class="text-3xl font-bold text-gray-800">
                         {{ data.exam.title }}
                     </h1>
-                    <div class="flex items-center justify-center space-x-3 ">
-                        <Icon name="lucide:calendar" class="w-6 h-6" />
-                        <h2 class="text-xl font-semibold">
-                            এক্সাম শুরু:
-                        </h2>
-                    </div>
-                    <p class="text-2xl font-medium ">
-                        {{ formatDate(data.exam.start_time) }}
-                    </p>
-                    <div class="flex items-center justify-center space-x-3 ">
-                        <Icon name="lucide:calendar" class="w-6 h-6" />
-                        <h2 class="text-xl font-semibold">
-                            এক্সাম শেষ:
-                        </h2>
-                    </div>
-                    <p class="text-2xl font-medium ">
-                        {{ formatDate(data.exam.end_time) }}
+                    <p class="text-lg font-medium text-gray-600">
+                        {{ data.exam.subject }}
                     </p>
                 </div>
 
-                <div class="mt-8">
-                    <Button @click="navigateTo('/exam/' + data.exam.id)"
-                        class="px-10 py-4 text-lg font-semibold text-white transition-all duration-300 transform rounded-full shadow-md bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-                        শুরু করুন
-                    </Button>
+                <!-- Exam Details -->
+                <div class="grid grid-cols-1 gap-3 p-4 bg-gray-50 rounded-lg">
+                    <!-- Start Time -->
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <Icon name="lucide:calendar" class="w-5 h-5 text-blue-500" />
+                            <h2 class="text-base font-semibold text-gray-700">
+                                এক্সাম শুরু:
+                            </h2>
+                        </div>
+                        <p class="text-lg font-medium text-gray-800">
+                            {{ formatDate(data.exam.start_time) }}
+                        </p>
+                    </div>
+
+                    <!-- End Time -->
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <Icon name="lucide:calendar" class="w-5 h-5 text-red-500" />
+                            <h2 class="text-base font-semibold text-gray-700">
+                                এক্সাম শেষ:
+                            </h2>
+                        </div>
+                        <p class="text-lg font-medium text-gray-800">
+                            {{ formatDate(data.exam.end_time) }}
+                        </p>
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <Icon name="lucide:clock" class="w-5 h-5 text-emerald-500" />
+                            <h2 class="text-base font-semibold text-gray-700">
+                                সময়সীমা:
+                            </h2>
+                        </div>
+                        <p class="text-lg font-medium text-gray-800">
+                            {{ data.exam.duration }} মিনিট
+                        </p>
+                    </div>
+
+                    <!-- Marking -->
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                        <div class="flex items-center space-x-2">
+                            <Icon name="lucide:star" class="w-5 h-5 text-emerald-500" />
+                            <h2 class="text-base font-semibold text-gray-700">
+                                পূর্ণমান:
+                            </h2>
+                        </div>
+                        <p class="text-lg font-medium text-gray-800">
+                            {{ data.exam.total_marks }} মার্ক
+                        </p>
+                    </div>
+                </div>
+                <!-- Warning Message -->
+                <div
+                    class="flex items-center justify-center p-4 space-x-3 text-white rounded-lg bg-gradient-to-r from-rose-500 to-rose-600">
+                    <Icon name="lucide:alert-circle" size="20" />
+                    <p class="text-sm font-medium">
+                        ভুলে বা নেটের সমস্যায় বা অন্য যেকোনো কারণে পরীক্ষা থেকে বের হয়ে গেলে, আবার প্রথম থেকে এক্সাম
+                        দিতে হবে এবং সাবমিট না করেই বের হয়ে গেলে, এক্সামে অনুপস্থিত ধরে নেয়া হবে।
+                    </p>
+                </div>
+
+                <!-- Start Button -->
+                <div class="flex justify-center mt-6">
+                    <button @click="navigateTo('/exam/' + data.exam.id)"
+                        class="relative px-10 py-3 text-base font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group">
+                        <span class="relative z-10 flex items-center gap-2">
+                            শুরু করো
+                            <Icon name="lucide:play" class="w-4 h-4" />
+                        </span>
+                        <div
+                            class="absolute inset-0 w-full h-full transition-opacity duration-300 rounded-full bg-gradient-to-r from-red-600 to-rose-600 opacity-0 group-hover:opacity-100">
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>
@@ -51,7 +100,6 @@
 </template>
 
 <script setup>
-
 definePageMeta({
     middleware: 'protected'
 })
@@ -59,10 +107,7 @@ definePageMeta({
 const route = useRoute()
 
 const { data, status, error, refresh } = await useFetch('/api/exams/' + route.params.id, {
-
 })
-
-
 </script>
 
 <style lang="scss" scoped></style>

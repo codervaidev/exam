@@ -18,4 +18,6 @@ export const ExamSchema = z.object({
   solutionPublishTime: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Invalid solution publish time",
   }),
+  shuffleQuestions: z.boolean().optional(),
+  negativeMarking: z.boolean().optional(),
 });

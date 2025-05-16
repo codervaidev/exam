@@ -99,6 +99,44 @@
                 </FormField>
             </div>
 
+            <div class="grid grid-cols-2 gap-4">
+
+                <FormField v-slot="{ field }" name="negativeMarking">
+                    <FormItem
+                        class="flex flex-row items-start p-4 space-x-3 space-y-0 bg-white border rounded-md dark:bg-slate-800">
+                        <FormControl>
+                            <Checkbox :checked="form.values.negativeMarking"
+                                @click="form.setFieldValue('negativeMarking', !form.values.negativeMarking)" />
+                        </FormControl>
+                        <div class="space-y-1 leading-none">
+                            <FormLabel>
+                                Negative Marking
+                            </FormLabel>
+                            <FormDescription>
+                                Apply negative marking for incorrect answers
+                            </FormDescription>
+                        </div>
+                    </FormItem>
+                </FormField>
+                <FormField v-slot="{ field }" name="shuffleQuestions">
+                    <FormItem
+                        class="flex flex-row items-start p-4 space-x-3 space-y-0 bg-white border rounded-md dark:bg-slate-800">
+                        <FormControl>
+                            <Checkbox :checked="form.values.shuffleQuestions"
+                                @click="form.setFieldValue('shuffleQuestions', !form.values.shuffleQuestions)" />
+                        </FormControl>
+                        <div class="space-y-1 leading-none">
+                            <FormLabel>
+                                Shuffle Question
+                            </FormLabel>
+                            <FormDescription>
+                                Shuffle question order for each student
+                            </FormDescription>
+                        </div>
+                    </FormItem>
+                </FormField>
+            </div>
+
 
             <div class="flex justify-end">
 
@@ -138,7 +176,9 @@ const form = useForm({
         duration: '',
         totalMarks: '',
         resultPublishTime: '',
-        solutionPublishTime: ''
+        solutionPublishTime: '',
+        shuffleQuestions: false,
+        negativeMarking: false
     }
 })
 

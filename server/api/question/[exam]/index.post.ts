@@ -26,6 +26,16 @@ export default defineEventHandler(async (event) => {
   let duration =
     new Date().getTime() - new Date(submission.data[0].created_at).getTime();
 
+  const exam = await query<{
+    negative_marking: boolean;
+  }>(`SELECT negative_marking FROM exams WHERE id = $1`, [id]);
+
+  if (!exam || !exam.data || exam.data.length === 0) {
+    return createError({
+      statusCode: 404,
+      statusMessage: "Exam not found",
+    });
+  }
   const marks = await query<{
     marks: number;
   }>(
@@ -42,7 +52,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const negMarks = (answers.length - marks?.data[0].marks) * 0.25;
-  const totalMarks = marks?.data[0].marks - negMarks;
+  const totalMarks = exam.data[0].negative_marking
+    ? marks?.data[0].marks - negMarks
+    : marks?.data[0].marks;
 
   await query(
     `UPDATE

@@ -10,4 +10,4 @@ export const SUBJECTS = [
 ];
 
 export const DIFFICULTY_LEVELS = ["None", "Easy", "Medium", "Hard"];
-export const HSC_BATCHES = ["HSC 2025", "HSC 2024", "HSC 2023", "Others"];
+export const HSC_BATCHES = ["HSC 2027", "HSC 2026", "HSC 2025", "Others"];

@@ -29,6 +29,8 @@ export default defineEventHandler(async (event) => {
       solution_publish_time: new Date(data.solutionPublishTime),
       duration: data.duration,
       total_marks: data.totalMarks,
+      negative_marking: data.negativeMarking,
+      shuffle_questions: data.shuffleQuestions,
     },
   });
 

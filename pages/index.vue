@@ -1,16 +1,19 @@
 <template>
   <AppContainer>
 
-    <div v-if="status === 'success'" class="space-y-6">
+    <div v-if="status === 'success'" class="space-y-6 relative">
       <div class="max-w-2xl mx-auto">
         <ExamCard v-for="exam in data.body.ongoingExams" :key="exam.id" :exam="exam" />
       </div>
-    
-          <div v-if="data.body.upcomingExams.length > 0" class="grid gap-6 md:grid-cols-2">
-            <ExamCard v-for="exam in data.body.upcomingExams" :key="exam.id" :exam="exam" />
-          </div>
 
-          <AppEmptyState v-else title="No exam scheduled" />
+      <div v-if="data.body.upcomingExams.length > 0" class="grid gap-6 max-w-2xl mx-auto">
+        <ExamCard v-for="exam in data.body.upcomingExams" :key="exam.id" :exam="exam" />
+      </div>
+
+      <div v-if="data.body.pastExams.length > 0" class="grid gap-6 md:grid-cols-2 mx-auto">
+        <ExamCard v-for="exam in data.body.pastExams" :key="exam.id" :exam="exam" />
+      </div>
+      <AppEmptyState v-else title="No exam scheduled" />
 
 
     </div>

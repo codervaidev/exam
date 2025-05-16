@@ -13,8 +13,6 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  console.log(data);
-
   await db.exam.create({
     data: {
       title: data.title,
@@ -22,7 +20,9 @@ export default defineEventHandler(async (event) => {
       start_time: formatDate(data.startTime),
       end_time: formatDate(data.endTime),
       result_publish_time: formatDate(data.resultPublishTime),
-      solution_publish_time: new Date(data.solutionPublishTime),
+      solution_publish_time: formatDate(data.solutionPublishTime),
+      shuffle_questions: data.shuffleQuestions,
+      negative_marking: data.negativeMarking,
       duration: data.duration,
       total_marks: data.totalMarks,
     },

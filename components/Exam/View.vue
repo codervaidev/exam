@@ -59,6 +59,14 @@
                         <Label>Updated At</Label>
                         <p class="text-xs text-muted-foreground">{{ formatTime(exam.updated_at) }}</p>
                     </div>
+                    <div class="grid gap-1">
+                        <Label>Negative Marking</Label>
+                        <p class="text-xs text-muted-foreground">{{ exam.negative_marking ? 'Yes' : 'No' }}</p>
+                    </div>
+                    <div class="grid gap-1">
+                        <Label>Shuffle Questions</Label>
+                        <p class="text-xs text-muted-foreground">{{ exam.shuffle_questions ? 'Yes' : 'No' }}</p>
+                    </div>
                 </div>
             </CardContent>
         </Card>

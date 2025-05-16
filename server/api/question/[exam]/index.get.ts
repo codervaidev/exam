@@ -51,6 +51,7 @@ export default defineEventHandler(async (event) => {
     SELECT 
       q.id,
       q.question,
+      q.subject,
       json_agg(
         json_build_object(
           'id', o.id,
@@ -101,6 +102,10 @@ export default defineEventHandler(async (event) => {
       `INSERT INTO submissions (id,exam_id, user_id, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
       [uuidv4(), id, userId, "pending", new Date(), new Date()]
     );
+  }
+
+  if (exam.shuffle_questions && questions?.data) {
+    questions.data = questions.data.sort(() => Math.random() - 0.5);
   }
 
   return {

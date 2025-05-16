@@ -19,6 +19,9 @@
         <Progress v-model="progress" class="w-full rounded-none " />
     </header>
     <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'">
+        <div
+            class="fixed inset-0 -z-10 h-full  w-screen bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        </div>
         <h1 class="text-xl font-bold text-center title_grad md:hidden">{{ data.exam.title }}</h1>
         <div v-for="(q, i) in data.questions" :key="i"
             class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
@@ -69,7 +72,8 @@ const { data, status, error, refresh } = await useFetch('/api/question/' + route
 })
 
 
-const timer = useLocalStorage('timer', null)
+const timer = ref(null)
+const end_time = ref(null)
 
 const { toast } = useToast()
 
@@ -106,22 +110,31 @@ const progress = computed(() => {
 
 
 
-const end_time = ref(null)
-
 onMounted(() => {
+    end_time.value = new Date(data.value.submission.created_at).getTime() + (data.value.exam.duration * 60 * 1000)
 
-    end_time.value = new Date(data.value.exam.end_time).getTime()
+    // Clear any existing timer
+    if (timer.value) {
+        clearInterval(timer.value)
+    }
 
-    if (!timer.value) {
-        timer.value = setInterval(() => {
-            const now = new Date().getTime()
-            const distance = end_time.value - now
-            if (distance < 0) {
-                clearInterval(timer.value)
-                timer.value = null
-                submitAns()
-            }
-        }, 1000)
+    // Set up new timer
+    timer.value = setInterval(() => {
+        const now = new Date().getTime()
+        const distance = end_time.value - now
+        if (distance < 0) {
+            clearInterval(timer.value)
+            timer.value = null
+            submitAns()
+        }
+    }, 1000)
+})
+
+// Cleanup timer when component unmounts
+onUnmounted(() => {
+    if (timer.value) {
+        clearInterval(timer.value)
+        timer.value = null
     }
 })
 

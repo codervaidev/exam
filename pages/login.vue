@@ -4,7 +4,7 @@
             <div class="grid gap-2 ">
                 <img src="/logo.png" alt="logo" class="h-16 mx-auto mb-10" />
                 <h3 class="text-xl font-bold lg:hidden text-slate-800">
-                    Rhombus <span class="text-red-400">Parallel</span>
+                    Rhombus <span class="text-red-400">Parallel</span> Science Hub
                 </h3>
                 <h1 class="hidden text-2xl font-semibold tracking-tight lg:block">
                     Login
@@ -82,7 +82,7 @@ const onSubmit = form.handleSubmit(async () => {
         })
 
         if (!data) {
-            return navigateTo('/register')
+            return navigateTo('/register?phone=' + phoneValue)
         }
 
         // Simulate user assignment and navigation
@@ -93,7 +93,7 @@ const onSubmit = form.handleSubmit(async () => {
         //     title: error.toString(),
         //     variant: 'destructive'
         // });
-        return navigateTo('/register')
+        return navigateTo('/register?phone=' + form.values.phone)
     } finally {
         isLoading.value = false;
     }
