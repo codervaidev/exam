@@ -3,7 +3,7 @@
         <!-- Top Bar with Statistics -->
         <div v-if="data.submission" class="p-6 bg-white border rounded-xl shadow-lg">
             <h1 class="mb-4 text-2xl font-bold text-center text-gray-800">{{ data.exam.title }}</h1>
-            <div class="grid grid-cols-4 gap-6 text-center">
+            <div class="grid sm:grid-cols-4 grid-cols-2 gap-6 text-center">
                 <div class="p-4 bg-gray-50 rounded-lg">
                     <div class="text-sm font-medium text-gray-600">Total Marks</div>
                     <div class="text-2xl font-bold text-gray-900">{{ data.submission.marks }}</div>

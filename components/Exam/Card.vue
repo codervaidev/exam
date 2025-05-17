@@ -61,7 +61,8 @@
                     </div>
                     <div class="ml-5 sm:ml-6 text-xs sm:text-sm font-medium text-yellow-600 dark:text-yellow-400">
                         {{ exam.total_marks }} x 1 = {{ exam.total_marks }}
-                        <span class="text-[10px] sm:text-xs text-yellow-500/80">(-0.25/Wrong Answer)</span>
+                        <span class="text-[10px] sm:text-xs text-yellow-500/80"
+                            v-if="exam.negative_marking">(-0.25/Wrong Answer)</span>
                     </div>
                 </div>
             </div>

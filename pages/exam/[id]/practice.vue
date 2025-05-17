@@ -1,6 +1,9 @@
 <template>
 
-    <div class="min-h-screen bg-white">
+    <div class="min-h-screen">
+        <div
+            class="fixed inset-0 -z-10 h-full  w-screen bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
+        </div>
         <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
             <AppContainer>
                 <div class="container flex items-center justify-between px-2 py-4 mx-auto md:px-4">
@@ -99,6 +102,14 @@
 
                         <AppMath v-model="a.option_text"></AppMath>
                     </div>
+                    <div v-if="q.explain && isSubmitted"
+                        class="p-4 mt-4 bg-green-50 border border-green-200 rounded-lg">
+                        <div class="flex items-center gap-2 mb-2">
+                            <Icon name="lucide:lightbulb" size="20" class="text-green-600" />
+                            <span class="font-medium text-green-800">Explanation</span>
+                        </div>
+                        <AppMath v-model="q.explain" class="text-gray-700"></AppMath>
+                    </div>
                 </div>
                 <p class="flex items-center mt-4 text-green-600" v-if="q.selected && !isSubmitted">
                     <Icon name="lucide:circle-check" class="w-4 h-4 mr-2" />
@@ -121,7 +132,7 @@
                     </p>
                     <p class="mt-2 text-xl text-gray-600">Great job!</p>
                 </div>
-                <DialogFooter class="flex justify-center space-x-4">
+                <DialogFooter class="flex justify-center gap-4">
                     <Button @click="retryExam" class="bg-gray-500 hover:bg-gray-600">Retry Exam</Button>
                     <Button @click="showDetails" class=" bg-primary hover:bg-primary-dark">View
                         Details</Button>
