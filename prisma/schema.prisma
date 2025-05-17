@@ -54,6 +54,7 @@ model Question {
   subject    String
   exam_id    String
   explain    String?
+  order      Int     @default(0)
 
   options Option[]
   exam    Exam?    @relation(fields: [exam_id], references: [id])

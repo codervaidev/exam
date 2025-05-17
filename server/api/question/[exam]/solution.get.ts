@@ -25,10 +25,6 @@ export default defineEventHandler(async (event) => {
       exam_id: id,
       user_id: userId,
     },
-
-    select: {
-      answers: true,
-    },
   });
 
   const questions = await db.question.findMany({
@@ -44,10 +40,6 @@ export default defineEventHandler(async (event) => {
       },
     },
   });
-
-  submission =
-    // @ts-ignore
-    submission && submission?.answers ? submission.answers : [];
 
   return {
     statusCode: 200,

@@ -35,7 +35,7 @@
                 </div>
 
                 <div v-if="questions.length > 0">
-                   
+
                     <div v-for="q, i in questions" :key="i">
                         <div class="mt-3 text-lg font-semibold" v-html="q.question"></div>
                         <div class="grid gap-3 mt-4">
@@ -123,7 +123,8 @@ const importQuestions = async () => {
                     { option_text: q.d, correct: q.d == q.correct },
                 ],
                 examId: props.examId,
-                subject: subjectId.value,
+                subject: q.subject || subjectId.value,
+                order: sl + 1,
                 difficulty: "Medium",
             }
             await $fetch('/api/admin/questions', { method: 'POST', body: question });

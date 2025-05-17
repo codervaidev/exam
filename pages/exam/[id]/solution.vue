@@ -1,51 +1,78 @@
 <template>
-
-
-
-    <div class="max-w-2xl py-5 mx-auto space-y-3" v-if="status === 'success'">
-
-        <div>
-
-            <h2 class="text-2xl font-semibold text-center ">
-                {{ data.exam.title }}
-            </h2>
-
-        </div>
-
-
-
-        <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-3 bg-white border rounded-lg shadow-md">
-
-            <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
-
-            <div class="flex flex-wrap gap-3 ">
-                <Badge> Q no. {{ i + 1 }}</Badge>
-                <Badge> {{ q.subject }}</Badge>
-                <Badge> 1 Marks</Badge>
-                <Badge v-if="notAnswered(q.id)" class="bg-red-500">Not Answered</Badge>
-            </div>
-            <div class="mt-3 space-y-3 ">
-
-                <div v-for="(a, j) in q.options" :key="j"
-                    class="relative flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
-                    :class="{ 'border-green-500': a.correct, 'border-red-500': wrongAnswer(a.id) && !a.correct }">
-                    <Icon name="lucide:check-circle-2" size="24" class="absolute text-green-500 right-3"
-                        v-if="a.correct" />
-                    <AppMath v-model="a.option_text">
-                    </AppMath>
+    <div class="max-w-3xl py-8 mx-auto space-y-6" v-if="status === 'success'">
+        <!-- Top Bar with Statistics -->
+        <div v-if="data.submission" class="p-6 bg-white border rounded-xl shadow-lg">
+            <h1 class="mb-4 text-2xl font-bold text-center text-gray-800">{{ data.exam.title }}</h1>
+            <div class="grid grid-cols-4 gap-6 text-center">
+                <div class="p-4 bg-gray-50 rounded-lg">
+                    <div class="text-sm font-medium text-gray-600">Total Marks</div>
+                    <div class="text-2xl font-bold text-gray-900">{{ data.submission.marks }}</div>
+                </div>
+                <div class="p-4 bg-green-50 rounded-lg">
+                    <div class="text-sm font-medium text-green-600">Correct</div>
+                    <div class="text-2xl font-bold text-green-700">{{ data.submission.correct }}</div>
+                </div>
+                <div class="p-4 bg-red-50 rounded-lg">
+                    <div class="text-sm font-medium text-red-600">Incorrect</div>
+                    <div class="text-2xl font-bold text-red-700">{{ data.submission.incorrect }}</div>
+                </div>
+                <div class="p-4 bg-yellow-50 rounded-lg">
+                    <div class="text-sm font-medium text-yellow-600">Skipped</div>
+                    <div class="text-2xl font-bold text-yellow-700">{{ data.submission.skipped }}</div>
                 </div>
             </div>
+        </div>
 
-            <AppMath v-if="q.explain" v-model="q.explain" class="p-2 border border-green-600 rounded-md">
-            </AppMath>
+        <div v-else class="p-6 bg-white border rounded-xl shadow-lg">
+            <div class="text-center">
+                <Icon name="lucide:alert-circle" size="48" class="mx-auto text-yellow-500 mb-4" />
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">Not participated</h2>
+                <p class="text-gray-600">You have not participated in this exam.</p>
+            </div>
+        </div>
 
+        <div v-if="data.questions" class="space-y-4">
+            <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-4 bg-white border rounded-xl shadow-lg">
+                <div class="flex items-start justify-between">
+                    <div class="text-lg font-semibold text-gray-900" v-html="q.question"></div>
+
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <Badge class="bg-blue-100 text-blue-800">Q{{ i + 1 }}</Badge>
+                    <Badge class="bg-purple-100 text-purple-800">{{ q.subject }}</Badge>
+                    <Badge class="bg-green-100 text-green-800">1 Mark</Badge>
+                    <Badge v-if="notAnswered(q.id)" class="bg-red-100 text-red-800">Not Answered</Badge>
+                </div>
+                <div class="mt-4 space-y-3">
+                    <div v-for="(a, j) in q.options" :key="j"
+                        class="relative flex items-center p-4 space-x-3 transition-all border-2 rounded-lg" :class="{
+                            'border-green-500 bg-green-50': a.correct,
+                            'border-red-500 bg-red-50': wrongAnswer(a.id) && !a.correct,
+                            'border-gray-200 hover:bg-gray-50': !a.correct && !wrongAnswer(a.id)
+                        }">
+                        <div class="flex-1">
+                            <AppMath v-model="a.option_text"></AppMath>
+                        </div>
+                        <Icon v-if="a.correct" name="lucide:check-circle-2" size="24" class="text-green-500" />
+                        <Icon v-if="wrongAnswer(a.id) && !a.correct" name="lucide:x-circle" size="24"
+                            class="text-red-500" />
+                    </div>
+                </div>
+
+                <div v-if="q.explain" class="p-4 mt-4 bg-green-50 border border-green-200 rounded-lg">
+                    <div class="flex items-center gap-2 mb-2">
+                        <Icon name="lucide:lightbulb" size="20" class="text-green-600" />
+                        <span class="font-medium text-green-800">Explanation</span>
+                    </div>
+                    <AppMath v-model="q.explain" class="text-gray-700"></AppMath>
+                </div>
+            </div>
         </div>
     </div>
 
     <div v-else>
         <AppLoader />
     </div>
-
 </template>
 
 <script setup>
@@ -54,19 +81,19 @@ const { data, status, error, refresh } = await useFetch('/api/question/' + route
     key: 'solution'
 })
 
-
-const wrongAnswer = (o) => {
-    // if exists
-    return data.value.submission.find(s => s.a == o)
+const wrongAnswer = (optionId) => {
+    if (!data.value?.submission?.answers) return false
+    return data.value?.submission?.answers?.includes(optionId) || false
 }
 
-const notAnswered = (o) => {
-    // if exists
-    return !(data.value.submission.find(s => s.q == o))
+const notAnswered = (questionId) => {
+    if (!data.value?.submission?.answers) return true
+    // Check if the question was skipped (not in answers array)
+    return !data.value.submission.answers.some(answerId => {
+        const question = data.value.questions.find(q => q.options.some(o => o.id === answerId))
+        return question && question.id === questionId
+    })
 }
-
-
-
 </script>
 
 <style lang="scss" scoped></style>
