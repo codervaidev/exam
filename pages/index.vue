@@ -2,7 +2,7 @@
   <AppContainer>
 
     <div v-if="status === 'success'" class="space-y-6 relative">
-      <div class="max-w-2xl mx-auto">
+      <div class="max-w-2xl mx-auto space-y-3">
         <ExamCard v-for="exam in data.body.ongoingExams" :key="exam.id" :exam="exam" />
       </div>
 

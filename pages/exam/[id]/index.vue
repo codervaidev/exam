@@ -1,60 +1,69 @@
 <template>
 
-    <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
-        <AppContainer>
-            <div class="container flex items-center justify-between px-2 py-4 mx-auto md:px-4">
-                <h1 class="hidden text-xl font-bold text-gray-800 md:block">{{ data.exam.title }}</h1>
-                <div class="flex items-center justify-between flex-1 space-x-4 md:justify-end">
-                    <div v-if="end_time" class="flex gap-4 text-lg font-semibold text-slate-800">
-                        <!-- Time Left: -->
-                        <ExamTimer :end_time="end_time" />
-                    </div>
-                    <Button @click="submitAns"
-                        class="px-3 py-3 font-semibold text-white transition-all duration-300 transform rounded-xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                        Submit Exam
-                    </Button>
-                </div>
-            </div>
-        </AppContainer>
-        <Progress v-model="progress" class="w-full rounded-none " />
-    </header>
-    <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'">
+    <div>
         <div
             class="fixed inset-0 -z-10 h-full  w-screen bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
         </div>
-        <h1 class="text-xl font-bold text-center title_grad md:hidden">{{ data.exam.title }}</h1>
-        <div v-for="(q, i) in data.questions" :key="i"
-            class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
 
-            <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
-
-            <div class="flex flex-wrap gap-3 ">
-                <Badge> Q no. {{ i + 1 }}</Badge>
-                <Badge> {{ q.subject }}</Badge>
-                <Badge> 1 Marks</Badge>
-            </div>
-            <div class="mt-3 space-y-3 ">
-
-                <div v-for="(a, j) in q.options" :key="j"
-                    class="flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
-                    :class="{ 'border-slate-500': data.questions[i].selected == a.id }" @click="selectOption(i, a.id)">
-
-
-                    <AppMath v-model="a.option_text">
-                    </AppMath>
+        <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
+            <AppContainer>
+                <div class="container flex items-center justify-between px-2 py-4 mx-auto md:px-4">
+                    <h1 class="hidden text-xl font-bold text-gray-800 md:block">{{ data.exam.title }}</h1>
+                    <div class="flex items-center justify-between flex-1 space-x-4 md:justify-end">
+                        <div v-if="end_time" class="flex gap-4 text-lg font-semibold text-slate-800">
+                            <!-- Time Left: -->
+                            <ExamTimer :end_time="end_time" />
+                        </div>
+                        <Button @click="submitAns"
+                            class="px-3 py-3 font-semibold text-white transition-all duration-300 transform rounded-xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                            Submit Exam
+                        </Button>
+                    </div>
                 </div>
+            </AppContainer>
+            <Progress v-model="progress" class="w-full rounded-none " />
+        </header>
+        <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'">
+            <div class="mb-4">
+                <h1 class=" text-2xl font-bold text-center text-gray-800">{{ data.exam.title }}</h1>
+                <p class="text-sm text-gray-500 text-center">
+                    {{ data.exam.subject }}
+                </p>
             </div>
-            <p class="flex items-center mt-4 text-green-600" v-if="q.selected">
-                <Icon name="lucide:circle-check" class="w-4 h-4 mr-2" />
-                Answer selected
-            </p>
+
+            <div v-for="(q, i) in data.questions" :key="i"
+                class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
+
+                <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
+
+                <div class="flex flex-wrap gap-3 ">
+                    <Badge> Q no. {{ i + 1 }}</Badge>
+                    <Badge> {{ q.subject }}</Badge>
+                    <Badge> 1 Marks</Badge>
+                </div>
+                <div class="mt-3 space-y-3 ">
+
+                    <div v-for="(a, j) in q.options" :key="j"
+                        class="flex items-center p-3 space-x-2 transition-colors border-2 border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+                        :class="{ 'border-slate-500': data.questions[i].selected == a.id }"
+                        @click="selectOption(i, a.id)">
+
+
+                        <AppMath v-model="a.option_text">
+                        </AppMath>
+                    </div>
+                </div>
+                <p class="flex items-center mt-4 text-green-600" v-if="q.selected">
+                    <Icon name="lucide:circle-check" class="w-4 h-4 mr-2" />
+                    Answer selected
+                </p>
+            </div>
+        </div>
+
+        <div v-else>
+            <AppLoader />
         </div>
     </div>
-
-    <div v-else>
-        <AppLoader />
-    </div>
-
 </template>
 
 <script setup>

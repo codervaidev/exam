@@ -18,8 +18,11 @@ export default defineEventHandler(async (event) => {
     include: {
       options: true,
     },
-    
+    orderBy: {
+      order: "asc",
+    },
   });
+
   return {
     statusCode: 200,
     body: {

@@ -7,16 +7,15 @@
         <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
             <AppContainer>
                 <div class="container flex items-center justify-between px-2 py-4 mx-auto md:px-4">
-                    <h1 class="hidden text-xl font-bold text-gray-800 md:block">{{ data.exam.title }}</h1>
-                    <div class="flex items-center justify-between flex-1 space-x-4 md:justify-end">
+                    <NavbarLogo :class="isSubmitted ? '' : 'hidden sm:block'" />
+                    <div class="flex items-center flex-1 space-x-4"
+                        :class="isSubmitted ? 'justify-end' : 'justify-between'">
                         <div v-if="end_time && !isSubmitted" class="flex gap-4 text-lg font-semibold text-slate-800">
                             <!-- Time Left: -->
                             <ExamTimer :end_time="end_time" />
 
                         </div>
-                        <div v-if="isSubmitted" class="text-lg font-semibold text-slate-800">
-                            Score: {{ score }} / {{ data.questions.length }}
-                        </div>
+
                         <Button @click="isSubmitted ? retryExam() : submitAns()"
                             class="px-6 py-3 text-lg font-medium text-white transition-all duration-200 rounded-lg shadow-md bg-gradient-to-r from-violet-500 to-purple-500 hover:from-purple-500 hover:to-violet-500 hover:shadow-lg active:scale-95">
                             <span class="flex items-center gap-2">
@@ -30,43 +29,24 @@
             <Progress v-model="progress" class="w-full rounded-none " />
         </header>
 
-        <!-- New summary section -->
-        <div v-if="isSubmitted" class="max-w-2xl p-4 mx-auto mt-4 bg-white border rounded-lg shadow">
-            <h2 class="mb-4 text-2xl font-semibold text-center">Summary</h2>
-            <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
-                <div class="p-4 bg-green-100 rounded-lg shadow">
-                    <h3 class="mb-2 text-lg font-semibold text-green-700">Correct</h3>
-                    <p class="text-2xl font-bold text-green-700">{{ correctCount }}</p>
-                </div>
-                <div class="p-4 bg-red-100 rounded-lg shadow">
-                    <h3 class="mb-2 text-lg font-semibold text-red-700">Wrong</h3>
-                    <p class="text-2xl font-bold text-red-700">{{ wrongCount }}</p>
-                </div>
-                <div class="p-4 bg-gray-100 rounded-lg shadow">
-                    <h3 class="mb-2 text-lg font-semibold text-gray-700">Not Answered</h3>
-                    <p class="text-2xl font-bold text-gray-700">{{ notAnsweredCount }}</p>
-                </div>
-                <div class="p-4 bg-orange-100 rounded-lg shadow">
-                    <h3 class="mb-2 text-lg font-semibold text-orange-700">Accuracy</h3>
-                    <p class="text-2xl font-bold text-orange-700">{{ (correctCount / (correctCount +
-                        wrongCount) * 100).toFixed(2) }}%</p>
-                </div>
-            </div>
-
-            <!-- Subject-based score counts -->
-            <div v-if="subjectScores.length > 1" class="mt-6">
-                <h3 class="mb-4 text-xl font-semibold text-center">Subject Based Score:</h3>
-                <div v-for="subject in subjectScores" :key="subject.name" class="p-4 mb-4 bg-white rounded-lg shadow">
-                    <div class="flex justify-between">
-                        <span class="text-lg font-semibold">{{ subject.name }}:</span>
-                        <span class="text-lg font-semibold">{{ subject.score }} / {{ subject.total }}</span>
-                    </div>
-                </div>
-            </div>
+        <div class="my-4" v-if="status === 'success'">
+            <h1 class=" text-2xl font-bold text-center text-gray-800">{{ data.exam.title }}</h1>
+            <p class="text-sm text-gray-500 text-center">
+                {{ data.exam.subject }}
+            </p>
         </div>
 
-        <div class="max-w-2xl py-5 mx-auto space-y-4 md:py-10 md:space-y-6" v-if="status === 'success'">
-            <h1 class="text-xl font-bold text-center title_grad md:hidden">{{ data.exam.title }}</h1>
+        <!-- New summary section -->
+        <div v-if="isSubmitted" class="max-w-3xl mx-auto">
+
+            <AppSummary :total_marks="data.exam.total_marks" :obtained_marks="score" :correct="correctCount"
+                :incorrect="wrongCount" :skipped="notAnsweredCount" />
+
+        </div>
+
+
+        <div class="max-w-3xl mt-2  mx-auto space-y-4  md:space-y-6" v-if="status === 'success'">
+
             <div v-for="(q, i) in data.questions" :key="i"
                 class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
 
@@ -175,7 +155,9 @@ const submitAns = async () => {
             if (ans.correct) {
                 return acc + 1
             } else if (ans.correct === false) {
-                return acc - 0.25
+                if (data.value.exam.negative_marking) {
+                    return acc - 0.25
+                }
             }
             return acc
         }, 0)

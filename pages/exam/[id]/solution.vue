@@ -1,26 +1,18 @@
 <template>
-    <div class="max-w-3xl py-8 mx-auto space-y-6" v-if="status === 'success'">
+    <div class="max-w-3xl   mx-auto space-y-4" v-if="status === 'success'">
+
+        <div class="mb-4">
+            <h1 class=" text-2xl font-bold text-center text-gray-800">{{ data.exam.title }}</h1>
+            <p class="text-sm text-gray-500 text-center">
+                {{ data.exam.subject }}
+            </p>
+        </div>
+
         <!-- Top Bar with Statistics -->
-        <div v-if="data.submission" class="p-6 bg-white border rounded-xl shadow-lg">
-            <h1 class="mb-4 text-2xl font-bold text-center text-gray-800">{{ data.exam.title }}</h1>
-            <div class="grid sm:grid-cols-4 grid-cols-2 gap-6 text-center">
-                <div class="p-4 bg-gray-50 rounded-lg">
-                    <div class="text-sm font-medium text-gray-600">Total Marks</div>
-                    <div class="text-2xl font-bold text-gray-900">{{ data.submission.marks }}</div>
-                </div>
-                <div class="p-4 bg-green-50 rounded-lg">
-                    <div class="text-sm font-medium text-green-600">Correct</div>
-                    <div class="text-2xl font-bold text-green-700">{{ data.submission.correct }}</div>
-                </div>
-                <div class="p-4 bg-red-50 rounded-lg">
-                    <div class="text-sm font-medium text-red-600">Incorrect</div>
-                    <div class="text-2xl font-bold text-red-700">{{ data.submission.incorrect }}</div>
-                </div>
-                <div class="p-4 bg-yellow-50 rounded-lg">
-                    <div class="text-sm font-medium text-yellow-600">Skipped</div>
-                    <div class="text-2xl font-bold text-yellow-700">{{ data.submission.skipped }}</div>
-                </div>
-            </div>
+        <div v-if="data.submission">
+            <AppSummary :total_marks="data.exam.total_marks" :obtained_marks="data.submission.marks"
+                :correct="data.submission.correct" :incorrect="data.submission.incorrect"
+                :skipped="data.submission.skipped" />
         </div>
 
         <div v-else class="p-6 bg-white border rounded-xl shadow-lg">
@@ -32,7 +24,7 @@
         </div>
 
         <div v-if="data.questions" class="space-y-4">
-            <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-4 bg-white border rounded-xl shadow-lg">
+            <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-4 bg-white border rounded-xl shadow-sm">
                 <div class="flex items-start justify-between">
                     <div class="text-lg font-semibold text-gray-900" v-html="q.question"></div>
 

@@ -19,6 +19,7 @@
             <p class="mt-1 text-xs sm:text-sm font-medium text-muted-foreground/80">{{ exam.subject }}</p>
         </CardHeader>
         <CardContent class="flex-grow p-4 sm:p-6">
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <div
                     class="p-3 sm:p-4 rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200/50 dark:border-blue-800/30">
@@ -80,6 +81,35 @@
                     <AppTimer :end="exam.start_time" />
                 </div>
             </div>
+
+
+
+            <div v-if="exam.status === 'past' && exam.submission && exam.submission.status === 'submitted'"
+                class="mt-4 p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/30 border border-slate-200/50 dark:border-slate-700/30 rounded-xl">
+                <div class="flex flex-col items-center text-center">
+                    <p class="text-base sm:text-lg font-bold text-red-500 mb-2">
+                        অংশগ্রহণের জন্য ধন্যবাদ
+                    </p>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+                        প্রাপ্ত নম্বর: {{ exam.submission.marks }}/{{ exam.total_marks }}
+                    </p>
+                </div>
+            </div>
+
+
+            <div v-else-if="exam.status === 'past' && !exam.submission"
+                class="mt-4 p-4 bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-slate-900/50 dark:to-slate-800/30 border border-slate-200/50 dark:border-slate-700/30 rounded-xl">
+                <div class="flex flex-col items-center text-center">
+                    <p class="text-base sm:text-lg font-bold text-red-500 mb-2">
+                        তুমি এই পরীক্ষায় অংশগ্রহণ করোনি!
+                    </p>
+                    <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400">
+                        প্রাপ্ত নম্বর: N/A
+                    </p>
+                </div>
+            </div>
+
+
         </CardContent>
         <CardFooter class="flex flex-col gap-3 pt-0">
             <Button v-if="exam.status === 'ongoing' && (!exam.submission || exam.submission.status === 'pending')"

@@ -139,13 +139,10 @@ const importQuestions = async () => {
     } finally {
         importloading.value = false
     }
-
-
-
 }
 
 const sampleQuestions = () => {
-    window.open('https://docs.google.com/spreadsheets/d/1CH-DssTBoaztz3sBIGQg2n7-SqopNRk8yBjBFqLzk9Q/edit?usp=sharing', '_blank')
+    window.open('https://docs.google.com/spreadsheets/d/1RDcBSDzZpWQC2kXdDpm80FJk0BRUmL-cG90bIEBI-1U/edit?gid=73560280#gid=73560280', '_blank')
 }
 watch(() => subjectId.value, (subjectId) => {
     if (subjectId) {
