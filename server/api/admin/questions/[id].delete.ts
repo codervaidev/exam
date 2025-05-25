@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     await db.option.deleteMany({
-      where: { questionId: questionId },
+      where: { question_id: questionId },
     });
 
     await db.question.delete({

@@ -74,8 +74,10 @@ model Exam {
   solution_publish_time DateTime
   shuffle_questions     Boolean  @default(false)
   negative_marking      Boolean  @default(false)
-  created_at            DateTime @default(now()) @map("created_at")
-  updated_at            DateTime @updatedAt @map("updated_at")
+  data                  Json?    @default("{}")
+
+  created_at DateTime @default(now()) @map("created_at")
+  updated_at DateTime @updatedAt @map("updated_at")
 
   submissions Submission[]
   questions   Question[]

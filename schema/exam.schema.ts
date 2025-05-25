@@ -20,4 +20,9 @@ export const ExamSchema = z.object({
   }),
   shuffleQuestions: z.boolean().optional(),
   negativeMarking: z.boolean().optional(),
+  data: z.object({
+    hard: z.number().positive("Hard must be a positive number").optional(),
+    medium: z.number().positive("Medium must be a positive number").optional(),
+    easy: z.number().positive("Easy must be a positive number").optional(),
+  }),
 });

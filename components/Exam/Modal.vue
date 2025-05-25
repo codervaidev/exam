@@ -4,6 +4,9 @@
         <AppLoader v-if="isLoading" />
         <form @submit="onSubmit" class="space-y-6">
 
+            <pre>
+                {{ form.errors }}
+            </pre>
 
             <FormField v-slot="{ componentField }" name="title">
                 <FormItem>
@@ -128,7 +131,36 @@
                     </FormItem>
                 </FormField>
             </div>
+            <div class="grid grid-cols-3 gap-4">
 
+                <FormField v-slot="{ componentField }" name="data.hard">
+                    <FormItem>
+                        <FormLabel>Hard</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="Hard" v-bind="componentField" />
+                        </FormControl>
+                    </FormItem>
+                </FormField>
+
+                <FormField v-slot="{ componentField }" name="data.medium">
+                    <FormItem>
+                        <FormLabel>Medium</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="Medium" v-bind="componentField" />
+                        </FormControl>
+                    </FormItem>
+                </FormField>
+
+                <FormField v-slot="{ componentField }" name="data.easy">
+                    <FormItem>
+                        <FormLabel>Easy</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="Easy" v-bind="componentField" />
+                        </FormControl>
+                    </FormItem>
+                </FormField>
+
+            </div>
 
             <div class="flex justify-end">
 
@@ -165,14 +197,42 @@ const form = useForm({
         resultPublishTime: '',
         solutionPublishTime: '',
         shuffleQuestions: false,
-        negativeMarking: false
+        negativeMarking: false,
+        data: {
+            hard: 0,
+            medium: 0,
+            easy: 0
+        }
     }
 })
 
 
 const onSubmit = form.handleSubmit(async (data) => {
-
     try {
+        // Manual validation for publish times
+        const startTime = new Date(data.startTime);
+        const endTime = new Date(data.endTime);
+        const durationMs = data.duration * 60 * 1000; // Convert minutes to milliseconds
+        const resultPublishTime = new Date(data.resultPublishTime);
+        const solutionPublishTime = new Date(data.solutionPublishTime);
+        const minPublishTime = new Date(endTime.getTime() + durationMs);
+
+        if (resultPublishTime <= minPublishTime || solutionPublishTime <= minPublishTime) {
+            return toast({
+                title: "Invalid Publish Times",
+                description: "Result and solution publish times must be after exam end time plus duration",
+                variant: "destructive"
+            });
+        }
+
+        if (startTime >= endTime) {
+            return toast({
+                title: "Invalid Start Time",
+                description: "Start time must be before end time",
+                variant: "destructive"
+            });
+        }
+
         isLoading.value = true
         if (initialExam.value.id) {
             const { error } = await useFetch(`/api/admin/exam/${initialExam.value.id}`, {
@@ -235,7 +295,12 @@ watch(() => initialExam.value, (value) => {
             resultPublishTime: dateFieldFormat(value.result_publish_time),
             solutionPublishTime: dateFieldFormat(value.solution_publish_time),
             shuffleQuestions: value.shuffle_questions,
-            negativeMarking: value.negative_marking
+            negativeMarking: value.negative_marking,
+            data: {
+                hard: value.data?.hard || 0,
+                medium: value.data?.medium || 0,
+                easy: value.data?.easy || 0
+            }
         })
     }
 }, { immediate: true })

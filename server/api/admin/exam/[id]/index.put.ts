@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
       total_marks: data.totalMarks,
       negative_marking: data.negativeMarking,
       shuffle_questions: data.shuffleQuestions,
+      data: data.data,
     },
   });
 

@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
       negative_marking: data.negativeMarking,
       duration: data.duration,
       total_marks: data.totalMarks,
+      data: data.data || {},
     },
   });
 

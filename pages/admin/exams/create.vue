@@ -137,6 +137,37 @@
                 </FormField>
             </div>
 
+            <div class="grid grid-cols-3 gap-4">
+
+                <FormField v-slot="{ componentField }" name="data.hard">
+                    <FormItem>
+                        <FormLabel>Hard</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="Hard" v-bind="componentField" />
+                        </FormControl>
+                    </FormItem>
+                </FormField>
+
+                <FormField v-slot="{ componentField }" name="data.medium">
+                    <FormItem>
+                        <FormLabel>Medium</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="Medium" v-bind="componentField" />
+                        </FormControl>
+                    </FormItem>
+                </FormField>
+
+                <FormField v-slot="{ componentField }" name="data.easy">
+                    <FormItem>
+                        <FormLabel>Easy</FormLabel>
+                        <FormControl>
+                            <Input type="number" placeholder="Easy" v-bind="componentField" />
+                        </FormControl>
+                    </FormItem>
+                </FormField>
+
+            </div>
+
 
             <div class="flex justify-end">
 
@@ -178,7 +209,12 @@ const form = useForm({
         resultPublishTime: '',
         solutionPublishTime: '',
         shuffleQuestions: false,
-        negativeMarking: false
+        negativeMarking: false,
+        data: {
+            hard: 0,
+            medium: 0,
+            easy: 0
+        }
     }
 })
 
@@ -186,6 +222,32 @@ const form = useForm({
 const onSubmit = form.handleSubmit(async (data) => {
 
     try {
+
+
+        const startTime = new Date(data.startTime);
+        const endTime = new Date(data.endTime);
+        const durationMs = data.duration * 60 * 1000; // Convert minutes to milliseconds
+        const resultPublishTime = new Date(data.resultPublishTime);
+        const solutionPublishTime = new Date(data.solutionPublishTime);
+        const minPublishTime = new Date(endTime.getTime() + durationMs);
+
+        if (resultPublishTime <= minPublishTime || solutionPublishTime <= minPublishTime) {
+            return toast({
+                title: "Invalid Publish Times",
+                description: "Result and solution publish times must be after exam end time plus duration",
+                variant: "destructive"
+            });
+        }
+
+
+        if (startTime >= endTime) {
+            return toast({
+                title: "Invalid Start Time",
+                description: "Start time must be before end time",
+                variant: "destructive"
+            });
+        }
+
         isLoading.value = true
 
         const { error } = await useAsyncData(() => $fetch('/api/admin/exam', {

@@ -15,13 +15,7 @@
                     Sample
                 </Button>
             </div>
-            <div class="">
 
-                <!-- Subject Select -->
-                <Input type="text" v-model="subjectId" placeholder="Enter the subject" />
-
-
-            </div>
             <div>
                 <div class="flex justify-between">
                     <h1>Questions
@@ -96,7 +90,7 @@ const fetchQuestions = async () => {
     try {
         const sheetId = url.value.split('/')[5]
 
-        const baseURL = `https://script.google.com/macros/s/AKfycbwzA-t_cUmiQpA7ArN8OEl_LBeu-JM9VgjrX3x0Camq-lsSt2Gd0xPZ3flPFyBipAQkJw/exec?type=question&sheet=${sheetId}`
+        const baseURL = `https://script.google.com/macros/s/AKfycbxEnSLBrQ3eGYvAIJwU0ykmUzxqIWDHg8swwnuevhha59AO6NEXpX_ux5PC_KfywQU4/exec?s=${sheetId}&sname=question`
         const res = await fetch(baseURL)
         const data = await res.json()
         questions.value = data
@@ -125,7 +119,7 @@ const importQuestions = async () => {
                 examId: props.examId,
                 subject: q.subject || subjectId.value,
                 order: sl + 1,
-                difficulty: "Medium",
+                difficulty: q.difficulty.toLowerCase() || "medium",
             }
             await $fetch('/api/admin/questions', { method: 'POST', body: question });
         }))
