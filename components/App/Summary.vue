@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 bg-white border rounded-xl ">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        <div class="grid grid-cols-2 sm:grid-cols-3  gap-3">
             <!-- Total Marks -->
             <div class="col-span-2 sm:col-span-1 p-3 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg">
                 <div class="flex items-center  gap-3">
@@ -40,8 +40,8 @@
                 <div class="flex items-center gap-3">
                     <Icon name="lucide:skip-forward" class="w-5 h-5 text-yellow-600" />
                     <div class="text-left">
-                        <div class="text-sm font-medium text-yellow-600">Skipped</div>
-                        <div class="text-xl font-bold text-yellow-700">{{ skipped }}</div>
+                        <div class="text-sm font-medium text-yellow-600">Not Answered</div>
+                        <div class="text-xl font-bold text-yellow-700">{{ total_not_answered }}</div>
                     </div>
                 </div>
             </div>
@@ -57,6 +57,20 @@
                     </div>
                 </div>
             </div>
+
+
+            <!-- Extra Questions -->
+            <div v-if="extra_questions > 0" class="p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
+                <div class="flex items-center gap-3">
+                    <Icon name="lucide:plus" class="w-5 h-5 text-purple-600" />
+                    <div class="text-left">
+                        <div class="text-sm font-medium text-purple-600">Extra Questions</div>
+                        <div class="text-xl font-bold text-purple-700">{{ extra_questions }}</div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </template>
@@ -81,7 +95,11 @@ const props = defineProps({
         type: Number,
         required: true
     },
-    skipped: {
+    total_not_answered: {
+        type: Number,
+        required: true
+    },
+    extra_questions: {
         type: Number,
         required: true
     }

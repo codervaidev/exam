@@ -29,21 +29,15 @@ export default defineEventHandler(async (event) => {
 
   let questions;
 
-  if (
-    !submission ||
-    !submission.data ||
-    submission.data.length === 0 ||
-    submission.data[0].status !== "pending"
-  ) {
-    // @ts-ignore
-    const hardqs = (exam?.data?.hard as number) || 0;
-    // @ts-ignore
-    const mediumqs = (exam?.data?.medium as number) || 0;
-    // @ts-ignore
-    const easyqs = (exam?.data?.easy as number) || 0;
+  // @ts-ignore
+  const hardqs = (exam?.data?.hard as number) || 0;
+  // @ts-ignore
+  const mediumqs = (exam?.data?.medium as number) || 0;
+  // @ts-ignore
+  const easyqs = (exam?.data?.easy as number) || 0;
 
-    questions = await query<Question[]>(
-      `
+  questions = await query<Question[]>(
+    `
     WITH difficulty_questions AS (
       SELECT 
         q.id,
@@ -75,26 +69,7 @@ export default defineEventHandler(async (event) => {
       SELECT * FROM difficulty_questions WHERE (difficulty = 'easy' OR difficulty = 'Easy') ORDER BY RANDOM() LIMIT $4
     ) easy_qs
     `,
-      [id, hardqs, mediumqs, easyqs]
-    );
-  }
-
-  questions = await query<Question[]>(
-    `SELECT  q.id,
-        q.question,
-        q.subject,
-        q.difficulty,
-        q.explain,
-        json_agg(
-          json_build_object(
-            'id', o.id,
-            'option_text', o.option_text,
-            'correct', o.correct
-          )
-        ) as options FROM questions q  LEFT JOIN question_options o ON q.id = o.question_id
-         WHERE q.id IN (${submission?.data?.[0]?.questions?.map((q) => `'${q}'`).join(",")})
-         GROUP BY q.id, q.question, q.subject, q.difficulty
-         `
+    [id, hardqs, mediumqs, easyqs]
   );
 
   return {

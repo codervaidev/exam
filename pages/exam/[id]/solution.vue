@@ -12,7 +12,10 @@
         <div v-if="data.submission">
             <AppSummary :total_marks="data.exam.total_marks" :obtained_marks="data.submission.marks"
                 :correct="data.submission.correct" :incorrect="data.submission.incorrect"
-                :skipped="data.submission.skipped" />
+                :skipped="data.submission.skipped"
+                :total_not_answered="data.questions.filter(q => notAnswered(q.id)).length"
+                :extra_questions="data.questions.filter(q => isExtraQuestion(q.id)).length"
+                />
 
 
         </div>
