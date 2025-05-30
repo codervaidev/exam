@@ -27,5 +27,7 @@ export const RegisterSchema = z.object({
     .min(1, "Institute is required")
     .max(100, "Institute cannot be more than 100 characters"),
 
+  tshirt: z.string().max(50, "T-shirt size cannot be empty"),
+
   batch: z.string().max(50, "Batch cannot be empty"),
 });

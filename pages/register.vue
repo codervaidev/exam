@@ -121,6 +121,30 @@
                                 <FormMessage />
                             </FormItem>
                         </FormField>
+
+                        <FormField v-slot="{ componentField }" name="tshirt">
+                            <FormItem>
+                                <FormLabel>T-shirt Size</FormLabel>
+                                <FormControl>
+                                    <Select v-bind="componentField">
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select T-shirt Size" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                <SelectItem value="S">S</SelectItem>
+                                                <SelectItem value="M">M</SelectItem>
+                                                <SelectItem value="L">L</SelectItem>
+                                                <SelectItem value="XL">XL</SelectItem>
+                                                <SelectItem value="XXL">XXL</SelectItem>
+                                                <SelectItem value="XXXL">XXXL</SelectItem>
+                                            </SelectGroup>
+                                        </SelectContent>
+                                    </Select>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
                     </div>
 
                     <div class="flex flex-col gap-2 py-6">
@@ -165,6 +189,7 @@ const form = useForm({
         institute: '',
         institute_name: '',
         batch: 'Others',
+        tshirt: 'S',
     },
 });
 
