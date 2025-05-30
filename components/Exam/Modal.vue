@@ -4,9 +4,6 @@
         <AppLoader v-if="isLoading" />
         <form @submit="onSubmit" class="space-y-6">
 
-            <pre>
-                {{ form.errors }}
-            </pre>
 
             <FormField v-slot="{ componentField }" name="title">
                 <FormItem>

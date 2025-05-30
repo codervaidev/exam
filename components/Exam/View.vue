@@ -7,6 +7,10 @@
             </div>
             <div class="flex flex-wrap gap-1.5">
                 <Button variant="outline" size="sm" class="hover:bg-primary/10"
+                    @click="navigateTo(`/admin/exams/${exam.id}/view`)">
+                    <Icon name="heroicons:eye" class="w-3.5 h-3.5 mr-1.5" />
+                    View Questions
+                </Button> <Button variant="outline" size="sm" class="hover:bg-primary/10"
                     @click="navigateTo(`/admin/leaderboards/${exam.id}`)">
                     <Icon name="heroicons:trophy" class="w-3.5 h-3.5 mr-1.5" />
                     Leaderboard
@@ -71,17 +75,17 @@
                                 <div class="flex items-center gap-2">
                                     <div class="w-2 h-2 rounded-full bg-red-500"></div>
                                     <span class="text-xs">Hard: {{ exam.question_counts.hard }}/{{ exam.data.hard
-                                    }}</span>
+                                        }}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
                                     <span class="text-xs">Medium: {{ exam.question_counts.medium }}/{{ exam.data.medium
-                                    }}</span>
+                                        }}</span>
                                 </div>
                                 <div class="flex items-center gap-2">
                                     <div class="w-2 h-2 rounded-full bg-green-500"></div>
                                     <span class="text-xs">Easy: {{ exam.question_counts.easy }}/{{ exam.data.easy
-                                    }}</span>
+                                        }}</span>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +124,7 @@
 const props = defineProps({
     exam: {
         type: Object,
-    }
+    },
 })
 
 const { onEdit } = useExam()

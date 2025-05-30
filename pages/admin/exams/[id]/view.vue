@@ -8,11 +8,12 @@
             <AppContainer>
                 <div class="container flex items-center justify-between px-2 py-4 mx-auto md:px-4">
                     <NavbarLogo :class="isSubmitted ? '' : 'hidden sm:block'" />
-                    <div class="flex items-center gap-4 w-full"
-                        :class="isSubmitted ? 'justify-end' : 'justify-between sm:justify-end'">
-                        <div v-if="end_time && !isSubmitted"
-                            class="flex items-center gap-4 text-lg font-semibold text-slate-800">
+                    <div class="flex items-center flex-1 space-x-4"
+                        :class="isSubmitted ? 'justify-end' : 'justify-between'">
+                        <div v-if="end_time && !isSubmitted" class="flex gap-4 text-lg font-semibold text-slate-800">
+                            <!-- Time Left: -->
                             <ExamTimer :end_time="end_time" />
+
                         </div>
 
                         <Button @click="isSubmitted ? retryExam() : submitAns()"
@@ -135,7 +136,7 @@ import { useToast } from '@/components/ui/toast/use-toast'
 
 const route = useRoute()
 
-const { data, status, error, refresh } = await useFetch('/api/question/' + route.params.id + '/practice', {
+const { data, status, error, refresh } = await useFetch('/api/question/' + route.params.id + '/qa', {
     key: 'questions'
 })
 

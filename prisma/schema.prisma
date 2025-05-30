@@ -55,6 +55,7 @@ model Question {
   exam_id    String
   explain    String?
   order      Int     @default(0)
+  extra      Boolean @default(false)
 
   options Option[]
   exam    Exam?    @relation(fields: [exam_id], references: [id])
@@ -90,6 +91,7 @@ model Submission {
   user_id      String
   exam_id      String
   answers      String[]
+  questions    String[]
   attempt      Int       @default(1)
   marks        Float     @default(0)
   correct      Int       @default(0)

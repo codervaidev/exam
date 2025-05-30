@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     difficulty: string;
     count: number;
   }>(`
-    SELECT exam_id, difficulty, COUNT(*) as count 
+    SELECT exam_id, LOWER(difficulty) as difficulty, COUNT(*) as count 
     FROM questions 
     WHERE exam_id IN (${exams.map((e) => `'${e.id}'`).join(",")})
     GROUP BY exam_id, difficulty

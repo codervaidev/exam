@@ -13,7 +13,10 @@
             <AppSummary :total_marks="data.exam.total_marks" :obtained_marks="data.submission.marks"
                 :correct="data.submission.correct" :incorrect="data.submission.incorrect"
                 :skipped="data.submission.skipped" />
+
+
         </div>
+
 
         <div v-else class="p-6 bg-white border rounded-xl shadow-lg">
             <div class="text-center">
@@ -33,6 +36,7 @@
                     <Badge class="bg-blue-100 text-blue-800">Q{{ i + 1 }}</Badge>
                     <Badge class="bg-purple-100 text-purple-800">{{ q.subject }}</Badge>
                     <Badge class="bg-green-100 text-green-800">1 Mark</Badge>
+                    <Badge v-if="isExtraQuestion(q.id)" class="bg-yellow-100 text-yellow-800">Extra Question</Badge>
                     <Badge v-if="notAnswered(q.id)" class="bg-red-100 text-red-800">Not Answered</Badge>
                 </div>
                 <div class="mt-4 space-y-3">
@@ -45,9 +49,14 @@
                         <div class="flex-1">
                             <AppMath v-model="a.option_text"></AppMath>
                         </div>
-                        <Icon v-if="a.correct" name="lucide:check-circle-2" size="24" class="text-green-500" />
-                        <Icon v-if="wrongAnswer(a.id) && !a.correct" name="lucide:x-circle" size="24"
-                            class="text-red-500" />
+                        <div class="flex items-center gap-2">
+                            <Icon v-if="a.correct" name="lucide:check-circle-2" size="24" class="text-green-500" />
+                            <Icon v-if="wrongAnswer(a.id) && !a.correct" name="lucide:x-circle" size="24"
+                                class="text-red-500" />
+                            <span v-if="a.correct" class="text-sm font-medium text-green-600">Correct Answer</span>
+                            <span v-if="wrongAnswer(a.id) && !a.correct" class="text-sm font-medium text-red-600">Your
+                                Answer</span>
+                        </div>
                     </div>
                 </div>
 
@@ -79,12 +88,26 @@ const wrongAnswer = (optionId) => {
 }
 
 const notAnswered = (questionId) => {
-    if (!data.value?.submission?.answers) return true
-    // Check if the question was skipped (not in answers array)
-    return !data.value.submission.answers.some(answerId => {
-        const question = data.value.questions.find(q => q.options.some(o => o.id === answerId))
-        return question && question.id === questionId
-    })
+    if (!data.value?.submission?.answers) return false
+
+    // If the question is extra (not in submission questions), it can't be unanswered
+    if (isExtraQuestion(questionId)) return false
+
+    // Find the question
+    const question = data.value.questions.find(q => q.id === questionId)
+    if (!question) return false
+
+    // Check if any of the question's options are in the answers array
+    const hasAnswer = question.options.some(option =>
+        data.value.submission.answers.includes(option.id)
+    )
+
+    return !hasAnswer
+}
+
+const isExtraQuestion = (questionId) => {
+    if (!data.value?.submission?.questions) return false
+    return !data.value.submission.questions.includes(questionId)
 }
 </script>
 

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { Question, Submission } from "~/server/types";
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.exam;
@@ -32,51 +33,77 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const cacheKey = `questions:${id}`;
-  const cachedQuestions = await getCache(cacheKey);
+  // @ts-ignore
+  const hardqs = (exam?.data?.hard as number) || 0;
+  // @ts-ignore
+  const mediumqs = (exam?.data?.medium as number) || 0;
+  // @ts-ignore
+  const easyqs = (exam?.data?.easy as number) || 0;
 
+  let submission = await query<Submission>(
+    `SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2 AND status = 'pending'`,
+    [id, userId]
+  );
+
+ 
   let questions;
-  if (cachedQuestions) {
-    questions = cachedQuestions;
+
+  if (
+    submission &&
+    submission.data &&
+    submission.data.length > 0 &&
+    submission.data[0]?.status === "pending"
+  ) {
+    questions = await query<Question[]>(
+      `SELECT  q.id,
+        q.question,
+        q.subject,
+        q.difficulty,
+        json_agg(
+          json_build_object(
+            'id', o.id,
+            'option_text', o.option_text
+          )
+        ) as options FROM questions q  LEFT JOIN question_options o ON q.id = o.question_id
+         WHERE q.id IN (${submission.data[0].questions.map((q) => `'${q}'`).join(",")})
+         GROUP BY q.id, q.question, q.subject, q.difficulty
+         `
+    );
   } else {
-    questions = await query<{
-      id: string;
-      question: string;
-      options: {
-        id: string;
-        option_text: string;
-      }[];
-    }>(
+    questions = await query<Question[]>(
       `
-    SELECT 
-      q.id,
-      q.question,
-      q.subject,
-      json_agg(
-        json_build_object(
-          'id', o.id,
-          'option_text', o.option_text
-        )
-      ) as options
-    FROM questions q
-    LEFT JOIN question_options o ON q.id = o.question_id
-    WHERE q.exam_id = $1
-    GROUP BY q.id, q.question
-  `,
-      [id]
+    WITH difficulty_questions AS (
+      SELECT 
+        q.id,
+        q.question,
+        q.subject,
+        q.difficulty,
+        json_agg(
+          json_build_object(
+            'id', o.id,
+            'option_text', o.option_text
+          )
+        ) as options
+      FROM questions q
+      LEFT JOIN question_options o ON q.id = o.question_id
+      WHERE q.exam_id = $1
+      GROUP BY q.id, q.question, q.subject, q.difficulty
+    )
+    SELECT * FROM (
+      SELECT * FROM difficulty_questions WHERE (difficulty = 'hard' OR difficulty = 'Hard') ORDER BY RANDOM() LIMIT $2
+    ) hard_qs
+    UNION ALL
+    SELECT * FROM (
+      SELECT * FROM difficulty_questions WHERE (difficulty = 'medium' OR difficulty = 'Medium') ORDER BY RANDOM() LIMIT $3
+    ) medium_qs
+    UNION ALL
+    SELECT * FROM (
+      SELECT * FROM difficulty_questions WHERE (difficulty = 'easy' OR difficulty = 'Easy') ORDER BY RANDOM() LIMIT $4
+    ) easy_qs
+    `,
+      [id, hardqs, mediumqs, easyqs]
     );
   }
-
-  let submission = await query<{
-    id: string;
-    user_id: string;
-    exam_id: string;
-    status: string;
-    created_at: string;
-  }>(`SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2`, [
-    id,
-    userId,
-  ]);
 
   if (
     submission &&
@@ -91,16 +118,23 @@ export default defineEventHandler(async (event) => {
   }
 
   if (!submission || !submission.data || submission.data.length === 0) {
-    submission = await query<{
-      id: string;
-      user_id: string;
-      exam_id: string;
-      status: string;
-      created_at: string;
-      updated_at: string;
-    }>(
-      `INSERT INTO submissions (id,exam_id, user_id, status, created_at, updated_at) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *`,
-      [uuidv4(), id, userId, "pending", new Date(), new Date()]
+    // @ts-ignore
+    let qsIds = questions.data?.map((q: Question) => `${q.id}`);
+    // @ts-ignore
+    submission = await db.submission.create({
+      data: {
+        id: uuidv4(),
+        exam_id: id,
+        user_id: userId,
+        questions: qsIds,
+        status: "pending",
+      },
+    });
+
+    submission = await query<Submission>(
+      `UPDATE submissions SET created_at = $1, updated_at = $2 WHERE id = $3 RETURNING *`,
+      // @ts-ignore
+      [new Date(), new Date(), submission.id]
     );
   }
 

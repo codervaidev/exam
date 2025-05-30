@@ -28,13 +28,13 @@
                                 === difficulty).length}}</p>
                         </div>
                         <div>
-                            <p class="text-sm text-gray-600">Remaining</p>
+                            <p class="text-sm text-gray-600">Extra</p>
                             <p class="text-xl font-bold" :class="{
                                 'text-red-500': count - data.body.questions.filter(q => q.difficulty.toLowerCase() === difficulty).length > 0,
                                 'text-green-500': count - data.body.questions.filter(q => q.difficulty.toLowerCase() === difficulty).length <= 0
                             }">
-                                {{count - data.body.questions.filter(q => q.difficulty.toLowerCase() ===
-                                    difficulty).length}}
+                                {{data.body.questions.filter(q => q.difficulty.toLowerCase() ===
+                                    difficulty).length - count}}
                             </p>
                         </div>
                     </div>

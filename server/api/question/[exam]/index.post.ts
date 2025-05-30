@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Exam not found",
     });
   }
-  const marks = await query<{
+  let marks = await query<{
     marks: number;
   }>(
     `
@@ -45,10 +45,11 @@ export default defineEventHandler(async (event) => {
   );
 
   if (!marks || !marks.data || marks.data.length === 0) {
-    return createError({
-      statusCode: 404,
-      statusMessage: "Marks not found",
-    });
+    marks = {
+      data: [{ marks: 0 }],
+      success: true,
+      count: 0,
+    };
   }
 
   const negMarks = (answers.length - marks?.data[0].marks) * 0.25;

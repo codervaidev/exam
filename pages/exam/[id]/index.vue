@@ -121,7 +121,7 @@ const progress = computed(() => {
 
 onMounted(() => {
     end_time.value = new Date(data.value.submission.created_at).getTime() + (data.value.exam.duration * 60 * 1000)
-
+    console.log(end_time.value)
     // Clear any existing timer
     if (timer.value) {
         clearInterval(timer.value)
@@ -134,7 +134,7 @@ onMounted(() => {
         if (distance < 0) {
             clearInterval(timer.value)
             timer.value = null
-            submitAns()
+            // submitAns()
         }
     }, 1000)
 })

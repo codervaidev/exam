@@ -14,7 +14,6 @@ export default defineEventHandler(async (event) => {
 
   const examId = event.context.params?.id;
 
-  console.log(data);
 
   const exam = await db.exam.update({
     where: {
