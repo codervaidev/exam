@@ -35,23 +35,12 @@
                             </FormItem>
                         </FormField>
 
+
                         <FormField v-slot="{ componentField }" name="district">
                             <FormItem>
                                 <FormLabel>District</FormLabel>
                                 <FormControl>
-                                    <Select v-bind="componentField" @update:modelValue="handleDistrictChange">
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select District" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem v-for="district in districts" :key="district.id"
-                                                    :value="district.name">
-                                                    {{ district.name }}
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                                    <Input placeholder="Enter District Name" v-bind="componentField" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -61,45 +50,23 @@
                             <FormItem>
                                 <FormLabel>Thana</FormLabel>
                                 <FormControl>
-                                    <Select v-bind="componentField" :disabled="!form.values.district"
-                                        @update:modelValue="handleThanaChange">
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Thana" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem v-for="thana in thanas" :key="thana.id" :value="thana.name">
-                                                    {{ thana.name }}
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                                    <Input type="text" v-bind="componentField" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         </FormField>
 
+
                         <FormField v-slot="{ componentField }" name="institute">
                             <FormItem>
                                 <FormLabel>Institute Name</FormLabel>
                                 <FormControl>
-                                    <Select v-bind="componentField" :disabled="!form.values.thana">
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Institute" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem v-for="school in schools" :key="school.school_name"
-                                                    :value="school.school_name">
-                                                    {{ school.school_name }}
-                                                </SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
+                                    <Input type="text" v-bind="componentField" />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         </FormField>
+
 
                         <FormField v-slot="{ componentField }" name="batch">
                             <FormItem>
@@ -193,10 +160,13 @@ const form = useForm({
         phone: route.query.phone || '',
         district: '',
         district_name: '',
+        district_text: '',
         thana: '',
         thana_name: '',
+        thana_text: '',
         institute: '',
         institute_name: '',
+        institute_text: '',
         batch: 'Others',
         tshirt: 'S',
         address: '',
