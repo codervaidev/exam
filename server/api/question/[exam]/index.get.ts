@@ -63,7 +63,8 @@ export default defineEventHandler(async (event) => {
     submission &&
     submission.data &&
     submission.data.length > 0 &&
-    submission.data[0]?.status === "pending"
+    submission.data[0]?.status === "pending" &&
+    submission.data[0].questions.length > 0
   ) {
     questions = await query<Question[]>(
       `SELECT  q.id,
