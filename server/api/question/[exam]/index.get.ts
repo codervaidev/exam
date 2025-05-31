@@ -23,16 +23,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  if (
-    new Date(exam.start_time) > new Date() ||
-    new Date(exam.end_time) < new Date()
-  ) {
-    return createError({
-      statusCode: 403,
-      statusMessage: "Exam is not active",
-    });
-  }
-
   // @ts-ignore
   const hardqs = (exam?.data?.hard as number) || 0;
   // @ts-ignore
