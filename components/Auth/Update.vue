@@ -61,8 +61,8 @@ const user = useUser();
 const form = useForm({
     validationSchema: formSchema,
     initialValues: {
-        address: user.value.address,
-        tshirt: user.value.tshirt || 'S',
+        address: user.value?.address || '',
+        tshirt: user.value?.tshirt || 'S',
     }
 })
 

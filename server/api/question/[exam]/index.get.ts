@@ -41,11 +41,22 @@ export default defineEventHandler(async (event) => {
   const easyqs = (exam?.data?.easy as number) || 0;
 
   let submission = await query<Submission>(
-    `SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2 AND status = 'pending'`,
+    `SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2`,
     [id, userId]
   );
 
- 
+  if (
+    submission &&
+    submission.data &&
+    submission.data.length > 0 &&
+    submission.data[0]?.status !== "pending"
+  ) {
+    return createError({
+      statusCode: 403,
+      statusMessage: "Submission already exists",
+    });
+  }
+
   let questions;
 
   if (
