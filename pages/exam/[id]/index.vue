@@ -134,7 +134,7 @@ onMounted(() => {
         if (distance < 0) {
             clearInterval(timer.value)
             timer.value = null
-            // submitAns()
+            submitAns()
         }
     }, 1000)
 })

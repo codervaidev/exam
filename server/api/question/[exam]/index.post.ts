@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
     marks: number;
   }>(
     `
-    SELECT COUNT(*) as marks FROM question_options WHERE id IN (${answers.map((id: string) => `'${id}'`).join(",")}) AND correct = true
+    SELECT COUNT(*) as marks FROM question_options WHERE id IN ('${answers.join("','")}') AND correct = true
   `
   );
 
