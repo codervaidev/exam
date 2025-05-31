@@ -23,6 +23,7 @@ export default defineEventHandler(async (event) => {
       institute: data.institute,
       batch: data.batch,
       tshirt: data.tshirt,
+      address: data.address,
     },
     update: {
       name: data.name,
@@ -31,6 +32,7 @@ export default defineEventHandler(async (event) => {
       institute: data.institute,
       batch: data.batch,
       tshirt: data.tshirt,
+      address: data.address,
     },
   });
   const session = await lucia.createSession(user.id, {});

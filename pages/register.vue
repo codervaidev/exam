@@ -145,6 +145,15 @@
                                 <FormMessage />
                             </FormItem>
                         </FormField>
+                        <FormField v-slot="{ componentField }" name="address">
+                            <FormItem>
+                                <FormLabel>Address</FormLabel>
+                                <FormControl>
+                                    <Textarea v-bind="componentField" />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        </FormField>
                     </div>
 
                     <div class="flex flex-col gap-2 py-6">
@@ -190,6 +199,7 @@ const form = useForm({
         institute_name: '',
         batch: 'Others',
         tshirt: 'S',
+        address: '',
     },
 });
 

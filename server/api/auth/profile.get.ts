@@ -3,19 +3,22 @@ export default defineEventHandler(async (event) => {
 
   const submissions = await db.submission.findMany({
     where: {
-      userId,
+      user_id: userId,
       status: "submitted",
     },
 
     select: {
       exam: {
         select: {
-              title: true,
-            duration: true
+          title: true,
+          duration: true,
         },
       },
       marks: true,
       duration: true,
+      correct: true,
+      incorrect: true,
+      skipped: true,
     },
   });
 

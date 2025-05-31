@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
   const submission = await query<{
     id: string;
     created_at: string;
+    questions: string[];
   }>(`SELECT * FROM submissions WHERE id = $1`, [submission_id]);
 
   if (!submission || !submission.data || submission.data.length === 0) {
@@ -57,6 +58,8 @@ export default defineEventHandler(async (event) => {
     ? marks?.data[0].marks - negMarks
     : marks?.data[0].marks;
 
+  const skipped = submission.data[0].questions.length - answers.length || 0;
+
   await query(
     `UPDATE
     submissions SET
@@ -77,7 +80,7 @@ export default defineEventHandler(async (event) => {
       totalMarks,
       marks?.data[0].marks,
       answers.length - marks?.data[0].marks,
-      answers.length - marks?.data[0].marks,
+      skipped,
       "submitted",
       submission.data[0].id,
     ]

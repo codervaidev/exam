@@ -14,6 +14,7 @@ model User {
   district   String
   thana      String
   institute  String
+  address    String?
   tshirt     String?
   role       String   @default("USER")
   batch      String   @default("Others")

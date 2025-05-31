@@ -54,6 +54,8 @@ export const lucia = new Lucia(adapter, {
       phone: attributes.phone,
       role: attributes.role,
       institute: attributes.institute,
+      tshirt: attributes.tshirt,
+      address: attributes.address,
     };
   },
 });
@@ -70,6 +72,8 @@ interface DatabaseUserAttributes {
   phone: string;
   institute: string;
   role: string;
+  tshirt: string;
+  address: string;
 }
 
 // role enum type

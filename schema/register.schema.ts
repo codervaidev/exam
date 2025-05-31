@@ -30,4 +30,6 @@ export const RegisterSchema = z.object({
   tshirt: z.string().max(50, "T-shirt size cannot be empty"),
 
   batch: z.string().max(50, "Batch cannot be empty"),
+
+  address: z.string().max(200, "Address cannot be more than 200 characters"),
 });
