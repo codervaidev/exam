@@ -16,7 +16,13 @@
 
             </div>
             <div class="flex justify-end mb-3">
-                <Button @click="exportAsCsv">
+                <!-- <Button @click="showAllResults" class="mr-2">
+                    <Icon name="lucide:list" class="mr-1" size="16" />
+                    Show All Results
+                </Button> -->
+                <AppLoader v-if="exportLoading" />
+                <Button v-else @click="exportAsCsv" :disabled="exportLoading">
+
                     <Icon name="lucide:download" class="mr-1" size="16" />
                     Export as CSV
                 </Button>
@@ -43,8 +49,29 @@
                                         }`" />
                                 </div>
                             </TableCell>
-                            <TableCell>{{ rank.user.name }}</TableCell>
-                            <TableCell>{{ rank.user.institute }}</TableCell>
+                            <TableCell>
+                                <div>
+                                    <p>
+                                        {{ rank.user.name }}
+                                    </p>
+                                    <p>
+                                        {{ rank.user.phone }}
+                                    </p>
+                                    <p>
+                                        {{ rank.user.tshirt }}
+                                    </p>
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <div>
+                                    <p>
+                                        {{ rank.user.institute }}
+                                    </p>
+                                    <p>
+                                        {{ rank.user.address }}
+                                    </p>
+                                </div>
+                            </TableCell>
                             <TableCell class="font-semibold text-right">{{ rank.marks }}</TableCell>
                             <TableCell class="text-right">
                                 <span class="flex items-center justify-end">
@@ -84,7 +111,7 @@ const pageSize = 25
 const leaderboard = ref([])
 const loadingMore = ref(false)
 
-const { data, status, error, refresh } = await useLazyFetch(`/api/question/${route.params.id}/leaderboard`, {
+const { data, status, error, refresh } = await useLazyFetch(`/api/admin/exam/${route.params.id}/leaderboard`, {
     key: 'leaderboard',
     query: {
         search: search
@@ -116,7 +143,7 @@ const onScroll = async () => {
 
 
 const loadMoreLeaderboard = async () => {
-    const response = await fetch(`/api/question/${route.params.id}/leaderboard?page=${page.value}&pageSize=${pageSize}&search=${search.value}`)
+    const response = await fetch(`/api/admin/exam/${route.params.id}/leaderboard?page=${page.value}&pageSize=${pageSize}&search=${search.value}`)
     const moreData = await response.json()
 
     if (moreData.leaderboard && moreData.leaderboard.length > 0) {
@@ -146,15 +173,30 @@ const deleteSubmission = async (id) => {
     refresh()
 }
 
+const showAllResults = async () => {
+    loadingMore.value = true;
+    const response = await fetch(`/api/admin/exam/${route.params.id}/leaderboard?page=1&pageSize=9999&search=${search.value}`)
+    const allData = await response.json()
+    leaderboard.value = allData.leaderboard
+    loadingMore.value = false;
+}
+
+
+const exportLoading = ref(false)
 
 
 const exportAsCsv = async () => {
+    exportLoading.value = true;
 
 
-    let csv = "Rank,Name,Institute,Marks,Duration\n"
+    const response = await fetch(`/api/admin/exam/${route.params.id}/leaderboard?page=1&pageSize=9999&search=${search.value}`)
+    const allData = await response.json()
+    const allLeaderboard = allData.leaderboard
 
-    leaderboard.value.forEach((rank, i) => {
-        csv += `${i + 1},${rank.user.name},${rank.user.institute},${rank.marks},${millisecToTime(rank.duration, data.value.examData.duration)}\n`
+    let csv = "Rank,Name,Institute,Phone,T-Shirt,Address,District,Marks,Duration\n"
+
+    allLeaderboard.forEach((rank, i) => {
+        csv += `${i + 1},${rank.user.name},${rank.user.institute.replace(/,/g, ' ')},${`"'${rank.user.phone}"`},${rank.user.tshirt},${`"${rank.user.address}"`},${`"${rank.user.district}"`},${rank.marks},${millisecToTime(rank.duration, data.value.examData.duration)}\n`
     })
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
@@ -169,10 +211,8 @@ const exportAsCsv = async () => {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     }
-
-
+    exportLoading.value = false;
 }
-
 
 </script>
 

@@ -145,9 +145,8 @@ debouncedWatch(presearch, (value) => {
 
                                     <TableHead>Name</TableHead>
                                     <TableHead>Phone</TableHead>
-                                    <TableHead class="hidden md:table-cell">
-                                        Email
-                                    </TableHead>
+                                    <TableHead>T-Shirt</TableHead>
+
                                     <TableHead class="hidden md:table-cell">
                                         Batch
                                     </TableHead>
@@ -168,14 +167,13 @@ debouncedWatch(presearch, (value) => {
                                     <TableCell>
                                         {{ user?.phone }}
                                     </TableCell>
+                                    <TableCell>
+                                        {{ user?.tshirt }}
+                                    </TableCell>
                                     <TableCell class="hidden md:table-cell">
                                         {{ user?.batch }}
                                     </TableCell>
-                                    <TableCell class="hidden md:table-cell">
-                                        <Badge>
-                                            {{ user?.role }}
-                                        </Badge>
-                                    </TableCell>
+
                                     <TableCell class="hidden md:table-cell">
                                         {{ user?.district }}
                                     </TableCell>
