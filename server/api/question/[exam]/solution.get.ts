@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
       question: true,
       subject: true,
       difficulty: true,
+      explain: true,
       options: {
         select: {
           id: true,
