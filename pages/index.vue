@@ -90,7 +90,8 @@ import { DotIcon } from 'lucide-vue-next'
 // Define page meta
 definePageMeta({
   title: 'Free Exam Platform - Home',
-  description: 'Access free exams and campaigns based on your level'
+  description: 'Access free exams and campaigns based on your level',
+  middleware: ['protected']
 })
 
 // Get authenticated user
@@ -102,14 +103,7 @@ const { data, status, error, refresh } = await useFetch('/api/campaigns', {
   server: false, // Only run on client since it requires authentication
 })
 
-// Utility functions
-const formatDateTime = (dateString) => {
-  try {
-    return format(new Date(dateString), 'MMM dd, yyyy')
-  } catch {
-    return dateString
-  }
-}
+
 
 const viewCampaignExams = (campaignId) => {
   navigateTo(`/exam?campaign=${campaignId}`)

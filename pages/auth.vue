@@ -100,6 +100,12 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { useToast } from '@/components/ui/toast/use-toast'
 import { RegisterSchema } from '~/schema/register.schema';
 
+definePageMeta({
+    title: 'Login',
+    description: 'Login to your account',
+
+    middleware: 'guest'
+})
 
 const grades = [
     {
