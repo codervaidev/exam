@@ -17,7 +17,7 @@
                 <!-- Exam Details -->
                 <div class="grid grid-cols-1 gap-3 p-2 sm:p-4 bg-gray-50 rounded-lg">
                     <!-- Start Time -->
-                    <div class=" flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <div class=" flex items-center justify-between p-3 bg-white rounded-lg">
                         <div class="flex items-center space-x-2">
                             <Icon name="lucide:calendar" class="w-5 h-5 text-blue-500" />
                             <h2 class="text-sm sm:text-base font-medium text-gray-700">
@@ -30,7 +30,7 @@
                     </div>
 
                     <!-- End Time -->
-                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg">
                         <div class="flex items-center space-x-2">
                             <Icon name="lucide:calendar" class="w-5 h-5 text-red-500" />
                             <h2 class="text-sm sm:text-base font-medium text-gray-700">
@@ -43,7 +43,7 @@
                     </div>
 
                     <!-- Duration -->
-                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg">
                         <div class="flex items-center space-x-2">
                             <Icon name="lucide:clock" class="w-5 h-5 text-emerald-500" />
                             <h2 class="text-sm sm:text-base font-medium text-gray-700">
@@ -56,7 +56,7 @@
                     </div>
 
                     <!-- Marking -->
-                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
+                    <div class="flex items-center justify-between p-3 bg-white rounded-lg">
                         <div class="flex items-center space-x-2">
                             <Icon name="lucide:star" class="w-5 h-5 text-emerald-500" />
                             <h2 class="text-sm sm:text-base font-medium text-gray-700">
@@ -69,26 +69,22 @@
                     </div>
                 </div>
                 <!-- Warning Message -->
-                <div
+                <!-- <div
                     class="flex items-center justify-center p-4 space-x-3 text-white rounded-lg bg-gradient-to-r from-rose-500 to-rose-600">
                     <Icon name="lucide:alert-circle" size="20" />
                     <p class="text-sm sm:text-base font-medium">
                         ভুলে বা নেটের সমস্যায় বা অন্য যেকোনো কারণে পরীক্ষা থেকে বের হয়ে গেলে, আবার প্রথম থেকে এক্সাম
                         দিতে হবে এবং সাবমিট না করেই বের হয়ে গেলে, এক্সামে অনুপস্থিত ধরে নেয়া হবে।
                     </p>
-                </div>
+                </div> -->
 
                 <!-- Start Button -->
                 <div class="flex justify-center mt-6">
+
                     <button @click="navigateTo('/exam/' + data.exam.id)"
-                        class="relative px-10 py-3 text-base font-semibold text-white transition-all duration-300 transform rounded-full shadow-lg bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 group">
-                        <span class="relative z-10 flex items-center gap-2">
-                            শুরু করো
-                            <Icon name="lucide:play" class="w-4 h-4" />
-                        </span>
-                        <div
-                            class="absolute inset-0 w-full h-full transition-opacity duration-300 rounded-full bg-gradient-to-r from-red-600 to-rose-600 opacity-0 group-hover:opacity-100">
-                        </div>
+                        class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl  duration-200 hover:bg-[#007b3a]">
+                        শুরু করো
+                        <ChevronRight class="w-4 h-4 ml-2" />
                     </button>
                 </div>
             </div>
@@ -100,6 +96,8 @@
 </template>
 
 <script setup>
+import { ChevronRight } from 'lucide-vue-next';
+
 definePageMeta({
     middleware: 'protected'
 })

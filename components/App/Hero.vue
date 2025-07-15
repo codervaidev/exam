@@ -1,6 +1,6 @@
 <template>
     <section
-        class="relative flex items-center justify-center bg-gradient-to-br from-black via-[#1a140a] to-[#2d220e] overflow-hidden ">
+        class="relative hidden md:flex items-center justify-center bg-gradient-to-br from-black via-[#1a140a] to-[#2d220e] overflow-hidden ">
 
 
         <div

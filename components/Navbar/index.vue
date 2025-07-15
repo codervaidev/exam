@@ -59,11 +59,7 @@
                         <img src="https://avatar.iran.liara.run/public/boy" alt="logo" class="w-8 h-8 rounded-full">
                         <p class="ml-3 font-medium">{{ user.name }}</p>
                     </div>
-                    <NuxtLink to="/profile" class="block px-3 py-2 text-base font-medium hover:bg-gray-100">Profile
-                    </NuxtLink>
-                    <NuxtLink to="/settings" class="block px-3 py-2 text-base font-medium hover:bg-gray-100">
-                        Settings
-                    </NuxtLink>
+
                     <button @click="logout"
                         class="block w-full px-3 py-2 text-base font-medium text-left hover:bg-gray-100">
                         লগআউট

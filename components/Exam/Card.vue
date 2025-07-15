@@ -8,7 +8,7 @@
                             'bg-green-100 text-green-800 hover:bg-green-100'
                 ]">
                     {{ exam.status === 'ongoing' ? 'চলমান পরীক্ষা' :
-                        exam.status === 'upcoming' ? 'পরিবর্তী পরীক্ষা' : 'পরীক্ষা শেষ' }}
+                        exam.status === 'upcoming' ? 'পরবর্তী পরীক্ষা' : 'পরীক্ষা শেষ' }}
                 </span>
             </div>
 
@@ -82,14 +82,22 @@
                 </div>
 
                 <div v-if="exam.status === 'ongoing'">
-                    <Button v-if="!exam.submission || exam.submission.status === 'pending'"
+
+                    <button v-if="!exam.submission || exam.submission.status === 'pending'"
                         @click="navigateTo(`/exam/${exam.id}/onboard`)"
-                        class="w-full bg-green-600 hover:bg-green-700 text-white">
+                        class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl  duration-200 hover:bg-[#007b3a]">
                         পরীক্ষা শুরু করো
-                    </Button>
+                    </button>
                     <p v-else class="text-lg font-semibold text-green-600 text-center">
                         অংশগ্রহণের জন্য ধন্যবাদ।
                     </p>
+                </div>
+
+                <div v-if="exam.status === 'past'">
+                    <button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
+                        class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl  duration-200 hover:bg-[#007b3a]">
+                        লিডারবোর্ড
+                    </button>
                 </div>
 
 

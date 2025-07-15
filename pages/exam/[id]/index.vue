@@ -1,9 +1,7 @@
 <template>
 
     <div>
-        <div
-            class="fixed inset-0 -z-10 h-full  w-screen bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
-        </div>
+
 
         <header class="sticky top-0 z-10 bg-white border-b border-gray-200 shadow-sm">
             <AppContainer>
@@ -14,10 +12,13 @@
                             <!-- Time Left: -->
                             <ExamTimer :end_time="end_time" />
                         </div>
-                        <Button @click="submitAns"
-                            class="px-3 py-3 font-semibold text-white transition-all duration-300 transform rounded-xl bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
-                            Submit Exam
-                        </Button>
+
+                        <div>
+                            <button @click="submitAns"
+                                class="flex special_effect outline-none border-none  text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl px-4 duration-200 hover:bg-[#007b3a]">
+                                সাবমিট করো
+                            </button>
+                        </div>
                     </div>
                 </div>
             </AppContainer>
@@ -32,7 +33,7 @@
             </div>
 
             <div v-for="(q, i) in data.questions" :key="i"
-                class="p-3 mx-2 space-y-3 bg-white border rounded-lg shadow-md md:p-6">
+                class="p-3 mx-2 space-y-3 bg-white border rounded-lg  md:p-6">
 
                 <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
 
