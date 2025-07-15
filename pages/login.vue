@@ -4,7 +4,7 @@
             <div class="grid gap-2 ">
                 <img src="/logo.png" alt="logo" class="h-16 mx-auto mb-10" />
                 <h3 class="text-xl font-bold lg:hidden text-slate-800">
-                    Rhombus <span class="text-red-400">Parallel</span> Science Hub
+                    <span class="text-yellow-500">ACS</span> Future School
                 </h3>
                 <h1 class="hidden text-2xl font-semibold tracking-tight lg:block">
                     Login

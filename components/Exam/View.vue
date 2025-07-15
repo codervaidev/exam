@@ -3,7 +3,13 @@
         <div class="flex flex-col gap-3 mb-4 sm:flex-row sm:items-center sm:justify-between">
             <div class="space-y-0.5">
                 <h1 class="text-xl font-bold tracking-tight">{{ exam.title }}</h1>
-                <p class="text-sm text-muted-foreground">{{ exam.subject }}</p>
+                <div class="flex gap-2">
+                    <p class="text-sm text-muted-foreground">{{ exam.subject }}</p>
+                    <span class="text-sm text-muted-foreground">•</span>
+                    <p class="text-sm text-muted-foreground">{{ exam.level }}</p>
+                    <span class="text-sm text-muted-foreground">•</span>
+                    <p class="text-sm text-primary font-medium">{{ exam.campaign_title || 'No Campaign' }}</p>
+                </div>
             </div>
             <div class="flex flex-wrap gap-1.5">
                 <Button variant="outline" size="sm" class="hover:bg-primary/10"
@@ -39,12 +45,13 @@
                 <div class="grid gap-4">
                     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Start Time</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.start_time) }}</p>
+                            <Label class="text-xs font-medium">Campaign</Label>
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{ exam.campaign_title || 'No Campaign' }}
+                            </p>
                         </div>
                         <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">End Time</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.end_time) }}</p>
+                            <Label class="text-xs font-medium">Level</Label>
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{ exam.level }}</p>
                         </div>
                         <div class="p-3 rounded-lg bg-muted/30">
                             <Label class="text-xs font-medium">Duration</Label>
@@ -60,60 +67,32 @@
 
                     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         <div class="p-3 rounded-lg bg-muted/30">
+                            <Label class="text-xs font-medium">Start Time</Label>
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.start_time) }}</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-muted/30">
+                            <Label class="text-xs font-medium">End Time</Label>
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.end_time) }}</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-muted/30">
                             <Label class="text-xs font-medium">Result Publish Time</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.result_publish_time) }}
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.result_publish_time)
+                                }}
                             </p>
                         </div>
                         <div class="p-3 rounded-lg bg-muted/30">
                             <Label class="text-xs font-medium">Solution Publish Time</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.solution_publish_time) }}
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{
+                                formatTime(exam.solution_publish_time) }}
                             </p>
                         </div>
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Question Distribution</Label>
-                            <div class="flex items-center justify-between mt-2">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                                    <span class="text-xs">Hard: {{ exam.question_counts.hard }}/{{ exam.data.hard
-                                        }}</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                                    <span class="text-xs">Medium: {{ exam.question_counts.medium }}/{{ exam.data.medium
-                                        }}</span>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                    <span class="text-xs">Easy: {{ exam.question_counts.easy }}/{{ exam.data.easy
-                                        }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <Separator class="my-2" />
-
-                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Created At</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.created_at) }}</p>
-                        </div>
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Updated At</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.updated_at) }}</p>
-                        </div>
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Negative Marking</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ exam.negative_marking ? 'Yes' : 'No' }}
-                            </p>
-                        </div>
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Shuffle Questions</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ exam.shuffle_questions ? 'Yes' : 'No' }}
-                            </p>
-                        </div>
 
                     </div>
+
+
+
+
                 </div>
             </CardContent>
         </Card>

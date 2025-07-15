@@ -33,6 +33,47 @@
             </FormField>
 
             <div class="grid grid-cols-2 gap-4">
+                <FormField v-slot="{ componentField }" name="campaignId">
+                    <FormItem>
+                        <FormLabel>Campaign</FormLabel>
+                        <FormControl>
+                            <Select v-bind="componentField">
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select campaign" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
+                                        {{ campaign.title }}
+                                    </SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+                <FormField v-slot="{ componentField }" name="level">
+                    <FormItem>
+                        <FormLabel>Level</FormLabel>
+                        <FormControl>
+                            <Select v-bind="componentField">
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select level" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="6">6</SelectItem>
+                                    <SelectItem value="7">7</SelectItem>
+                                    <SelectItem value="8">8</SelectItem>
+                                    <SelectItem value="9">9</SelectItem>
+                                    <SelectItem value="10">10</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </FormControl>
+                        <FormMessage />
+                    </FormItem>
+                </FormField>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
 
                 <FormField v-slot="{ componentField }" name="startTime">
                     <FormItem>
@@ -99,76 +140,6 @@
                 </FormField>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-
-                <FormField v-slot="{ field }" name="negativeMarking">
-                    <FormItem
-                        class="flex flex-row items-start p-4 space-x-3 space-y-0 bg-white border rounded-md dark:bg-slate-800">
-                        <FormControl>
-                            <Checkbox :checked="form.values.negativeMarking"
-                                @click="form.setFieldValue('negativeMarking', !form.values.negativeMarking)" />
-                        </FormControl>
-                        <div class="space-y-1 leading-none">
-                            <FormLabel>
-                                Negative Marking
-                            </FormLabel>
-                            <FormDescription>
-                                Apply negative marking for incorrect answers
-                            </FormDescription>
-                        </div>
-                    </FormItem>
-                </FormField>
-                <FormField v-slot="{ field }" name="shuffleQuestions">
-                    <FormItem
-                        class="flex flex-row items-start p-4 space-x-3 space-y-0 bg-white border rounded-md dark:bg-slate-800">
-                        <FormControl>
-                            <Checkbox :checked="form.values.shuffleQuestions"
-                                @click="form.setFieldValue('shuffleQuestions', !form.values.shuffleQuestions)" />
-                        </FormControl>
-                        <div class="space-y-1 leading-none">
-                            <FormLabel>
-                                Shuffle Question
-                            </FormLabel>
-                            <FormDescription>
-                                Shuffle question order for each student
-                            </FormDescription>
-                        </div>
-                    </FormItem>
-                </FormField>
-            </div>
-
-            <div class="grid grid-cols-3 gap-4">
-
-                <FormField v-slot="{ componentField }" name="data.hard">
-                    <FormItem>
-                        <FormLabel>Hard</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="Hard" v-bind="componentField" />
-                        </FormControl>
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="data.medium">
-                    <FormItem>
-                        <FormLabel>Medium</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="Medium" v-bind="componentField" />
-                        </FormControl>
-                    </FormItem>
-                </FormField>
-
-                <FormField v-slot="{ componentField }" name="data.easy">
-                    <FormItem>
-                        <FormLabel>Easy</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="Easy" v-bind="componentField" />
-                        </FormControl>
-                    </FormItem>
-                </FormField>
-
-            </div>
-
-
             <div class="flex justify-end">
 
                 <Button type="submit" class="ml-auto">
@@ -197,11 +168,17 @@ definePageMeta({
 const isLoading = ref(false)
 const { toast } = useToast()
 
+// Fetch campaigns for the select dropdown
+const { data: campaignsData } = await useFetch('/api/admin/campaigns')
+const campaigns = computed(() => campaignsData.value?.body || [])
+
 const form = useForm({
     schema: toTypedSchema(ExamSchema),
     defaultValues: {
         title: '',
         subject: '',
+        level: '',
+        campaignId: '',
         startTime: '',
         endTime: '',
         duration: '',

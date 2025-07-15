@@ -6,8 +6,9 @@
     </NuxtLayout>
 
     <Toaster />
+    <!-- <AuthRegister /> -->
 
-    <AuthUpdate :isOpen="isOpen" />
+
   </div>
 
 </template>
@@ -18,13 +19,6 @@
 const user = useUser();
 
 
-const { isOpen } = useUpdate()
-
-onMounted(() => {
-  if (user.value && (!user.value.address || !user.value.tshirt)) {
-    isOpen.value = true;
-  }
-})
 
 
 

@@ -1,46 +1,35 @@
-import { verifyRequestOrigin } from "lucia";
-
-import type { User, Session } from "lucia";
+import { Session, User } from "../types";
+import {
+  serialiseSession,
+  SESSION_COOKIE_NAME,
+  validateSession,
+} from "../services/auth.service";
 
 export default defineEventHandler(async (event) => {
-  //   if (event.node.req.method !== "GET") {
-  //     const originHeader = getHeader(event, "Origin") ?? null;
-  //     const hostHeader = getHeader(event, "Host") ?? null;
-  //     console.log(originHeader, hostHeader);
+  const sessionId = getCookie(event, SESSION_COOKIE_NAME) ?? null;
 
-  //     if (
-  //       !originHeader ||
-  //       !hostHeader ||
-  //       !verifyRequestOrigin(originHeader, [hostHeader])
-  //     ) {
-  //       return event.node.res.writeHead(403).end();
-  //     }
-  //   }
-
-  const sessionId = getCookie(event, lucia.sessionCookieName) ?? null;
   if (!sessionId) {
     event.context.session = null;
     event.context.user = null;
     return;
   }
 
-  const { session, user } = await lucia.validateSession(sessionId);
-  if (session && session.fresh) {
-    appendHeader(
-      event,
-      "Set-Cookie",
-      lucia.createSessionCookie(session.id).serialize()
-    );
+  const { session, user } = await validateSession(sessionId);
+
+  if (session) {
+    appendResponseHeader(event, "Set-Cookie", serialiseSession(session));
   }
   if (!session) {
-    appendHeader(
-      event,
-      "Set-Cookie",
-      lucia.createBlankSessionCookie().serialize()
-    );
+    appendResponseHeader(event, "Set-Cookie", "path=/;");
   }
+
+
+ 
+  // @ts-ignore
   event.context.session = session;
-  event.context.user = user;
+  // @ts-ignore
+  event.context.user = user
+   
 });
 
 declare module "h3" {

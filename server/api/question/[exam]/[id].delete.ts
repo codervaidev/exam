@@ -1,13 +1,14 @@
 export default defineEventHandler(async (event) => {
   await validateRequest(event, ["ADMIN"]);
   // delete submission
-  const { id } = event.context.params;
+  const id = event.context.params?.id;
 
-  const submission = await db.submission.findUnique({
-    where: {
-      id: id as string,
-    },
-  });
+  const submissionResult = await query<{id: string}>(
+    `SELECT id FROM free_exam_submissions WHERE id = $1`,
+    [id as string]
+  );
+
+  const submission = submissionResult.data?.[0];
 
   if (!submission) {
     return {
@@ -18,11 +19,10 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  await db.submission.delete({
-    where: {
-      id: id as string,
-    },
-  });
+  await query(
+    `DELETE FROM free_exam_submissions WHERE id = $1`,
+    [id as string]
+  );
 
   return {
     status: 200,

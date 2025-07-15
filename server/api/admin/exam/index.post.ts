@@ -1,36 +1,51 @@
 import { zh } from "h3-zod";
 import { ExamSchema } from "~/schema/exam.schema";
-import { formatDate } from "~/server/utils/format";
 
 export default defineEventHandler(async (event) => {
   await validateRequest(event, ["ADMIN"]);
   const { data, error } = await zh.useSafeValidatedBody(event, ExamSchema);
 
   if (error) {
-    return {
-      status: 400,
-      statusMessage: error,
-    };
+    console.log(error)
+    throw createError({
+      statusCode: 400,
+      statusMessage: error.issues?.[0]?.message || "Validation error"
+    });
   }
 
-  await db.exam.create({
-    data: {
-      title: data.title,
-      subject: data.subject,
-      start_time: formatDate(data.startTime),
-      end_time: formatDate(data.endTime),
-      result_publish_time: formatDate(data.resultPublishTime),
-      solution_publish_time: formatDate(data.solutionPublishTime),
-      shuffle_questions: data.shuffleQuestions,
-      negative_marking: data.negativeMarking,
-      duration: data.duration,
-      total_marks: data.totalMarks,
-      data: data.data || {},
-    },
-  });
+  const result = await query(`
+    INSERT INTO free_exam_exams (
+      title, subject, level, campaign_id, start_time, end_time,
+      duration, total_marks, result_publish_time, solution_publish_time,
+      shuffle_questions, negative_marking
+    )
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+    RETURNING id
+  `, [
+    data.title,
+    data.subject,
+    data.level,
+    data.campaignId,
+    new Date(data.startTime),
+    new Date(data.endTime),
+    data.duration,
+    data.totalMarks,
+    new Date(data.resultPublishTime),
+    new Date(data.solutionPublishTime),
+    data.shuffleQuestions || false,
+    data.negativeMarking || false
+  ]);
+
+  if (!result.success) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Failed to create exam"
+    });
+  }
 
   return {
     statusCode: 201,
     statusMessage: "Exam created successfully",
+    data: result.data?.[0]
   };
 });

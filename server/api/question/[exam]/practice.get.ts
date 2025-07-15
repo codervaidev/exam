@@ -11,9 +11,18 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const exam = await db.exam.findUnique({
-    where: { id: id },
-  });
+  const examResult = await query<{
+    id: string;
+    title: string;
+    subject: string;
+    level: string;
+    start_time: string;
+    end_time: string;
+    duration: number;
+    data: any;
+  }>(`SELECT * FROM free_exam_exams WHERE id = $1`, [id]);
+
+  const exam = examResult.data?.[0];
 
   if (!exam) {
     return createError({
@@ -23,7 +32,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const submission = await query<Submission>(
-    `SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2`,
+    `SELECT * FROM free_exam_submissions WHERE exam_id = $1 AND user_id = $2`,
     [id, userId]
   );
 
@@ -52,8 +61,8 @@ export default defineEventHandler(async (event) => {
             'correct', o.correct
           )
         ) as options
-      FROM questions q
-      LEFT JOIN question_options o ON q.id = o.question_id
+      FROM free_exam_questions q
+      LEFT JOIN free_exam_question_options o ON q.id = o.question_id
       WHERE q.exam_id = $1
       GROUP BY q.id, q.question, q.difficulty
     )

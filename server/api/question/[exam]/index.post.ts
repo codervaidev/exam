@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
     id: string;
     created_at: string;
     questions: string[];
-  }>(`SELECT * FROM submissions WHERE id = $1`, [submission_id]);
+  }>(`SELECT * FROM free_exam_submissions WHERE id = $1`, [submission_id]);
 
   if (!submission || !submission.data || submission.data.length === 0) {
     return createError({
@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
   const exam = await query<{
     negative_marking: boolean;
-  }>(`SELECT negative_marking FROM exams WHERE id = $1`, [id]);
+  }>(`SELECT negative_marking FROM free_exam_exams WHERE id = $1`, [id]);
 
   if (!exam || !exam.data || exam.data.length === 0) {
     return createError({
@@ -41,7 +41,7 @@ export default defineEventHandler(async (event) => {
     marks: number;
   }>(
     `
-    SELECT COUNT(*) as marks FROM question_options WHERE id IN ('${answers.join("','")}') AND correct = true
+    SELECT COUNT(*) as marks FROM free_exam_question_options WHERE id IN ('${answers.join("','")}') AND correct = true
   `
   );
 
@@ -53,16 +53,16 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const negMarks = (answers.length - marks?.data[0].marks) * 0.25;
+  const negMarks = (answers.length - (marks.data?.[0]?.marks || 0)) * 0.25;
   const totalMarks = exam.data[0].negative_marking
-    ? marks?.data[0].marks - negMarks
-    : marks?.data[0].marks;
+    ? (marks.data?.[0]?.marks || 0) - negMarks
+    : (marks.data?.[0]?.marks || 0);
 
   const skipped = submission.data[0].questions.length - answers.length || 0;
 
   await query(
     `UPDATE
-    submissions SET
+    free_exam_submissions SET
       answers = $1,
       duration = $2,
       submitted_at = $3,
@@ -78,8 +78,8 @@ export default defineEventHandler(async (event) => {
       duration,
       new Date(),
       totalMarks,
-      marks?.data[0].marks,
-      answers.length - marks?.data[0].marks,
+      marks.data?.[0]?.marks || 0,
+      answers.length - (marks.data?.[0]?.marks || 0),
       skipped,
       "submitted",
       submission.data[0].id,

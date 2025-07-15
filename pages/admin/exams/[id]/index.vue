@@ -13,34 +13,7 @@
             </div>
         </div>
 
-        <div v-if="status === 'success' && data.body.exam.data" class="print:hidden my-5">
-            <div class="grid grid-cols-3 gap-4 p-4 mb-5 bg-white border rounded-lg">
-                <div v-for="(count, difficulty) in data.body.exam.data" :key="difficulty" class="p-4 border rounded-lg">
-                    <h3 class="mb-2 text-lg font-semibold capitalize">{{ difficulty }}</h3>
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Required</p>
-                            <p class="text-xl font-bold">{{ count }}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600">Added</p>
-                            <p class="text-xl font-bold">{{data.body.questions.filter(q => q.difficulty.toLowerCase()
-                                === difficulty).length}}</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-600">Extra</p>
-                            <p class="text-xl font-bold" :class="{
-                                'text-red-500': count - data.body.questions.filter(q => q.difficulty.toLowerCase() === difficulty).length > 0,
-                                'text-green-500': count - data.body.questions.filter(q => q.difficulty.toLowerCase() === difficulty).length <= 0
-                            }">
-                                {{data.body.questions.filter(q => q.difficulty.toLowerCase() ===
-                                    difficulty).length - count}}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
 
         <div v-if="status === 'success'" class="mt-5 space-y-5">
 

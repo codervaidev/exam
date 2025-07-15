@@ -1,25 +1,64 @@
 export default defineEventHandler(async (event) => {
   await validateRequest(event, ["ADMIN"]);
-  const exams = await db.exam.findMany({
-    orderBy: {
-      start_time: "desc",
-    },
-  });
-
-  // Get question counts by difficulty for each exam using raw SQL
-  const questionCounts = await query<{
-    exam_id: string;
-    difficulty: string;
-    count: number;
+  
+  // Get exams with campaign information using raw SQL
+  const exams = await query<{
+    id: string;
+    title: string;
+    subject: string;
+    level: string;
+    campaign_id: string;
+    campaign_title: string;
+    start_time: string;
+    end_time: string;
+    duration: number;
+    total_marks: number;
+    result_publish_time: string;
+    solution_publish_time: string;
+    shuffle_questions: boolean;
+    negative_marking: boolean;
+    data: any;
+    created_at: string;
+    updated_at: string;
   }>(`
-    SELECT exam_id, LOWER(difficulty) as difficulty, COUNT(*) as count 
-    FROM questions 
-    WHERE exam_id IN (${exams.map((e) => `'${e.id}'`).join(",")})
-    GROUP BY exam_id, difficulty
+    SELECT 
+      e.id, e.title, e.subject, e.level, e.campaign_id,
+      c.title as campaign_title,
+      e.start_time, e.end_time, e.duration, e.total_marks,
+      e.result_publish_time, e.solution_publish_time,
+      e.shuffle_questions, e.negative_marking, e.data,
+      e.created_at, e.updated_at
+    FROM free_exam_exams e
+    LEFT JOIN free_exam_campaigns c ON e.campaign_id = c.id
+    ORDER BY e.start_time DESC
   `);
 
+  if (!exams.success) {
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Failed to fetch exams"
+    });
+  }
+
+  // Get question counts by difficulty for each exam using raw SQL
+  const examIds = exams.data?.map(e => e.id) || [];
+  let questionCounts: { data: Array<{ exam_id: string; difficulty: string; count: number; }> | null } = { data: [] };
+  
+  if (examIds.length > 0) {
+    questionCounts = await query<{
+      exam_id: string;
+      difficulty: string;
+      count: number;
+    }>(`
+      SELECT exam_id, LOWER(difficulty) as difficulty, COUNT(*) as count 
+      FROM free_exam_questions 
+      WHERE exam_id = ANY($1)
+      GROUP BY exam_id, difficulty
+    `, [examIds]);
+  }
+
   // Map the counts to each exam
-  const examsWithCounts = exams.map((exam) => {
+  const examsWithCounts = exams.data?.map((exam) => {
     const counts =
       questionCounts.data?.filter((q) => q.exam_id === exam.id) || [];
     const difficultyCounts = {
@@ -30,14 +69,14 @@ export default defineEventHandler(async (event) => {
 
     counts.forEach((count) => {
       difficultyCounts[count.difficulty as keyof typeof difficultyCounts] =
-        count.count;
+        Number(count.count);
     });
 
     return {
       ...exam,
       question_counts: difficultyCounts,
     };
-  });
+  }) || [];
 
   return {
     statusCode: 200,

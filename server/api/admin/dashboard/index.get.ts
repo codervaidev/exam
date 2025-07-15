@@ -1,28 +1,26 @@
 export default defineEventHandler(async (event) => {
   // Count of total users
-  const userCount = await db.user.count();
+  const userCountResult = await query<{count: number}>(`SELECT COUNT(*) as count FROM free_exam_users`);
+  const userCount = userCountResult.data?.[0]?.count || 0;
 
   // Count of total exams
-  const examCount = await db.exam.count();
+  const examCountResult = await query<{count: number}>(`SELECT COUNT(*) as count FROM free_exam_exams`);
+  const examCount = examCountResult.data?.[0]?.count || 0;
 
   // Count of total submissions
-  const submissionCount = await db.submission.count();
+  const submissionCountResult = await query<{count: number}>(`SELECT COUNT(*) as count FROM free_exam_submissions`);
+  const submissionCount = submissionCountResult.data?.[0]?.count || 0;
 
   // Count of total questions
-  const questionCount = await db.question.count();
+  const questionCountResult = await query<{count: number}>(`SELECT COUNT(*) as count FROM free_exam_questions`);
+  const questionCount = questionCountResult.data?.[0]?.count || 0;
 
   // Count of active sessions (you might define 'active' based on your needs)
-  const activeSessionCount = await db.session.count({
-    where: {
-      expiresAt: {
-        gt: new Date(), // Active sessions are those that haven't expired yet
-      },
-    },
-  });
-
-
- 
-
+  const activeSessionCountResult = await query<{count: number}>(
+    `SELECT COUNT(*) as count FROM free_exam_sessions WHERE expires_at > $1`, 
+    [new Date()]
+  );
+  const activeSessionCount = activeSessionCountResult.data?.[0]?.count || 0;
 
   return {
     userCount,

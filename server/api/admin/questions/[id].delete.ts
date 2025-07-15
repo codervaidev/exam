@@ -3,13 +3,17 @@ export default defineEventHandler(async (event) => {
   const questionId = event.context.params?.id;
 
   try {
-    await db.option.deleteMany({
-      where: { question_id: questionId },
-    });
+    // Delete options first (due to foreign key constraint)
+    await query(
+      `DELETE FROM free_exam_question_options WHERE question_id = $1`,
+      [questionId]
+    );
 
-    await db.question.delete({
-      where: { id: questionId },
-    });
+    // Delete the question
+    await query(
+      `DELETE FROM free_exam_questions WHERE id = $1`,
+      [questionId]
+    );
 
     return {
       statusCode: 200,

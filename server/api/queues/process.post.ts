@@ -24,7 +24,7 @@ const processSubmission = async (body: any) => {
     created_at: string;
   }>(
     `
-    SELECT * FROM submissions WHERE id = $1
+    SELECT * FROM free_exam_submissions WHERE id = $1
   `,
     [submission_id]
   );
@@ -43,7 +43,7 @@ const processSubmission = async (body: any) => {
     marks: number;
   }>(
     `
-    SELECT COUNT(*) as marks FROM question_options WHERE id IN (${answers.map((id: string) => `'${id}'`).join(",")}) AND correct = true
+    SELECT COUNT(*) as marks FROM free_exam_question_options WHERE id IN (${answers.map((id: string) => `'${id}'`).join(",")}) AND correct = true
   `
   );
 
@@ -59,7 +59,7 @@ const processSubmission = async (body: any) => {
 
   await query(
     `
-    UPDATE submissions SET
+    UPDATE free_exam_submissions SET
       answers = $1,
       duration = $2,
       submitted_at = $3,
@@ -75,9 +75,9 @@ const processSubmission = async (body: any) => {
       duration,
       new Date(),
       totalMarks,
-      marks?.data[0].marks,
-      answers.length - marks?.data[0].marks,
-      answers.length - marks?.data[0].marks,
+      marks?.data[0]?.marks || 0,
+      answers.length - (marks?.data[0]?.marks || 0),
+      answers.length - (marks?.data[0]?.marks || 0),
       "submitted",
       submission.data[0].id,
     ]

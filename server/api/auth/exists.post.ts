@@ -1,10 +1,11 @@
 export default defineEventHandler(async (event) => {
   const { phone } = await readBody(event);
-  const existingUser = await db.user.findUnique({
-    where: { phone },
-  });
+  const existingUser = await query<{id: string}>(
+    `SELECT id FROM free_exam_users WHERE phone = $1`, 
+    [phone]
+  );
 
-  if (!existingUser) {
+  if (!existingUser.data || existingUser.data.length === 0) {
     throw createError({
       statusMessage: "Incorrect phone or password",
       statusCode: 400,

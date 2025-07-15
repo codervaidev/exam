@@ -12,9 +12,19 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const exam = await db.exam.findUnique({
-    where: { id: id },
-  });
+  const examResult = await query<{
+    id: string;
+    title: string;
+    subject: string;
+    level: string;
+    start_time: string;
+    end_time: string;
+    duration: number;
+    shuffle_questions: boolean;
+    data: any;
+  }>(`SELECT * FROM free_exam_exams WHERE id = $1`, [id]);
+
+  const exam = examResult.data?.[0];
 
   if (!exam) {
     return createError({
@@ -33,15 +43,9 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // @ts-ignore
-  const hardqs = (exam?.data?.hard as number) || 0;
-  // @ts-ignore
-  const mediumqs = (exam?.data?.medium as number) || 0;
-  // @ts-ignore
-  const easyqs = (exam?.data?.easy as number) || 0;
-
+ 
   let submission = await query<Submission>(
-    `SELECT * FROM submissions WHERE exam_id = $1 AND user_id = $2`,
+    `SELECT * FROM free_exam_submissions WHERE exam_id = $1 AND user_id = $2`,
     [id, userId]
   );
 
@@ -57,34 +61,8 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  let questions;
-
-  if (
-    submission &&
-    submission.data &&
-    submission.data.length > 0 &&
-    submission.data[0]?.status === "pending" &&
-    submission.data[0].questions.length > 0
-  ) {
-    questions = await query<Question[]>(
-      `SELECT  q.id,
-        q.question,
-        q.subject,
-        q.difficulty,
-        json_agg(
-          json_build_object(
-            'id', o.id,
-            'option_text', o.option_text
-          )
-        ) as options FROM questions q  LEFT JOIN question_options o ON q.id = o.question_id
-         WHERE q.id IN (${submission.data[0].questions.map((q) => `'${q}'`).join(",")})
-         GROUP BY q.id, q.question, q.subject, q.difficulty
-         `
-    );
-  } else {
-    questions = await query<Question[]>(
+  let questions = await query<Question[]>(
       `
-    WITH difficulty_questions AS (
       SELECT 
         q.id,
         q.question,
@@ -96,26 +74,14 @@ export default defineEventHandler(async (event) => {
             'option_text', o.option_text
           )
         ) as options
-      FROM questions q
-      LEFT JOIN question_options o ON q.id = o.question_id
+      FROM free_exam_questions q
+      LEFT JOIN free_exam_question_options o ON q.id = o.question_id
       WHERE q.exam_id = $1
       GROUP BY q.id, q.question, q.subject, q.difficulty
-    )
-    SELECT * FROM (
-      SELECT * FROM difficulty_questions WHERE (difficulty = 'hard' OR difficulty = 'Hard') ORDER BY RANDOM() LIMIT $2
-    ) hard_qs
-    UNION ALL
-    SELECT * FROM (
-      SELECT * FROM difficulty_questions WHERE (difficulty = 'medium' OR difficulty = 'Medium') ORDER BY RANDOM() LIMIT $3
-    ) medium_qs
-    UNION ALL
-    SELECT * FROM (
-      SELECT * FROM difficulty_questions WHERE (difficulty = 'easy' OR difficulty = 'Easy') ORDER BY RANDOM() LIMIT $4
-    ) easy_qs
+    
     `,
-      [id, hardqs, mediumqs, easyqs]
+      [id]
     );
-  }
 
   if (
     submission &&
@@ -132,21 +98,12 @@ export default defineEventHandler(async (event) => {
   if (!submission || !submission.data || submission.data.length === 0) {
     // @ts-ignore
     let qsIds = questions.data?.map((q: Question) => `${q.id}`);
-    // @ts-ignore
-    submission = await db.submission.create({
-      data: {
-        id: uuidv4(),
-        exam_id: id,
-        user_id: userId,
-        questions: qsIds,
-        status: "pending",
-      },
-    });
-
+    const submissionId = uuidv4();
+    
     submission = await query<Submission>(
-      `UPDATE submissions SET created_at = $1, updated_at = $2 WHERE id = $3 RETURNING *`,
-      // @ts-ignore
-      [new Date(), new Date(), submission.id]
+      `INSERT INTO free_exam_submissions (id, exam_id, user_id, questions, status, answers, attempt, marks, correct, incorrect, skipped, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
+      [submissionId, id, userId, qsIds, "pending", [], 1, 0, 0, 0, 0, new Date(), new Date()]
     );
   }
 

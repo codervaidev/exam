@@ -4,7 +4,7 @@
             <div class="grid gap-2">
                 <img src="/logo.png" alt="logo" class="h-16 mx-auto mb-10" />
                 <h3 class="text-xl font-bold lg:hidden text-slate-800">
-                    Rhombus <span class="text-red-400">Parallel</span> Science Hub
+                    <span class="text-yellow-500">ACS</span> Future School
                 </h3>
                 <h1 class="hidden text-2xl font-semibold tracking-tight lg:block">
                     Register
@@ -36,25 +36,7 @@
                         </FormField>
 
 
-                        <FormField v-slot="{ componentField }" name="district">
-                            <FormItem>
-                                <FormLabel>District</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Enter District Name" v-bind="componentField" />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
 
-                        <FormField v-slot="{ componentField }" name="thana">
-                            <FormItem>
-                                <FormLabel>Thana</FormLabel>
-                                <FormControl>
-                                    <Input type="text" v-bind="componentField" />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
 
 
                         <FormField v-slot="{ componentField }" name="institute">
@@ -68,13 +50,13 @@
                         </FormField>
 
 
-                        <FormField v-slot="{ componentField }" name="batch">
+                        <FormField v-slot="{ componentField }" name="level">
                             <FormItem>
-                                <FormLabel>HSC Batch</FormLabel>
+                                <FormLabel>Class</FormLabel>
                                 <Select v-bind="componentField">
                                     <FormControl>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select your HSC BATCH" />
+                                            <SelectValue placeholder="What Class are you in?" />
                                         </SelectTrigger>
                                     </FormControl>
                                     <SelectContent>
@@ -89,38 +71,6 @@
                             </FormItem>
                         </FormField>
 
-                        <FormField v-slot="{ componentField }" name="tshirt">
-                            <FormItem>
-                                <FormLabel>T-shirt Size</FormLabel>
-                                <FormControl>
-                                    <Select v-bind="componentField">
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select T-shirt Size" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectGroup>
-                                                <SelectItem value="S">S</SelectItem>
-                                                <SelectItem value="M">M</SelectItem>
-                                                <SelectItem value="L">L</SelectItem>
-                                                <SelectItem value="XL">XL</SelectItem>
-                                                <SelectItem value="XXL">XXL</SelectItem>
-                                                <SelectItem value="XXXL">XXXL</SelectItem>
-                                            </SelectGroup>
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
-                        <FormField v-slot="{ componentField }" name="address">
-                            <FormItem>
-                                <FormLabel>Address</FormLabel>
-                                <FormControl>
-                                    <Textarea v-bind="componentField" />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        </FormField>
                     </div>
 
                     <div class="flex flex-col gap-2 py-6">
@@ -158,26 +108,12 @@ const form = useForm({
     initialValues: {
         name: '',
         phone: route.query.phone || '',
-        district: '',
-        district_name: '',
-        district_text: '',
-        thana: '',
-        thana_name: '',
-        thana_text: '',
         institute: '',
-        institute_name: '',
-        institute_text: '',
-        batch: 'Others',
-        tshirt: 'S',
-        address: '',
+        level: '',
     },
 });
 
 const isLoading = ref(false);
-const districts = ref([]);
-const thanas = ref([]);
-const schools = ref([]);
-const thanaLoading = ref(false);
 
 const { toast } = useToast();
 const user = useUser();
@@ -217,76 +153,10 @@ const onSubmit = form.handleSubmit(async () => {
 });
 
 const hsc_batches = [
-    'HSC 2027',
-    'HSC 2026',
-    'HSC 2025',
-    'Others',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
 ]
-
-const handleDistrictChange = async (districtId) => {
-    form.values.thana = '';
-    form.values.thana_name = '';
-    form.values.institute = '';
-    form.values.institute_name = '';
-    thanas.value = [];
-    schools.value = [];
-
-    if (districtId) {
-        try {
-            thanaLoading.value = true;
-
-            const selectedDistrict = districts.value.find(d => d.name === districtId);
-
-            const thanaRes = await axios.get(`https://oyster-app-nmb7x.ondigitalocean.app/api/location/thanas/${selectedDistrict.id}`);
-            thanas.value = thanaRes.data.data;
-        } catch (error) {
-            console.error(error);
-            toast({
-                title: 'Error fetching thanas',
-                variant: 'destructive'
-            });
-        } finally {
-            thanaLoading.value = false;
-        }
-    }
-};
-
-const handleThanaChange = async (thanaId) => {
-    form.values.institute = '';
-    form.values.institute_name = '';
-    schools.value = [];
-
-    if (thanaId) {
-        try {
-            thanaLoading.value = true;
-            const selectedThana = thanas.value.find(t => t.name === thanaId);
-
-            const { data } = await axios.get(`https://oyster-app-nmb7x.ondigitalocean.app/api/location/schools/${selectedThana.id}`);
-            schools.value = data.data;
-        } catch (error) {
-            console.error(error);
-            toast({
-                title: 'Error fetching schools',
-                variant: 'destructive'
-            });
-        } finally {
-            thanaLoading.value = false;
-        }
-    }
-};
-
-
-
-onMounted(async () => {
-    try {
-        const { data } = await axios.get('https://oyster-app-nmb7x.ondigitalocean.app/api/location/districts');
-        districts.value = data.data;
-    } catch (error) {
-        console.error(error);
-        toast({
-            title: 'Error fetching districts',
-            variant: 'destructive'
-        });
-    }
-});
 </script>

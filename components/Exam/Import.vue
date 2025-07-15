@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <Button @click="isOpen = true" variant="outline">
             <Icon name="bx:bx-plus" />
             Import Questions

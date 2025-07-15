@@ -3,13 +3,10 @@ export default defineEventHandler(async (event) => {
 
   const { address, tshirt } = await readBody(event);
 
-  const user = await db.user.update({
-    where: { id: userId },
-    data: {
-      address,
-      tshirt,
-    },
-  });
+  const user = await query(
+    `UPDATE free_exam_users SET district = $1, thana = $2, updated_at = $3 WHERE id = $4 RETURNING *`,
+    [address, tshirt, new Date(), userId]
+  );
 
-  return user;
+  return user.data?.[0];
 });

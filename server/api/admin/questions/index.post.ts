@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
@@ -12,22 +14,24 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await db.question.create({
-      data: {
-        question,
-        subject,
-        difficulty: difficulty || "Medium",
-        exam_id: examId,
-        explain,
-        order: order || 0,
-        options: {
-          create: options.map((option) => ({
-            option_text: option.option_text,
-            correct: option.correct,
-          })),
-        },
-      },
-    });
+    const questionId = uuidv4();
+    
+    // Create the question
+    await query(
+      `INSERT INTO free_exam_questions (id, question, subject, difficulty, exam_id, explain, "order", extra) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [questionId, question, subject, difficulty || "Medium", examId, explain, order || 0, false]
+    );
+
+    // Create the options
+    for (const option of options) {
+      const optionId = uuidv4();
+      await query(
+        `INSERT INTO free_exam_question_options (id, option_text, correct, question_id) 
+         VALUES ($1, $2, $3, $4)`,
+        [optionId, option.option_text, option.correct, questionId]
+      );
+    }
 
     return {
       statusCode: 201,

@@ -77,6 +77,49 @@
   }
 }
 
+
+
+
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('../fonts/HindSiliguri-Bold.ttf');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('../fonts/HindSiliguri-Regular.ttf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('../fonts/HindSiliguri-Medium.ttf');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('../fonts/HindSiliguri-SemiBold.ttf');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Hind Siliguri';
+  src: url('../fonts/HindSiliguri-Light.ttf');
+  font-weight: 300;
+}
+
+
+
+body {
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
+.font-hind {
+  font-family: 'Hind Siliguri', sans-serif;
+}
+
 /* hide scrollbar of a div */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -135,34 +178,27 @@
 }
 
 
+.special_effect {
+    transition: all 0.1s ease-in-out;
+    box-shadow: 0px 5px 0px #2F6D00;
 
-@font-face {
-  font-family: 'Li Ador Noirrit';
-  src: url('../fonts/Li Ador Noirrit Bold.ttf');
-  font-weight: 700;
+    &:active {
+        transform: scale(1.05);
+        box-shadow: 0px 0px 0px #2F6D00;
+    }
 }
 
-@font-face {
-  font-family: 'Li Ador Noirrit';
-  src: url('../fonts/Li Ador Noirrit Regular.ttf');
-  font-weight: 400;
-}
+.special_effect_red {
+    transition: all 0.1s ease-in-out;
+    box-shadow: 0px 5px 0px #860000;
 
-
-@font-face {
-  font-family: 'Li Ador Noirrit';
-  src: url('../fonts/Li Ador Noirrit SemiBold.ttf');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: 'Li Ador Noirrit';
-  src: url('../fonts/Li Ador Noirrit Light.ttf');
-  font-weight: 300;
+    &:active {
+        transform: scale(1.05);
+        box-shadow: 0px 0px 0px #860000;
+    }
 }
 
 
-
-body {
-  font-family: 'Li Ador Noirrit', sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

@@ -18,3 +18,22 @@ export type Submission = {
   created_at: string;
   updated_at: string;
 };
+
+
+export type User = {
+  id: string;
+  name: string;
+  phone: string;
+  district: string;
+  thana: string;
+  institute: string;
+  role: string;
+  level: string;
+};
+
+
+export type Session = {
+  id: string;
+  user_id: string;
+  expires_at: Date;
+};

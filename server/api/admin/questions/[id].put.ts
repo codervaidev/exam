@@ -14,33 +14,32 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Update the question details
-    const updatedQuestion = await db.question.update({
-      where: { id: questionId },
-      data: {
-        question,
-        subject,
-        difficulty: difficulty || "Medium",
-        exam_id: examId,
-        explain,
-      },
-    });
+    const updatedQuestionResult = await query(
+      `UPDATE free_exam_questions 
+       SET question = $1, subject = $2, difficulty = $3, exam_id = $4, explain = $5 
+       WHERE id = $6 
+       RETURNING *`,
+      [question, subject, difficulty || "Medium", examId, explain, questionId]
+    );
+
+    const updatedQuestion = updatedQuestionResult.data?.[0];
 
     // Update the options
     await Promise.all(
-      options.map(async (option) => {
+      options.map(async (option: any) => {
         if (option.id && option.type == "update") {
           // Update existing option
-          await db.option.update({
-            where: { id: option.id },
-            data: {
-              option_text: option.option_text,
-              correct: option.correct,
-            },
-          });
+          await query(
+            `UPDATE free_exam_question_options 
+             SET option_text = $1, correct = $2 
+             WHERE id = $3`,
+            [option.option_text, option.correct, option.id]
+          );
         } else if (option.type == "delete") {
-          await db.option.delete({
-            where: { id: option.id },
-          });
+          await query(
+            `DELETE FROM free_exam_question_options WHERE id = $1`,
+            [option.id]
+          );
         }
       })
     );

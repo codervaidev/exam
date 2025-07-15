@@ -23,7 +23,7 @@ export default defineNuxtConfig({
   ssr: false,
   app: {
     head: {
-      title: "Rhombus Parallel - Exam",
+      title: "ACS Future School - Exam",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },

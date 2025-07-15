@@ -1,32 +1,25 @@
+import { deleteOtherSessions, createSession, serialiseSession } from "../../services/auth.service";
+
 export default eventHandler(async (event) => {
   const { phone } = await readBody(event);
 
-  let existingUser = await db.user.findUnique({
-    where: { phone },
-  });
+  let existingUser = await query<{id: string}>("SELECT * FROM free_exam_users WHERE phone = $1", [
+    phone,
+  ]);
 
-  if (!existingUser) {
+  if (!existingUser.data) {
     throw createError({
       statusMessage: "Incorrect phone or password",
       statusCode: 400,
     });
   }
 
-  const session = await lucia.createSession(existingUser.id, {});
+ await deleteOtherSessions(existingUser.data[0].id);
 
-  await db.session.deleteMany({
-    where: {
-      id: {
-        not: session.id,
-      },
-      userId: existingUser.id,
-    },
-  });
+      const session = await createSession(existingUser.data[0].id) as {id: string, user_id: string, expires_at: Date};
 
-  appendHeader(
-    event,
-    "Set-Cookie",
-    lucia.createSessionCookie(session.id).serialize()
-  );
-  return true;
+      appendHeader(event, "Set-Cookie", serialiseSession(session));
+
+      return true;
+ 
 });

@@ -7,6 +7,11 @@ export const navMenu: NavMenuItems = [
     link: "/admin",
   },
   {
+    title: "Campaigns",
+    icon: "i-lucide-calendar",
+    link: "/admin/campaigns",
+  },
+  {
     title: "Exam",
     icon: "i-lucide-clipboard",
     link: "/admin/exams",

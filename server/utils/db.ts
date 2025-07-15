@@ -1,22 +1,16 @@
 import pg, { PoolConfig } from "pg";
 const { Pool } = pg;
 
-const sslCert = process.env.DB_SSL_CERT;
 
 const poolConfig: PoolConfig = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  database: process.env.DB_DATABASE,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 };
 
 const pool = new Pool({
   ...poolConfig,
-  ssl: {
-    rejectUnauthorized: false,
-    ca: sslCert,
-  },
 });
 
 type QueryResult<T> = {
