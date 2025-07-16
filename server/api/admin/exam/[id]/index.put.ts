@@ -21,6 +21,9 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  const startTime = new Date(new Date(data.startTime).getTime() + 6 * 60 * 60 * 1000);
+  const endTime = new Date(new Date(data.endTime).getTime() + 6 * 60 * 60 * 1000);
+
   const result = await query(`
     UPDATE free_exam_exams 
     SET title = $1, subject = $2, level = $3, campaign_id = $4,
@@ -35,12 +38,12 @@ export default defineEventHandler(async (event) => {
     data.subject,
     data.level,
     data.campaignId,
-    data.startTime,
-    data.endTime,
+    startTime,
+    endTime,
     data.duration,
     data.totalMarks,
-    data.endTime,
-    data.endTime,
+    endTime,
+    endTime,
     data.shuffleQuestions || false,
     data.negativeMarking || false,
     examId
