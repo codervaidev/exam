@@ -110,27 +110,7 @@
                 </FormField>
 
             </div>
-            <div class="grid grid-cols-2 gap-4">
 
-                <FormField v-slot="{ componentField }" name="resultPublishTime">
-                    <FormItem>
-                        <FormLabel>Result publish at</FormLabel>
-                        <FormControl>
-                            <Input type="datetime-local" v-bind="componentField" />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="solutionPublishTime">
-                    <FormItem>
-                        <FormLabel>Solution Publish at</FormLabel>
-                        <FormControl>
-                            <Input type="datetime-local" v-bind="componentField" />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-            </div>
 
 
 
@@ -173,8 +153,6 @@ const form = useForm({
         endTime: '',
         duration: '',
         totalMarks: '',
-        resultPublishTime: '',
-        solutionPublishTime: '',
         shuffleQuestions: false,
         negativeMarking: false,
         data: {
@@ -191,18 +169,7 @@ const onSubmit = form.handleSubmit(async (data) => {
         // Manual validation for publish times
         const startTime = new Date(data.startTime);
         const endTime = new Date(data.endTime);
-        const durationMs = data.duration * 60 * 1000; // Convert minutes to milliseconds
-        const resultPublishTime = new Date(data.resultPublishTime);
-        const solutionPublishTime = new Date(data.solutionPublishTime);
-        const minPublishTime = new Date(endTime.getTime() + durationMs);
 
-        if (resultPublishTime <= minPublishTime || solutionPublishTime <= minPublishTime) {
-            return toast({
-                title: "Invalid Publish Times",
-                description: "Result and solution publish times must be after exam end time plus duration",
-                variant: "destructive"
-            });
-        }
 
         if (startTime >= endTime) {
             return toast({
@@ -220,8 +187,8 @@ const onSubmit = form.handleSubmit(async (data) => {
                     ...data,
                     startTime: dateFieldFormat(data.startTime),
                     endTime: dateFieldFormat(data.endTime),
-                    resultPublishTime: dateFieldFormat(data.resultPublishTime),
-                    solutionPublishTime: dateFieldFormat(data.solutionPublishTime)
+                    resultPublishTime: dateFieldFormat(data.endTime),
+                    solutionPublishTime: dateFieldFormat(data.endTime)
                 }
             })
             if (error.value) {

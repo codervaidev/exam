@@ -64,6 +64,12 @@
         <div v-else>
             <AppLoader />
         </div>
+        <AppModal v-model="submittedModal">
+            <div class="flex flex-col items-center justify-center">
+                <h1 class="text-2xl font-bold">Submitted</h1>
+                <p class="text-sm text-gray-500">Your answers have been submitted successfully</p>
+            </div>
+        </AppModal>
     </div>
 </template>
 
@@ -87,6 +93,8 @@ const end_time = ref(null)
 
 const { toast } = useToast()
 
+
+const submittedModal = ref(false)
 const submitAns = async () => {
 
     try {
@@ -94,18 +102,17 @@ const submitAns = async () => {
         await $fetch('/api/question/' + route.params.id, { method: 'POST', body: { answers, submission_id: data.value.submission.id } })
         clearTimeout(timer.value)
         timer.value = null
-        toast({
-            title: 'Submitted',
-            description: 'Your answers have been submitted successfully',
+        submittedModal.value = true
 
-        })
     } catch (error) {
         toast({
             title: 'Error',
             variant: 'destructive'
         })
     }
-    navigateTo('/')
+    setTimeout(() => {
+        navigateTo('/')
+    }, 2000)
 }
 
 const selectOption = (idx, a_id) => {

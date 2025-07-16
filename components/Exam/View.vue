@@ -74,18 +74,7 @@
                             <Label class="text-xs font-medium">End Time</Label>
                             <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.end_time) }}</p>
                         </div>
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Result Publish Time</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ formatTime(exam.result_publish_time)
-                                }}
-                            </p>
-                        </div>
-                        <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Solution Publish Time</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{
-                                formatTime(exam.solution_publish_time) }}
-                            </p>
-                        </div>
+
 
 
                     </div>

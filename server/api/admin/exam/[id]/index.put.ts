@@ -39,8 +39,8 @@ export default defineEventHandler(async (event) => {
     new Date(data.endTime),
     data.duration,
     data.totalMarks,
-    new Date(data.resultPublishTime),
-    new Date(data.solutionPublishTime),
+    new Date(data.endTime),
+    new Date(data.endTime),
     data.shuffleQuestions || false,
     data.negativeMarking || false,
     examId

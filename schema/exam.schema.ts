@@ -14,12 +14,6 @@ export const ExamSchema = z.object({
   }),
   duration: z.number().positive("Duration must be a positive number"),
   totalMarks: z.number().positive("Total marks must be a positive number"),
-  resultPublishTime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid result publish time",
-  }),
-  solutionPublishTime: z.string().refine((val) => !isNaN(Date.parse(val)), {
-    message: "Invalid solution publish time",
-  }),
   shuffleQuestions: z.boolean().optional(),
   negativeMarking: z.boolean().optional(),
   
