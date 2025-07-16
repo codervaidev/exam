@@ -185,8 +185,8 @@ const onSubmit = form.handleSubmit(async (data) => {
                 method: 'PUT',
                 body: {
                     ...data,
-                    startTime: dateFieldFormat(data.startTime),
-                    endTime: dateFieldFormat(data.endTime),
+                    startTime: (data.startTime),
+                    endTime: (data.endTime),
                     resultPublishTime: dateFieldFormat(data.endTime),
                     solutionPublishTime: dateFieldFormat(data.endTime)
                 }
