@@ -55,10 +55,18 @@
                 </p>
 
                 <!-- Campaign Stats -->
-                <div class="flex items-center text-sm text-gray-600 gap-2 pt-3 border-t border-gray-100">
-                  <span class="font-medium">{{ campaign.total_exam }}টি পরীক্ষা</span>
-                  <DotIcon class="w-3 h-3 text-gray-400" />
-                  <span>{{ calculateDaysLeft(campaign.start_time, campaign.end_time) }} দিন</span>
+                <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                  <div class="flex items-center text-sm text-gray-600 gap-2">
+                    <span class="font-medium">{{ campaign.total_exam }}টি পরীক্ষা</span>
+                    <DotIcon class="w-3 h-3 text-gray-400" />
+                    <span>{{ calculateDaysLeft(campaign.start_time, campaign.end_time) }} দিন</span>
+                  </div>
+
+                  <!-- Leaderboard Button -->
+                  <Button @click.stop="viewLeaderboard(campaign.id)" variant="outline" size="sm" class="text-xs">
+                    <Icon name="lucide:trophy" class="w-3 h-3 mr-1" />
+                    লিডারবোর্ড
+                  </Button>
                 </div>
               </div>
             </div>
@@ -107,6 +115,10 @@ const { data, status, error, refresh } = await useFetch('/api/campaigns', {
 
 const viewCampaignExams = (campaignId) => {
   navigateTo(`/exam?campaign=${campaignId}`)
+}
+
+const viewLeaderboard = (campaignId) => {
+  navigateTo(`/leaderboard/${campaignId}`)
 }
 
 const calculateDaysLeft = (startDate, endDate) => {

@@ -82,7 +82,7 @@
                     <div class="flex flex-row items-center w-full gap-4">
                         <button type="submit"
                             class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl duration-200 hover:bg-[#007b3a]">
-                            সাবমিট করো
+                            {{ isLoading ? 'সাবমিট হচ্ছে...' : 'সাবমিট করো' }}
                         </button>
                     </div>
                 </div>

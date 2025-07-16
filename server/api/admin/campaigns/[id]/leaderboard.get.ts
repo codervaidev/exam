@@ -94,9 +94,9 @@ export default defineEventHandler(async (event) => {
       u.thana as user_thana,
       COUNT(s.id) as total_exams_attempted,
       SUM(s.marks) as total_marks_obtained,
-      ROUND(AVG(s.marks), 2) as average_marks,
+      ROUND(AVG(s.marks)::numeric, 2) as average_marks,
       SUM(s.duration) as total_duration,
-      ROUND(AVG(s.duration), 0) as average_duration
+      ROUND(AVG(s.duration)::numeric, 0) as average_duration
     FROM free_exam_users u
     JOIN free_exam_submissions s ON u.id = s.user_id
     WHERE s.exam_id = ANY($1) 
