@@ -30,10 +30,7 @@
                             <TableHead class="w-[50px]">Rank</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Institute</TableHead>
-                            <TableHead class="text-right">Total Marks</TableHead>
-                            <TableHead class="text-right">Exams Taken</TableHead>
                             <TableHead class="text-right">Avg. Marks</TableHead>
-                            <TableHead class="text-right">Total Duration</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -48,23 +45,13 @@
                             </TableCell>
                             <TableCell>{{ rank.user.name }}</TableCell>
                             <TableCell>{{ rank.user.institute }}</TableCell>
-                            <TableCell class="font-semibold text-right">{{ rank.marks }}</TableCell>
-                            <TableCell class="text-right">
-                                <span class="text-sm">
-                                    {{ rank.totalExamsAttempted }}/{{ rank.totalExamsInCampaign }}
-                                </span>
-                            </TableCell>
+
                             <TableCell class="text-right">
                                 <span class="text-sm font-medium">
                                     {{ rank.averageMarks }}
                                 </span>
                             </TableCell>
-                            <TableCell class="text-right">
-                                <span class="flex items-center justify-end">
-                                    <Icon name="lucide:clock" class="mr-1" size="14" />
-                                    {{ formatDuration(rank.duration) }}
-                                </span>
-                            </TableCell>
+
 
                         </TableRow>
 
