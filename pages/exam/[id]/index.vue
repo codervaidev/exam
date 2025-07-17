@@ -64,10 +64,39 @@
         <div v-else>
             <AppLoader />
         </div>
-        <AppModal v-model="submittedModal">
-            <div class="flex flex-col items-center justify-center">
-                <h1 class="text-2xl font-bold">Submitted</h1>
-                <p class="text-sm text-gray-500">Your answers have been submitted successfully</p>
+        <AppModal :isOpen="submittedModal" @onClose="submittedModal = false">
+            <div class="flex flex-col items-center justify-center p-6">
+                <!-- Success State -->
+                <div v-if="submissionState === 'success'" class="text-center">
+                    <Icon name="lucide:check-circle" class="w-16 h-16 mx-auto mb-4 text-green-500" />
+                    <h1 class="text-2xl font-bold text-green-600 mb-2">Submitted Successfully!</h1>
+                    <p class="text-sm text-gray-500">Your answers have been submitted successfully</p>
+                    <p class="text-xs text-gray-400 mt-2">Redirecting to home page...</p>
+                </div>
+
+                <!-- Error State -->
+                <div v-else-if="submissionState === 'error'" class="text-center">
+                    <Icon name="lucide:x-circle" class="w-16 h-16 mx-auto mb-4 text-red-500" />
+                    <h1 class="text-2xl font-bold text-red-600 mb-2">Submission Failed</h1>
+                    <p class="text-sm text-gray-500 mb-4">Failed to submit your answers. Please try again.</p>
+                    <div class="flex gap-2">
+                        <button @click="submittedModal = false"
+                            class="px-4 py-2 text-sm bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                            Close
+                        </button>
+                        <button @click="submittedModal = false; submitAns()"
+                            class="px-4 py-2 text-sm bg-red-500 text-white rounded-lg hover:bg-red-600">
+                            Try Again
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Submitting State -->
+                <div v-else-if="submissionState === 'submitting'" class="text-center">
+                    <AppLoader />
+                    <h1 class="text-2xl font-bold text-blue-600 mb-2 mt-4">Submitting...</h1>
+                    <p class="text-sm text-gray-500">Please wait while we submit your answers</p>
+                </div>
             </div>
         </AppModal>
     </div>
@@ -90,29 +119,45 @@ const { data, status, error, refresh } = await useFetch('/api/question/' + route
 
 const timer = ref(null)
 const end_time = ref(null)
+const submittedModal = ref(false)
+const submissionState = ref('idle') // 'idle', 'submitting', 'success', 'error'
 
 const { toast } = useToast()
 
-
-const submittedModal = ref(false)
 const submitAns = async () => {
-
     try {
+        submissionState.value = 'submitting'
         const answers = data.value.questions.filter(q => q.selected).map(q => q.selected)
-        await $fetch('/api/question/' + route.params.id, { method: 'POST', body: { answers, submission_id: data.value.submission.id } })
+        await $fetch('/api/question/' + route.params.id, {
+            method: 'POST',
+            body: { answers, submission_id: data.value.submission.id }
+        })
+
+        // Clear timer after successful submission
         clearTimeout(timer.value)
         timer.value = null
+
+        // Show success state
+        submissionState.value = 'success'
         submittedModal.value = true
 
+
+
+        // Navigate after delay only on success
+        setTimeout(() => {
+            navigateTo('/')
+        }, 2000)
+
     } catch (error) {
+        submissionState.value = 'error'
+        submittedModal.value = true
+
         toast({
-            title: 'Error',
+            title: 'Submission Failed',
+            description: 'Failed to submit your answers. Please try again.',
             variant: 'destructive'
         })
     }
-    setTimeout(() => {
-        navigateTo('/')
-    }, 2000)
 }
 
 const selectOption = (idx, a_id) => {
