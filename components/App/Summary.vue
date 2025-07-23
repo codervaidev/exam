@@ -35,40 +35,6 @@
                 </div>
             </div>
 
-            <!-- Skipped -->
-            <div class="p-3 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-lg">
-                <div class="flex items-center gap-3">
-                    <Icon name="lucide:skip-forward" class="w-5 h-5 text-yellow-600" />
-                    <div class="text-left">
-                        <div class="text-sm font-medium text-yellow-600">Not Answered</div>
-                        <div class="text-xl font-bold text-yellow-700">{{ total_not_answered }}</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Accuracy -->
-            <div class="p-3 bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg">
-                <div class="flex items-center gap-3">
-                    <Icon name="lucide:percent" class="w-5 h-5 text-orange-600" />
-                    <div class="text-left">
-                        <div class="text-sm font-medium text-orange-600">Accuracy</div>
-                        <div class="text-xl font-bold text-orange-700">{{ (correct /
-                            (correct + incorrect) * 100).toFixed(2) }}%</div>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Extra Questions -->
-            <div v-if="extra_questions > 0" class="p-3 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg">
-                <div class="flex items-center gap-3">
-                    <Icon name="lucide:plus" class="w-5 h-5 text-purple-600" />
-                    <div class="text-left">
-                        <div class="text-sm font-medium text-purple-600">Extra Questions</div>
-                        <div class="text-xl font-bold text-purple-700">{{ extra_questions }}</div>
-                    </div>
-                </div>
-            </div>
 
 
         </div>

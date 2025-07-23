@@ -93,10 +93,15 @@
                     </p>
                 </div>
 
-                <div v-if="exam.status === 'past'">
+                <div class="grid grid-cols-2 gap-3"
+                    v-if="exam.status === 'past' || (exam.submission && exam.submission.status === 'submitted')">
                     <button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
                         class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl  duration-200 hover:bg-[#007b3a]">
                         লিডারবোর্ড
+                    </button>
+                    <button @click="navigateTo(`/exam/${exam.id}/solution`)"
+                        class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl  duration-200 hover:bg-[#007b3a]">
+                        সমাধান
                     </button>
                 </div>
 

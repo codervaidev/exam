@@ -14,8 +14,7 @@
                 :correct="data.submission.correct" :incorrect="data.submission.incorrect"
                 :skipped="data.submission.skipped"
                 :total_not_answered="data.questions.filter(q => notAnswered(q.id)).length"
-                :extra_questions="data.questions.filter(q => isExtraQuestion(q.id)).length"
-                />
+                :extra_questions="data.questions.filter(q => isExtraQuestion(q.id)).length" />
 
 
         </div>
@@ -39,7 +38,6 @@
                     <Badge class="bg-blue-100 text-blue-800">Q{{ i + 1 }}</Badge>
                     <Badge class="bg-purple-100 text-purple-800">{{ q.subject }}</Badge>
                     <Badge class="bg-green-100 text-green-800">1 Mark</Badge>
-                    <Badge v-if="isExtraQuestion(q.id)" class="bg-yellow-100 text-yellow-800">Extra Question</Badge>
                     <Badge v-if="notAnswered(q.id)" class="bg-red-100 text-red-800">Not Answered</Badge>
                 </div>
                 <div class="mt-4 space-y-3">

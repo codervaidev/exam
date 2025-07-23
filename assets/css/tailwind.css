@@ -80,45 +80,7 @@
 
 
 
-@font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../fonts/HindSiliguri-Bold.ttf');
-  font-weight: 700;
-}
 
-@font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../fonts/HindSiliguri-Regular.ttf');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../fonts/HindSiliguri-Medium.ttf');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../fonts/HindSiliguri-SemiBold.ttf');
-  font-weight: 600;
-}
-
-@font-face {
-  font-family: 'Hind Siliguri';
-  src: url('../fonts/HindSiliguri-Light.ttf');
-  font-weight: 300;
-}
-
-
-
-body {
-  font-family: 'Hind Siliguri', sans-serif;
-}
-
-.font-hind {
-  font-family: 'Hind Siliguri', sans-serif;
-}
 
 /* hide scrollbar of a div */
 .hide-scrollbar::-webkit-scrollbar {
