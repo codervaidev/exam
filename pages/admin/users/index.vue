@@ -145,14 +145,10 @@ debouncedWatch(presearch, (value) => {
 
                                     <TableHead>Name</TableHead>
                                     <TableHead>Phone</TableHead>
-                                    <TableHead>T-Shirt</TableHead>
+                                    <TableHead>Class</TableHead>
 
-                                    <TableHead class="hidden md:table-cell">
-                                        Batch
-                                    </TableHead>
-                                    <TableHead class="hidden md:table-cell">
-                                        District
-                                    </TableHead>
+                                    <TableHead>Institute</TableHead>
+
                                     <TableHead>
                                         <span class="sr-only">Actions</span>
                                     </TableHead>
@@ -167,16 +163,14 @@ debouncedWatch(presearch, (value) => {
                                     <TableCell>
                                         {{ user?.phone }}
                                     </TableCell>
-                                    <TableCell>
-                                        {{ user?.tshirt }}
-                                    </TableCell>
                                     <TableCell class="hidden md:table-cell">
-                                        {{ user?.batch }}
+                                        {{ user?.level }}
+                                    </TableCell>
+                                    <TableCell>
+                                        {{ user?.institute }}
                                     </TableCell>
 
-                                    <TableCell class="hidden md:table-cell">
-                                        {{ user?.district }}
-                                    </TableCell>
+
 
                                     <TableCell>
                                         <ClientOnly>
@@ -206,7 +200,7 @@ debouncedWatch(presearch, (value) => {
                     <CardFooter v-if="status == 'success'" class="flex justify-between">
                         <div class="text-xs text-muted-foreground">
                             Showing <strong>1-10</strong> of <strong>{{ data?.totalUsers }}</strong>
-                            products
+                            users
                         </div>
                         <div>
                             <Pagination v-slot="{ page }" @update:page="paginate"

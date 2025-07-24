@@ -32,7 +32,7 @@
             <div v-for="(q, i) in data.questions" :key="i" class="p-6 space-y-4 bg-white border rounded-xl shadow-sm">
                 <div class="flex items-start justify-between">
                     <div class="text-lg font-semibold text-gray-900" v-html="q.question"></div>
-
+ 
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <Badge class="bg-blue-100 text-blue-800">Q{{ i + 1 }}</Badge>
