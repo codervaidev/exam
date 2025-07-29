@@ -50,10 +50,16 @@ CREATE TABLE "free_exam_exams" (
     solution_publish_time TIMESTAMP NOT NULL,
     shuffle_questions BOOLEAN NOT NULL DEFAULT FALSE,
     negative_marking BOOLEAN NOT NULL DEFAULT FALSE,
+    sequence_order INT NOT NULL DEFAULT 1,
     data JSON DEFAULT '{}',
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE "free_exam_exams" ADD COLUMN "chapter" TEXT DEFAULT '';
+
+ALTER TABLE "free_exam_exams"
+ADD COLUMN "description" TEXT DEFAULT '';
 
 CREATE TABLE "free_exam_questions" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
@@ -100,3 +106,21 @@ CREATE TABLE "free_exam_submissions" (
 CREATE INDEX free_exam_user_id_index ON "free_exam_submissions" (user_id);
 
 CREATE INDEX free_exam_exam_id_index ON "free_exam_submissions" (exam_id);
+
+-- Migration: Add sequence_order to existing exams
+-- This will set sequence_order based on start_time for existing exams
+UPDATE free_exam_exams
+SET
+    sequence_order = (
+        SELECT row_number() OVER (
+                PARTITION BY
+                    campaign_id
+                ORDER BY start_time ASC
+            )
+        FROM free_exam_exams e2
+        WHERE
+            e2.campaign_id = free_exam_exams.campaign_id
+    )
+WHERE
+    sequence_order IS NULL
+    OR sequence_order = 1;

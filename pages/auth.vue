@@ -1,39 +1,7 @@
 <template>
     <div class="max-w-2xl mx-auto">
-        <div v-if="!regForm || !selectedGrade" class="w-full max-w-2xl p-5 mx-auto bg-white rounded-2xl">
-            <div>
-                <h1 class="text-xl font-medium">তুমি কোন শ্রেণিতে পড়ছো এখন?</h1>
-            </div>
 
-            <div class="flex flex-col gap-4 py-4">
-                <div v-for="(grade, index) in grades" :key="index" @click="selectGrade(grade.value)"
-                    class="flex items-center justify-between w-full gap-4 p-3 text-lg transition-all duration-200 border-2 border-gray-200 rounded-2xl hover:scale-102"
-                    :class="{ '!border-[#008643]': grade.value == selectedGrade }">
-
-                    <div class="flex items-center gap-4">
-                        <img :src="grade.icon" alt="grade" class="w-10 h-10">
-                        <span class="text-lg font-thin">{{ grade.name }} শ্রেণী</span>
-                    </div>
-
-
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="8.5" y="8.5" width="15" height="15" rx="7.5" fill="white" />
-                        <rect x="8.5" y="8.5" width="15" height="15" rx="7.5" stroke="#008643" />
-                        <circle v-if="grade.value === selectedGrade" cx="16" cy="16" r="3" fill="#008643" />
-                    </svg>
-
-
-                </div>
-            </div>
-
-            <div class="">
-                <button @click="confirmSelection"
-                    class="flex special_effect outline-none border-none text-lg text-center justify-center text-white items-center w-full h-12 font-medium bg-[#008643] shadow-lg rounded-2xl  duration-200 hover:bg-[#007b3a]">
-                    এগিয়ে যাও
-                </button>
-            </div>
-        </div>
-        <div v-else>
+        <div>
             <h1 class="text-xl font-medium my-4">তোমার ডিটেইলস দাও</h1>
             <form @submit.prevent="onSubmit">
 
@@ -61,6 +29,17 @@
                             <FormMessage />
                         </FormItem>
                     </FormField>
+                    <FormField v-slot="{ componentField }" name="level">
+                        <FormItem>
+                            <Label>তোমার শ্রেণি*</Label>
+                            <FormControl>
+                                <Input disabled
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-base placeholder-gray-400 font-normal"
+                                    placeholder="SSC 2026" value="SSC 2026" />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    </FormField>
                     <FormField v-slot="{ componentField }" name="institute">
                         <FormItem>
                             <Label>তোমার স্কুল*</Label>
@@ -72,10 +51,6 @@
                             <FormMessage />
                         </FormItem>
                     </FormField>
-
-
-
-
                 </div>
 
                 <div class="flex flex-col gap-2 py-6">
@@ -162,7 +137,7 @@ const form = useForm({
         name: '',
         phone: '',
         institute: '',
-        level: selectedGrade.value?.toString() || '9',
+        level: '10',
     },
 });
 
@@ -195,9 +170,9 @@ const onSubmit = form.handleSubmit(async () => {
 
         return navigateTo('/')
 
-    } catch (error) {
+    } catch (error: any) {
         toast({
-            title: error.toString(),
+            title: error instanceof Error ? error.message : 'An unknown error occurred',
             variant: 'destructive'
         });
     } finally {

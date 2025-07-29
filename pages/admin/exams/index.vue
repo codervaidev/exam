@@ -15,6 +15,7 @@
         </div>
     </div>
     <ExamModal />
+    <ExamEditModal :exam="editExam" :is-open="isEditOpen" @close="onEditClose" @updated="onEditUpdated" />
 </template>
 
 <script setup>
@@ -23,7 +24,7 @@ definePageMeta({
     layout: 'admin',
 })
 
-const { onOpen } = useExam()
+const { onOpen, editExam, isEditOpen, onEditClose, onEditUpdated } = useExam()
 
 const { data, status, error, refresh } = await useFetch('/api/admin/exam', {
     key: 'admin-exams',

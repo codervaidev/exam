@@ -33,47 +33,35 @@
             </FormField>
 
             <div class="grid grid-cols-2 gap-4">
-                <FormField v-slot="{ componentField }" name="campaignId">
+                <FormField v-slot="{ componentField }" name="sequenceOrder">
                     <FormItem>
-                        <FormLabel>Campaign</FormLabel>
+                        <FormLabel>Sequence Order</FormLabel>
                         <FormControl>
-                            <Select v-bind="componentField">
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select campaign" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
-                                        {{ campaign.title }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <Input type="number" placeholder="1, 2, 3..." v-bind="componentField" />
                         </FormControl>
+                        <FormDescription>
+                            Order in which this exam should be taken (1 = first, 2 = second, etc.)
+                        </FormDescription>
                         <FormMessage />
                     </FormItem>
                 </FormField>
-                <FormField v-slot="{ componentField }" name="level">
+                <FormField v-slot="{ componentField }" name="yt_class_link">
                     <FormItem>
-                        <FormLabel>Level</FormLabel>
+                        <FormLabel>Class Link</FormLabel>
                         <FormControl>
-                            <Select v-bind="componentField">
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select level" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="6">6</SelectItem>
-                                    <SelectItem value="7">7</SelectItem>
-                                    <SelectItem value="8">8</SelectItem>
-                                    <SelectItem value="9">9</SelectItem>
-                                    <SelectItem value="10">10</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <Input type="text" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                                v-bind="componentField" />
                         </FormControl>
+                        <FormDescription>
+                            Youtube class link
+                        </FormDescription>
                         <FormMessage />
                     </FormItem>
                 </FormField>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
+
 
                 <FormField v-slot="{ componentField }" name="startTime">
                     <FormItem>
@@ -157,19 +145,14 @@ const form = useForm({
     defaultValues: {
         title: '',
         subject: '',
-        level: '',
-        campaignId: '',
         startTime: '',
         endTime: '',
         duration: '',
         totalMarks: '',
+        sequenceOrder: 1,
         shuffleQuestions: false,
         negativeMarking: false,
-        data: {
-            hard: 0,
-            medium: 0,
-            easy: 0
-        }
+        yt_class_link: '',
     }
 })
 
@@ -181,13 +164,28 @@ const onSubmit = form.handleSubmit(async (data) => {
 
         const startTime = new Date(data.startTime);
         const endTime = new Date(data.endTime);
-        const durationMs = data.duration * 60 * 1000; // Convert minutes to milliseconds
 
 
         if (startTime >= endTime) {
             return toast({
                 title: "Invalid Start Time",
                 description: "Start time must be before end time",
+                variant: "destructive"
+            });
+        }
+
+        if (data.duration <= 0) {
+            return toast({
+                title: "Invalid Duration",
+                description: "Duration must be greater than 0",
+                variant: "destructive"
+            });
+        }
+
+        if (data.totalMarks <= 0) {
+            return toast({
+                title: "Invalid Total Marks",
+                description: "Total marks must be greater than 0",
                 variant: "destructive"
             });
         }
@@ -200,17 +198,24 @@ const onSubmit = form.handleSubmit(async (data) => {
         }))
         if (error.value) {
             return toast({
-                title: error.value.statusCode.toString(),
-                description: error.value.statusMessage,
+                title: "Error",
+                description: error.value.statusMessage || "Failed to create exam",
                 variant: 'destructive'
             })
         }
 
+        toast({
+            title: "Success",
+            description: "Exam created successfully",
+        })
+
         navigateTo('/admin/exams')
 
     } catch (error) {
+        console.error('Error creating exam:', error)
         return toast({
-            title: error.toString(),
+            title: "Error",
+            description: error.message || "An unexpected error occurred",
             variant: 'destructive'
         })
     } finally {

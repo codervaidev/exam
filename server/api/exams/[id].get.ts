@@ -5,8 +5,7 @@ export default defineEventHandler(async (event) => {
     id: string;
     title: string;
     subject: string;
-    level: string;
-    campaign_id: string;
+    yt_class_link: string; 
     start_time: string;
     end_time: string;
     duration: number;

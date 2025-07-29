@@ -21,31 +21,28 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const startTime = new Date(new Date(data.startTime).getTime() + 6 * 60 * 60 * 1000);
-  const endTime = new Date(new Date(data.endTime).getTime() + 6 * 60 * 60 * 1000);
-
   const result = await query(`
     UPDATE free_exam_exams 
-    SET title = $1, subject = $2, level = $3, campaign_id = $4,
-        start_time = $5, end_time = $6, duration = $7, total_marks = $8,
-        result_publish_time = $9, solution_publish_time = $10,
-        shuffle_questions = $11, negative_marking = $12,
+    SET title = $1, subject = $2, yt_class_link = $3,
+        start_time = $4, end_time = $5, duration = $6, total_marks = $7,
+        result_publish_time = $8, solution_publish_time = $9,
+        shuffle_questions = $10, negative_marking = $11, sequence_order = $12,
         updated_at = NOW()
     WHERE id = $13
     RETURNING id
   `, [
     data.title,
     data.subject,
-    data.level,
-    data.campaignId,
-    startTime,
-    endTime,
+    data.yt_class_link || null,
+    new Date(data.startTime),
+    new Date(data.endTime),
     data.duration,
     data.totalMarks,
-    endTime,
-    endTime,
+    new Date(data.endTime),
+    new Date(data.endTime),
     data.shuffleQuestions || false,
     data.negativeMarking || false,
+    data.sequenceOrder || 1,
     examId
   ]);
 

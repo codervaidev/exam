@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { Question, Submission } from "~/server/types";
+import { checkExamAccess } from "~/server/utils/exam";
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.exam;
@@ -12,11 +13,21 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // Check sequential access first
+  const accessCheck = await checkExamAccess(userId, id);
+  if (!accessCheck.canAccess) {
+    return createError({
+      statusCode: 403,
+      statusMessage: accessCheck.reason || "Access denied",
+    });
+  }
+
   const examResult = await query<{
     id: string;
     title: string;
     subject: string;
-    level: string;
+    yt_class_link: string;
+    sequence_order: number;
     start_time: string;
     end_time: string;
     duration: number;
@@ -43,7 +54,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
- 
   let submission = await query<Submission>(
     `SELECT * FROM free_exam_submissions WHERE exam_id = $1 AND user_id = $2`,
     [id, userId]

@@ -6,9 +6,8 @@ export default defineEventHandler(async (event) => {
     id: string;
     title: string;
     subject: string;
-    level: string;
-    campaign_id: string;
     campaign_title: string;
+    sequence_order: number;
     start_time: string;
     end_time: string;
     duration: number;
@@ -22,15 +21,14 @@ export default defineEventHandler(async (event) => {
     updated_at: string;
   }>(`
     SELECT 
-      e.id, e.title, e.subject, e.level, e.campaign_id,
-      c.title as campaign_title,
+      e.id, e.title, e.subject,
+      e.sequence_order,
       e.start_time, e.end_time, e.duration, e.total_marks,
       e.result_publish_time, e.solution_publish_time,
       e.shuffle_questions, e.negative_marking, e.data,
       e.created_at, e.updated_at
     FROM free_exam_exams e
-    LEFT JOIN free_exam_campaigns c ON e.campaign_id = c.id
-    ORDER BY e.start_time DESC
+    ORDER BY e.sequence_order ASC, e.start_time DESC
   `);
 
   if (!exams.success) {

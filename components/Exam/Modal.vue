@@ -1,267 +1,150 @@
 <template>
-    <AppModal size="sm:min-w-3xl" :isOpen="isOpen" title="Exam Management"
-        description="Create and update exams for your institution" @onClose="onClose" v-if="isOpen">
-        <AppLoader v-if="isLoading" />
-        <form @submit="onSubmit" class="space-y-6">
+    <Dialog :open="isOpen" @update:open="closeModal">
+        <DialogContent class="max-w-4xl max-h-[90vh] overflow-y-auto hide-scrollbar">
 
 
-            <FormField v-slot="{ componentField }" name="title">
-                <FormItem>
-                    <FormLabel>Exam Title</FormLabel>
-                    <FormControl>
-                        <Input type="text" placeholder="Topic, Chapter, Title..." v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-            </FormField>
-            <FormField v-slot="{ componentField }" name="subject">
-                <FormItem>
-                    <FormLabel>Subject</FormLabel>
-                    <FormControl>
-                        <Input type="text" placeholder="Subject Name" v-bind="componentField" />
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
-            </FormField>
+            <div class="space-y-6">
+                <!-- Top Banner Image -->
+                <div
+                    class="w-full h-32 flex items-center justify-center text-center text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
+                    <div>
+                        <h2 class="text-2xl font-bold ">{{ exam?.title }}</h2>
+                        <p class="text-lg">{{ exam?.subject }}</p>
+                    </div>
+                </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <FormField v-slot="{ componentField }" name="campaignId">
-                    <FormItem>
-                        <FormLabel>Campaign</FormLabel>
-                        <FormControl>
-                            <Select v-bind="componentField">
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select campaign" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem v-for="campaign in campaigns" :key="campaign.id" :value="campaign.id">
-                                        {{ campaign.title }}
-                                    </SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="level">
-                    <FormItem>
-                        <FormLabel>Level</FormLabel>
-                        <FormControl>
-                            <Select v-bind="componentField">
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select level" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="6">6</SelectItem>
-                                    <SelectItem value="7">7</SelectItem>
-                                    <SelectItem value="8">8</SelectItem>
-                                    <SelectItem value="9">9</SelectItem>
-                                    <SelectItem value="10">10</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-            </div>
+                <!-- Course/Exam Header -->
+                <div class="flex justify-between items-start">
 
-            <div class="grid grid-cols-2 gap-4">
+                    <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
+                        চলমান পরীক্ষা
+                    </span>
+                </div>
 
-                <FormField v-slot="{ componentField }" name="startTime">
-                    <FormItem>
-                        <FormLabel>Start Time</FormLabel>
-                        <FormControl>
-                            <Input type="datetime-local" v-bind="componentField" />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-                <FormField v-slot="{ componentField }" name="endTime">
-                    <FormItem>
-                        <FormLabel>End Time</FormLabel>
-                        <FormControl>
-                            <Input type="datetime-local" v-bind="componentField" />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
-            </div>
-            <div class="grid grid-cols-2 gap-4">
+                <!-- Descriptive Text -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <p class="text-gray-700 leading-relaxed">
+                        তুমি যে কোর্স চুজ করেছো, তাতে তোমাকে নিচের কোন এচিভ সেন্টারে গিয়ে ক্লাস করা লাগবে তার জন্য
+                        নির্বাচন করে আমাদের সহয়তা করো।
+                    </p>
+                </div>
+
+                <!-- Exam Instructions -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold text-gray-900">পরীক্ষার নির্দেশনাবলি</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg space-y-3">
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">১.</span>
+                            <p class="text-gray-700 text-sm">
+                                প্রতিটি MCQ প্রশ্নের জন্য চারটি করে অপশন থাকবে। সঠিক উত্তরটি বাছাই করতে হবে। একই
+                                প্রশ্নের একাধিক উত্তর থাকবে না। কোনো প্রশ্নের সঠিক উত্তর না থাকলে সবচেয়ে কাছাকাছি
+                                উত্তরটি বাছাই করতে হবে।
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">২.</span>
+                            <p class="text-gray-700 text-sm">
+                                প্রতিটি সঠিক উত্তরের জন্য ১ নম্বর পাওয়া যাবে।
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">৩.</span>
+                            <p class="text-gray-700 text-sm">
+                                প্রতিটি ভুল উত্তরের জন্য ২৫% নম্বর কাটা যাবে। [কনডিশনাল অন ডিমান্ড]
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">৪.</span>
+                            <p class="text-gray-700 text-sm">
+                                সময় শেষ হয়ে গেলে অটো সাবমিট হয়ে যাবে।
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">৫.</span>
+                            <p class="text-gray-700 text-sm">
+                                ইন্টার্নেট জনিত সমস্যা অথবা অন্য কোন কারণে যদি, এক্সাম থেকে বের হয়ে যাও, তাহলে
+                                নির্ডিষ্ট টাইম শেষে অটো সাবমিট হয়ে যাবে।
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">৬.</span>
+                            <p class="text-gray-700 text-sm">
+                                নির্দিষ্ট সময়ের ভেতর দেয়া শুধুমাত্র প্রথবারের কুইজটির মার্ক্সই লিডারবোর্ডে আসবে।
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <span class="text-blue-600 font-bold">৭.</span>
+                            <p class="text-gray-700 text-sm">
+                                টাইম শেষেও প্র্যাকটিস এক্সাম দেয়া যাবে, তবে সেগুলোর মার্ক্স লিডারবোর্ডে আসবেনা।
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suitable Class Section -->
+                <div class="space-y-4" v-if="exam?.yt_class_link">
+                    <h3 class="text-lg font-bold text-gray-900">পরীক্ষার জন্য উপযুক্ত ক্লাস</h3>
+
+                    <div class="mt-4 flex">
+                        <a :href="exam.yt_class_link" target="_blank" rel="noopener"
+                            class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                            <Icon name="lucide:play-circle" class="w-5 h-5 mr-2" />
+                            ক্লাসটি দেখে নাও
+                        </a>
+                    </div>
+                </div>
 
 
-                <FormField v-slot="{ componentField }" name="duration">
-                    <FormItem>
-                        <FormLabel>Duration (minutes)</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="Duration (minutes)" v-bind="componentField" />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
 
-                <FormField v-slot="{ componentField }" name="totalMarks">
-                    <FormItem>
-                        <FormLabel>Total Marks</FormLabel>
-                        <FormControl>
-                            <Input type="number" placeholder="Total Marks" v-bind="componentField" />
-                        </FormControl>
-                        <FormMessage />
-                    </FormItem>
-                </FormField>
 
             </div>
 
+            <DialogFooter class="flex gap-3">
 
+                <button v-if="!exam?.isLocked" @click="startExam"
+                    class="flex items-center justify-center gap-2 w-full h-12 font-semibold special_effect bg-primary text-white rounded-xl">
 
-
-
-            <div class="flex justify-end">
-
-                <Button type="submit" class="ml-auto">
-                    Save Exam
-                </Button>
-            </div>
-
-        </form>
-
-    </AppModal>
+                    পরীক্ষা শুরু করো
+                </button>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
 </template>
 
 <script setup>
-
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { useToast } from '@/components/ui/toast/use-toast'
-import { ExamSchema } from '~/schema/exam.schema';
-const { isOpen, onClose, initialExam } = useExam()
-
-const isLoading = ref(false)
-const { toast } = useToast()
-
-// Fetch campaigns for the select dropdown
-const { data: campaignsData } = await useFetch('/api/admin/campaigns')
-const campaigns = computed(() => campaignsData.value?.body || [])
-
-const form = useForm({
-    schema: toTypedSchema(ExamSchema),
-    defaultValues: {
-        title: '',
-        subject: '',
-        level: '',
-        campaignId: '',
-        startTime: '',
-        endTime: '',
-        duration: '',
-        totalMarks: '',
-        shuffleQuestions: false,
-        negativeMarking: false,
-        data: {
-            hard: 0,
-            medium: 0,
-            easy: 0
-        }
+const props = defineProps({
+    exam: {
+        type: Object,
+        required: true
+    },
+    isOpen: {
+        type: Boolean,
+        default: false
     }
 })
 
+const emit = defineEmits(['close', 'start-exam'])
 
-const onSubmit = form.handleSubmit(async (data) => {
-    try {
-        // Manual validation for publish times
-        const startTime = new Date(data.startTime);
-        const endTime = new Date(data.endTime);
+const closeModal = () => {
+    emit('close')
+}
 
-
-        if (startTime >= endTime) {
-            return toast({
-                title: "Invalid Start Time",
-                description: "Start time must be before end time",
-                variant: "destructive"
-            });
-        }
-
-        isLoading.value = true
-        if (initialExam.value.id) {
-            const { error } = await useFetch(`/api/admin/exam/${initialExam.value.id}`, {
-                method: 'PUT',
-                body: {
-                    ...data,
-                    startTime: dateFieldFormat(data.startTime),
-                    endTime: dateFieldFormat(data.endTime),
-                    resultPublishTime: dateFieldFormat(data.endTime),
-                    solutionPublishTime: dateFieldFormat(data.endTime)
-                }
-            })
-            if (error.value) {
-                return toast({
-                    title: error.value.statusCode.toString(),
-                    description: error.value.statusMessage,
-                    variant: 'destructive'
-                })
-            }
-
-            refreshNuxtData('admin-exams')
-            return onClose()
-        }
-        const { error } = await useAsyncData(() => $fetch('/api/admin/exam', {
-            method: 'POST',
-            body: {
-                ...data,
-                startTime: dateFieldFormat(data.startTime),
-                endTime: dateFieldFormat(data.endTime),
-                resultPublishTime: dateFieldFormat(data.resultPublishTime),
-                solutionPublishTime: dateFieldFormat(data.solutionPublishTime)
-            }
-        }))
-        if (error.value) {
-            return toast({
-                title: error.value.statusCode.toString(),
-                description: error.value.statusMessage,
-                variant: 'destructive'
-            })
-        }
-
-        refreshNuxtData('admin-exams')
-        return onClose()
-
-    } catch (error) {
-        return toast({
-            title: error.toString(),
-            variant: 'destructive'
-        })
-    } finally {
-        isLoading.value = false
+const startExam = () => {
+    if (!props.exam?.isLocked) {
+        emit('start-exam', props.exam)
     }
-})
+}
 
-
-watch(() => initialExam.value, (value) => {
-
-    if (value) {
-        form.setValues({
-            title: value.title,
-            subject: value.subject,
-            level: value.level,
-            campaignId: value.campaign_id,
-            startTime: dateFieldFormat(value.start_time),
-            endTime: dateFieldFormat(value.end_time),
-            duration: value.duration,
-            totalMarks: value.total_marks,
-            resultPublishTime: dateFieldFormat(value.result_publish_time),
-            solutionPublishTime: dateFieldFormat(value.solution_publish_time),
-            shuffleQuestions: value.shuffle_questions,
-            negativeMarking: value.negative_marking,
-            data: {
-                hard: value.data?.hard || 0,
-                medium: value.data?.medium || 0,
-                easy: value.data?.easy || 0
-            }
-        })
-    }
-}, { immediate: true })
-
-
-// spob update the data
-
+const formatDate = (dateString) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return date.toLocaleDateString('bn-BD', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
+}
 </script>
 
 <style lang="scss" scoped></style>

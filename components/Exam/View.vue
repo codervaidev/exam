@@ -7,8 +7,6 @@
                     <p class="text-sm text-muted-foreground">{{ exam.subject }}</p>
                     <span class="text-sm text-muted-foreground">•</span>
                     <p class="text-sm text-muted-foreground">{{ exam.level }}</p>
-                    <span class="text-sm text-muted-foreground">•</span>
-                    <p class="text-sm text-primary font-medium">{{ exam.campaign_title || 'No Campaign' }}</p>
                 </div>
             </div>
             <div class="flex flex-wrap gap-1.5">
@@ -50,8 +48,8 @@
                             </p>
                         </div>
                         <div class="p-3 rounded-lg bg-muted/30">
-                            <Label class="text-xs font-medium">Level</Label>
-                            <p class="mt-0.5 text-xs text-muted-foreground">{{ exam.level }}</p>
+                            <Label class="text-xs font-medium">Sequence Order</Label>
+                            <p class="mt-0.5 text-xs text-muted-foreground">{{ exam.sequence_order || 'Not Set' }}</p>
                         </div>
                         <div class="p-3 rounded-lg bg-muted/30">
                             <Label class="text-xs font-medium">Duration</Label>
@@ -104,6 +102,18 @@ const deleteExam = async (id) => {
         })
         refreshNuxtData('admin-exams')
     }
+}
+
+const formatTime = (dateString) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return date.toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
 }
 </script>
 

@@ -4,8 +4,6 @@ export const ExamSchema = z.object({
   id: z.string().optional(), // id is optional when creating a new exam, as it's generated automatically
   title: z.string().min(1, "Title is required"),
   subject: z.string().min(1, "Subject is required"),
-  level: z.string().min(1, "Level is required"),
-  campaignId: z.string().min(1, "Campaign is required"),
   startTime: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Invalid start time",
   }),
@@ -16,7 +14,8 @@ export const ExamSchema = z.object({
   totalMarks: z.number().positive("Total marks must be a positive number"),
   shuffleQuestions: z.boolean().optional(),
   negativeMarking: z.boolean().optional(),
-  
+  sequenceOrder: z.number().positive("Sequence order must be a positive number").optional(),
+  yt_class_link: z.string().optional(),
 });
 
 export const CampaignSchema = z.object({
