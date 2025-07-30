@@ -94,6 +94,13 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+
+    // check if exam starts
+    if(new Date(exam.start_time) > currentDate){
+      isLocked = true;
+      lockReason = "Exam not started yet";
+    }
+
     return {
       ...exam,
       status,
