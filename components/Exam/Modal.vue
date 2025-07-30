@@ -86,7 +86,6 @@
                             <h2 class="text-base sm:text-lg font-bold text-gray-900">
                                 {{ exam.chapter }}
                             </h2>
-                            <span class="hidden sm:inline-block text-gray-400">|</span>
                             <h3 class="text-base sm:text-lg font-semibold text-gray-700 mt-1 sm:mt-0">
                                 {{ exam.data.teacher }}
                             </h3>
