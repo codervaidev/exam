@@ -61,7 +61,7 @@
                 <div v-if="!exam.isLocked">
                     <button v-if="!exam.submission || exam.submission.status === 'pending'" @click="openExamModal"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
-                        <Icon name="lucide:lock" class="w-4 h-4" />
+
                         পরীক্ষা শুরু করো
                     </button>
                     <p v-else class="text-sm font-semibold text-green-600 text-center">
