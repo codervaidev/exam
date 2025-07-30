@@ -1,21 +1,20 @@
 <template>
     <Dialog :open="isOpen" @update:open="closeModal">
-        <DialogContent class="max-w-4xl max-h-[90vh] overflow-y-auto hide-scrollbar">
+        <DialogContent class="max-w-xl max-h-[90vh] overflow-y-auto hide-scrollbar">
 
 
             <div class="space-y-6">
                 <!-- Top Banner Image -->
-                <div
-                    class="w-full h-32 flex items-center justify-center text-center text-white bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg">
-                    <div>
-                        <h2 class="text-2xl font-bold ">{{ exam?.title }}</h2>
-                        <p class="text-lg">{{ exam?.subject }}</p>
-                    </div>
+                <div class=" flex items-center justify-center text-center text-white h-72 rounded-lg overflow-hidden ">
+                    <img :src="exam?.data?.poster" alt="" class="w-full h-full object-cover aspect-square">
                 </div>
 
                 <!-- Course/Exam Header -->
                 <div class="flex justify-between items-start">
-
+                    <div>
+                        <h2 class="text-xl font-bold ">{{ exam?.title }}</h2>
+                        <p>{{ exam?.subject }}</p>
+                    </div>
                     <span class="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold">
                         চলমান পরীক্ষা
                     </span>
@@ -78,21 +77,29 @@
                 </div>
 
                 <!-- Suitable Class Section -->
-                <div class="space-y-4" v-if="exam?.yt_class_link">
-                    <h3 class="text-lg font-bold text-gray-900">পরীক্ষার জন্য উপযুক্ত ক্লাস</h3>
-
-                    <div class="mt-4 flex">
-                        <a :href="exam.yt_class_link" target="_blank" rel="noopener"
-                            class="inline-flex items-center px-4 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors">
-                            <Icon name="lucide:play-circle" class="w-5 h-5 mr-2" />
-                            ক্লাসটি দেখে নাও
-                        </a>
+                <div v-if="exam?.yt_class_link" class="w-full bg-gray-50 rounded-xl p-5 flex items-center gap-5 mt-6">
+                    <div class="flex-shrink-0 flex items-center justify-center w-14 h-14 rounded-full bg-red-100">
+                        <Icon name="lucide:play-circle" class="w-8 h-8 text-red-600" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                            <h2 class="text-base sm:text-lg font-bold text-gray-900">
+                                {{ exam.chapter }}
+                            </h2>
+                            <span class="hidden sm:inline-block text-gray-400">|</span>
+                            <h3 class="text-base sm:text-lg font-semibold text-gray-700 mt-1 sm:mt-0">
+                                {{ exam.data.teacher }}
+                            </h3>
+                        </div>
+                        <div class="mt-3">
+                            <a :href="exam.yt_class_link" target="_blank" rel="noopener"
+                                class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors">
+                                <Icon name="lucide:play-circle" class="w-5 h-5 mr-2" />
+                                ক্লাসটি দেখে নাও
+                            </a>
+                        </div>
                     </div>
                 </div>
-
-
-
-
             </div>
 
             <DialogFooter class="flex gap-3">
