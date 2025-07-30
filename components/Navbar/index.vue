@@ -4,15 +4,6 @@
             <div
                 class="flex items-center justify-between px-4 py-2 border-2 border-white rounded-full backdrop-blur-sm bg-gradient-to-r from-white to-white/50">
                 <NavbarLogo />
-
-
-
-                <!-- Mobile Menu Button -->
-                <Button variant="ghost" class="md:hidden" @click="isMobileMenuOpen = !isMobileMenuOpen">
-                    <MenuIcon v-if="!isMobileMenuOpen" class="w-6 h-6" />
-                    <XIcon v-else class="w-6 h-6" />
-                </Button>
-
                 <!-- User Profile Dropdown -->
                 <div v-if="user" class="relative items-center hidden gap-2 md:flex">
                     <DropdownMenu>
@@ -27,7 +18,7 @@
 
                                 <p class="font-medium text-sm">{{ user.name }}</p>
                                 <p class="text-xs text-gray-500">
-                                    {{ gradeMap[user.level] }} শ্রেণি
+                                    SSC'26
                                 </p>
                             </div>
                             <ChevronDownIcon class="w-4 h-4" />

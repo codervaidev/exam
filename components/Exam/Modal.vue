@@ -21,63 +21,59 @@
                     </span>
                 </div>
 
-                <!-- Descriptive Text -->
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <p class="text-gray-700 leading-relaxed">
-                        তুমি যে কোর্স চুজ করেছো, তাতে তোমাকে নিচের কোন এচিভ সেন্টারে গিয়ে ক্লাস করা লাগবে তার জন্য
-                        নির্বাচন করে আমাদের সহয়তা করো।
-                    </p>
-                </div>
+
 
                 <!-- Exam Instructions -->
                 <div class="space-y-4">
                     <h3 class="text-lg font-bold text-gray-900">পরীক্ষার নির্দেশনাবলি</h3>
                     <div class="bg-gray-50 p-4 rounded-lg space-y-3">
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">১.</span>
-                            <p class="text-gray-700 text-sm">
-                                প্রতিটি MCQ প্রশ্নের জন্য চারটি করে অপশন থাকবে। সঠিক উত্তরটি বাছাই করতে হবে। একই
-                                প্রশ্নের একাধিক উত্তর থাকবে না। কোনো প্রশ্নের সঠিক উত্তর না থাকলে সবচেয়ে কাছাকাছি
-                                উত্তরটি বাছাই করতে হবে।
-                            </p>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">২.</span>
-                            <p class="text-gray-700 text-sm">
-                                প্রতিটি সঠিক উত্তরের জন্য ১ নম্বর পাওয়া যাবে।
-                            </p>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">৩.</span>
-                            <p class="text-gray-700 text-sm">
-                                প্রতিটি ভুল উত্তরের জন্য ২৫% নম্বর কাটা যাবে। [কনডিশনাল অন ডিমান্ড]
-                            </p>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">৪.</span>
-                            <p class="text-gray-700 text-sm">
-                                সময় শেষ হয়ে গেলে অটো সাবমিট হয়ে যাবে।
-                            </p>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">৫.</span>
-                            <p class="text-gray-700 text-sm">
-                                ইন্টার্নেট জনিত সমস্যা অথবা অন্য কোন কারণে যদি, এক্সাম থেকে বের হয়ে যাও, তাহলে
-                                নির্ডিষ্ট টাইম শেষে অটো সাবমিট হয়ে যাবে।
-                            </p>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">৬.</span>
-                            <p class="text-gray-700 text-sm">
-                                নির্দিষ্ট সময়ের ভেতর দেয়া শুধুমাত্র প্রথবারের কুইজটির মার্ক্সই লিডারবোর্ডে আসবে।
-                            </p>
-                        </div>
-                        <div class="flex gap-3">
-                            <span class="text-blue-600 font-bold">৭.</span>
-                            <p class="text-gray-700 text-sm">
-                                টাইম শেষেও প্র্যাকটিস এক্সাম দেয়া যাবে, তবে সেগুলোর মার্ক্স লিডারবোর্ডে আসবেনা।
-                            </p>
-                        </div>
+                        <ul class="space-y-3 list-none">
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    প্রতিটি MCQ প্রশ্নের জন্য চারটি করে অপশন থাকবে। সঠিক উত্তরটি বাছাই করতে হবে। একই
+                                    প্রশ্নের একাধিক উত্তর থাকবে না। কোনো প্রশ্নের সঠিক উত্তর না থাকলে সবচেয়ে কাছাকাছি
+                                    উত্তরটি বাছাই করতে হবে।
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    প্রতিটি সঠিক উত্তরের জন্য ১ নম্বর পাওয়া যাবে।
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    প্রতিটি ভুল উত্তরের জন্য ২৫% নম্বর কাটা যাবে। [কনডিশনাল অন ডিমান্ড]
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    সময় শেষ হয়ে গেলে অটো সাবমিট হয়ে যাবে।
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    ইন্টার্নেট জনিত সমস্যা অথবা অন্য কোন কারণে যদি, এক্সাম থেকে বের হয়ে যাও, তাহলে
+                                    নির্ডিষ্ট টাইম শেষে অটো সাবমিট হয়ে যাবে।
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    নির্দিষ্ট সময়ের ভেতর দেয়া শুধুমাত্র প্রথবারের কুইজটির মার্ক্সই লিডারবোর্ডে আসবে।
+                                </span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="mt-1 w-3 h-3 rounded-full bg-green-600 flex-shrink-0"></span>
+                                <span class="text-gray-700 text-sm">
+                                    টাইম শেষেও প্র্যাকটিস এক্সাম দেয়া যাবে, তবে সেগুলোর মার্ক্স লিডারবোর্ডে আসবেনা।
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 

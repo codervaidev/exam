@@ -2,21 +2,9 @@
     <div>
         <div class="max-w-4xl p-4 mx-auto ">
 
-            <AppHeading :center="true" title="Campaign Leaderboard"
-                :subtitle="status === 'success' ? data.campaignData.title : ''" />
+            <AppHeading :center="true" title="ক্যাম্পেইন লিডারবোর্ড" />
 
-            <div v-if="status === 'success' && data.exams.length > 0" class="mb-4 text-center">
-                <p class="text-sm text-gray-600 mb-2">
-                    Combined results from {{ data.exams.length }} exam{{ data.exams.length > 1 ? 's' : '' }} in this
-                    campaign
-                </p>
-                <div class="flex flex-wrap justify-center gap-2">
-                    <span v-for="exam in data.exams" :key="exam.id"
-                        class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                        {{ exam.title }}
-                    </span>
-                </div>
-            </div>
+
 
             <div class="relative mt-4 mb-4">
                 <Input type="text" placeholder="Search by name or institute..." class="pl-10" v-model="presearch" />
@@ -78,7 +66,7 @@ const pageSize = 25
 const leaderboard = ref([])
 const loadingMore = ref(false)
 
-const { data, status, error, refresh } = await useLazyFetch(`/api/campaigns/${route.params.id}/leaderboard`, {
+const { data, status, error, refresh } = await useLazyFetch(`/api/leaderboard`, {
     key: 'campaign-leaderboard',
     query: {
         search: search
@@ -109,7 +97,7 @@ const onScroll = async () => {
 };
 
 const loadMoreLeaderboard = async () => {
-    const response = await fetch(`/api/campaigns/${route.params.id}/leaderboard?page=${page.value}&pageSize=${pageSize}&search=${search.value}`)
+    const response = await fetch(`/api/leaderboard?page=${page.value}&pageSize=${pageSize}&search=${search.value}`)
     const moreData = await response.json()
 
     if (moreData.leaderboard && moreData.leaderboard.length > 0) {
