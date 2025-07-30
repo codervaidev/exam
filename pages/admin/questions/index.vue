@@ -34,7 +34,7 @@
                                 <Badge variant="secondary" :class="{ 'bg-green-500 text-white': q[a] == q.correct }">
                                     {{ k + 1 }}
                                 </Badge>
-                                <div v-html="q[a]"></div>
+                                <div v-katex="q[a]"></div>
                             </div>
                         </div>
                     </div>
