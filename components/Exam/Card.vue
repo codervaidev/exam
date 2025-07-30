@@ -64,9 +64,13 @@
 
                         পরীক্ষা শুরু করো
                     </button>
-                    <p v-else class="text-sm font-semibold text-green-600 text-center">
-                        অংশগ্রহণের জন্য ধন্যবাদ।
-                    </p>
+                    <div v-else class="flex justify-center items-center">
+                        <div
+                            class="text-sm inline-block mx-auto rounded-full border py-2 px-5 bg-green-50 mt-2 border-primary  font-semibold text-green-600 text-center">
+
+                            অংশগ্রহণের জন্য ধন্যবাদ।
+                        </div>
+                    </div>
                 </div>
 
                 <div v-else-if="exam.isLocked || exam.status === 'upcoming'" class="mt-4">
