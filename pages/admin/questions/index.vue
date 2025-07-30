@@ -22,7 +22,9 @@
 
             <div v-if="questions.length > 0" class="space-y-3">
                 <div v-for="q, i in questions" :key="i" class="px-3 py-2 bg-white rounded-md">
-                    <div class="text-lg font-semibold " v-html="q.question"></div>
+
+                    <AppMath class="text-lg font-semibold " v-model="q.question"></AppMath>
+
                     <div>
                         <Badge variant="secondary" class="text-white bg-green-500">
                             Q. No. {{ i + 1 }}
