@@ -1,8 +1,5 @@
 <template>
     <div class="space-y-3">
-
-
-
         <div class="flex gap-2 print:hidden">
             <Input type="text" v-model="url" placeholder="Enter the URL of the questions" />
             <AppButton @click="fetchQuestions" :loading="loading" label="Load Questions" />
@@ -34,12 +31,10 @@
                     <div class="grid gap-3 mt-4">
                         <div v-for="(a, k) in ['a', 'b', 'c', 'd']" :key="k">
                             <div class="flex gap-3 p-2 border rounded-lg">
-                                <Badge variant="secondary"
-                                    :class="{ 'bg-green-500 text-white': q[a] == q[parseInt(q.correct) - 1] }">
+                                <Badge variant="secondary" :class="{ 'bg-green-500 text-white': (k + 1) == q.correct }">
                                     {{ k + 1 }}
                                 </Badge>
                                 <AppMath v-model="q[a]"></AppMath>
-
                             </div>
                         </div>
                     </div>
