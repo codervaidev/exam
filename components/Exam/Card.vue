@@ -94,7 +94,7 @@
 
                 <!-- Past Exam Actions -->
                 <div class="grid grid-cols-2 gap-3" v-if="(exam.submission && exam.submission.status === 'submitted')">
-                    <button @click="openExamModal"
+                    <button @click="openClass"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
                         <VideoIcon class="w-4 h-4" />
                         <span class="hidden md:block">
