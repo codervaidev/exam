@@ -1,6 +1,6 @@
 <template>
-    <div class="">
-        <vue-mathjax :options="options" :formula="model" :safe="false" />
+    <div v-katex="model">
+
     </div>
 </template>
 
