@@ -3,7 +3,13 @@
         <CardContent class="p-6">
             <!-- Date Label -->
             <div class="absolute top-4 right-4">
-                <span class="text-xs font-semibold rounded-full px-3 py-1.5" :class="[
+                <div v-if="exam.submission && exam.submission.status === 'submitted'"
+                    class="text-sm inline-block mx-auto rounded-full border py-1 px-2 bg-green-50 mt-2 border-primary  font-semibold text-green-600 text-center">
+
+                    অংশগ্রহণের জন্য ধন্যবাদ।
+                </div>
+
+                <span v-else class="text-xs font-semibold rounded-full px-3 py-1.5" :class="[
                     exam.isLocked ? 'bg-gray-100 text-gray-600' :
                         exam.status === 'ongoing' ? 'bg-green-100 text-green-700' :
                             exam.status === 'upcoming' ? 'bg-blue-100 text-gray-700' :
@@ -61,19 +67,22 @@
                 <div v-if="!exam.isLocked">
                     <button v-if="!exam.submission || exam.submission.status === 'pending'" @click="openExamModal"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
+                        <VideoIcon class="w-4 h-4" />
+                        One Shot ক্লাস দেখো
+                    </button>
+                    <button v-if="!exam.submission || exam.submission.status === 'pending'" @click="openExamModal"
+                        class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
 
                         পরীক্ষা শুরু করো
                     </button>
-                    <div v-else class="flex justify-center items-center">
-                        <div
-                            class="text-sm inline-block mx-auto rounded-full border py-2 px-5 bg-green-50 mt-2 border-primary  font-semibold text-green-600 text-center">
-
-                            অংশগ্রহণের জন্য ধন্যবাদ।
-                        </div>
-                    </div>
                 </div>
 
-                <div v-else-if="exam.isLocked || exam.status === 'upcoming'" class="mt-4">
+                <div v-else-if="exam.isLocked || exam.status === 'upcoming'" class="mt-4 grid grid-cols-2 gap-3">
+                    <button @click="openClass"
+                        class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
+                        <VideoIcon class="w-4 h-4" />
+                        One Shot ক্লাস দেখো
+                    </button>
                     <button disabled
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-gray-300 text-gray-600 rounded-xl cursor-not-allowed">
                         <Icon name="lucide:lock" class="w-4 h-4" />
@@ -82,16 +91,23 @@
                 </div>
 
                 <!-- Past Exam Actions -->
-                <div class=" hidden grid-cols-2 gap-3"
-                    v-if="exam.status === 'past' || (exam.submission && exam.submission.status === 'submitted')">
-                    <button @click="navigateTo(`/exam/${exam.id}/leaderboard`)"
-                        class="flex items-center justify-center w-full h-10 font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm">
+                <div class="grid grid-cols-2 gap-3" v-if="(exam.submission && exam.submission.status === 'submitted')">
+                    <button @click="openExamModal"
+                        class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
+                        <VideoIcon class="w-4 h-4" />
+                        One Shot ক্লাস দেখো
+                    </button>
+                    <button @click="showLeaderboard"
+                        class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]"
+                        :class="exam.status !== 'past' ? '!bg-gray-400' : ''">
+                        <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M0.77002 16V6H4.92302V16H0.77002ZM6.73002 16V0H11.27V16H6.73002ZM13.077 16V8H17.231V16H13.077Z"
+                                fill="white" />
+                        </svg>
                         লিডারবোর্ড
                     </button>
-                    <button @click="navigateTo(`/exam/${exam.id}/solution`)"
-                        class="flex items-center justify-center w-full h-10 font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm">
-                        সমাধান
-                    </button>
+
                 </div>
             </div>
         </CardContent>
@@ -102,7 +118,9 @@
 </template>
 
 <script setup>
+import { VideoIcon } from 'lucide-vue-next'
 import ExamModal from './Modal.vue'
+import { toast } from '../ui/toast'
 
 const { exam } = defineProps({
     exam: {
@@ -153,6 +171,28 @@ const getDateLabel = (exam) => {
 
 
 }
+
+
+const openClass = () => {
+    window.open(exam.yt_class_link, '_blank')
+}
+
+const showLeaderboard = () => {
+    navigateTo(`/exam/${exam.id}/leaderboard`)
+    if (exam.status == 'past') {
+        navigateTo(`/exam/${exam.id}/leaderboard`)
+    } else {
+        toast({
+            title: 'পরীক্ষার সময় শেষ হওয়ার পরেই লিডারবোর্ড দেখা যাবে',
+            variant: 'destructive',
+        })
+    }
+
+
+
+}
+
+
 </script>
 
 <style lang="scss" scoped>

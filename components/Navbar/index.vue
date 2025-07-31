@@ -1,6 +1,6 @@
 <template>
     <div class="w-full bg-[#DFE2E6]">
-        <div class="fixed left-0 right-0 z-50 max-w-6xl px-4 mx-auto top-3">
+        <div class="fixed left-0 right-0 z-50 max-w-7xl px-4 mx-auto top-3">
             <div
                 class="flex items-center justify-between px-4 py-2 border-2 border-white rounded-full backdrop-blur-sm bg-gradient-to-r from-white to-white/50">
                 <NavbarLogo />

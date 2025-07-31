@@ -53,6 +53,18 @@
 
             </div>
         </div>
+
+        <div class="fixed bottom-0 left-0 right-0 bg-white z-50">
+            <div class="max-w-3xl mx-auto py-2">
+                <div class="flex items-center justify-center">
+                    <div class="text-center text-sm text-gray-700">
+                        টপ পারফর্মাররা, ACS Future School অ্যাপে লগইন করো—তোমাদের জেমস তোমাদের অপেক্ষায়!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </template>
 

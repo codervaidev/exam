@@ -33,6 +33,7 @@ export default defineEventHandler(async (event) => {
     duration: number;
     shuffle_questions: boolean;
     data: any;
+  total_marks: number
   }>(`SELECT * FROM free_exam_exams WHERE id = $1`, [id]);
 
   const exam = examResult.data?.[0];
@@ -88,9 +89,10 @@ export default defineEventHandler(async (event) => {
       LEFT JOIN free_exam_question_options o ON q.id = o.question_id
       WHERE q.exam_id = $1
       GROUP BY q.id, q.question, q.subject, q.difficulty
-    
+      ORDER BY RANDOM()
+      LIMIT $2
     `,
-      [id]
+      [id, exam.total_marks]
     );
 
   if (
@@ -117,9 +119,7 @@ export default defineEventHandler(async (event) => {
     );
   }
 
-  if (exam.shuffle_questions && questions?.data) {
-    questions.data = questions.data.sort(() => Math.random() - 0.5);
-  }
+  // Questions are already randomized in the SQL query with LIMIT based on total_marks
 
   return {
     statusCode: 200,

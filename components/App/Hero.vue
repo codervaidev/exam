@@ -4,7 +4,7 @@
 
 
         <div
-            class="relative z-10 w-full max-w-6xl px-4 md:px-8 py-10 md:py-16 flex flex-col md:flex-row items-center md:items-start justify-between gap-10 md:gap-16">
+            class="relative z-10 w-full max-w-7xl px-4 md:px-8 py-10 md:py-16 flex flex-col md:flex-row items-center md:items-start justify-between gap-10 md:gap-16">
             <!-- Left: Hero Text -->
             <div class="flex-1 flex flex-col items-start">
                 <h1 class="text-3xl md:text-4xl font-extrabold text-white mb-5 md:mb-6 leading-tight drop-shadow-lg">
@@ -27,9 +27,11 @@
                         </span>
                     </span>
                 </div>
-                <p class="text-base md:text-lg text-white/90 leading-relaxed drop-shadow-sm max-w-2xl">
+                <p class="text-base  text-white/90 leading-relaxed drop-shadow-sm max-w-2xl">
                     কেমন হতো যদি ফ্রি-তেই পুরো SSC পরীক্ষার সিলেবাস কমপ্লিট হয়ে যেতো আবার পরীক্ষার মাধ্যমে প্র্যাক্টিস
-                    করে সিলেবাসের উপর দক্ষতা যাচাই করে ১ লক্ষ টাকাও জেতা যেতো? শিক্ষার্থীদের জন্য তেমন ভাবনা থেকেই ACS
+                    করে সিলেবাসের উপর দক্ষতা যাচাই করে ১ লক্ষ টাকাও জেতা যেতো? <br> <br> শিক্ষার্থীদের জন্য তেমন ভাবনা
+                    থেকেই
+                    ACS
                     Future School এর SSC 33days challenge ক্যাম্পেইন। ৩৩ দিনে SSC শর্ট সিলেবাসের ৩৩ চ্যাপ্টারের ক্লাস
                     এবং ৩৩টি পরীক্ষার মাধ্যমে তাই সাজানো আমাদের এই ক্যাম্পেইন। ৩৩টি অনলাইন এবং ১টি অফলাইন এক্সামের
                     মাধ্যমে সেরাদের সেরা টপ ৩জন এর জন্য থাকবে ১ লক্ষ টাকা জিতে নেয়ার সুযোগ! তুমিও বিজয়ী হতে পারো এই
@@ -37,61 +39,12 @@
                 </p>
             </div>
             <!-- Right: Exam Start Card -->
-            <div
-                class="w-full max-w-xs md:w-[350px] bg-[#112A1A] rounded-2xl shadow-2xl p-6 flex flex-col items-center border border-[#1e3a2a]/40">
-                <h2
-                    class="text-xl font-bold text-transparent bg-clip-text mb-1 bg-gradient-to-tr from-[#10E010] to-[#00984C]">
-                    ফ্রি পরীক্ষা শুরু হবে
-                </h2>
-                <p class="text-green-50 text-xs md:text-sm mb-4 text-center">নির্ধারিত সময়ের পরে শুরু হবে তোমার পরীক্ষা
-                </p>
-                <div class="flex w-full justify-between items-center gap-2 text-[#9E9E9E] mb-2">
-                    <span>
-                        সময় বাকি
-                    </span>
-                    <span class="inline-flex items-center gap-1">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.66659 2V6.66667H12.6666L7.33325 14V9.33333H3.33325L8.66659 2Z"
-                                stroke="url(#paint0_linear_6883_10729)" stroke-width="1.5" stroke-linecap="round"
-                                stroke-linejoin="round" />
-                            <defs>
-                                <linearGradient id="paint0_linear_6883_10729" x1="7.99992" y1="2" x2="7.99992" y2="14"
-                                    gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#CF8E16" />
-                                    <stop offset="1" stop-color="#FFE49C" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                        <span class="text-[#fad162] font-semibold">
-                            তারাতারি কর
-                        </span>
-                    </span>
-                </div>
-                <div class="w-full grid grid-cols-4 gap-2 md:gap-3 mb-4">
-                    <div class="flex flex-col items-center">
-                        <span
-                            class="text-xl md:text-3xl font-extrabold text-white bg-[#0086434D]/30 px-2 md:px-3 py-2 rounded-md shadow-sm">{{
-                                days }}</span>
-                        <span class="text-green-100 text-xs mt-1">দিন</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <span
-                            class="text-xl md:text-3xl font-extrabold text-white bg-[#0086434D]/30 px-2 md:px-3 py-2 rounded-md shadow-sm">{{
-                                hours }}</span>
-                        <span class="text-green-100 text-xs mt-1">ঘন্টা</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <span
-                            class="text-xl md:text-3xl font-extrabold text-white bg-[#0086434D]/30 px-2 md:px-3 py-2 rounded-md shadow-sm">{{
-                                minutes }}</span>
-                        <span class="text-green-100 text-xs mt-1">মিনিট</span>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <span
-                            class="text-xl md:text-3xl font-extrabold text-white bg-[#0086434D]/30 px-2 md:px-3 py-2 rounded-md shadow-sm">{{
-                                seconds }}</span>
-                        <span class="text-green-100 text-xs mt-1">সেকন্ড</span>
-                    </div>
+            <div class="w-full max-w-md  overflow-hidden rounded-2xl  flex flex-col items-center">
+                <div class="w-full aspect-video rounded-lg overflow-hidden">
+                    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/DBX9nJ45RUg"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen class="w-full h-full"></iframe>
                 </div>
             </div>
         </div>

@@ -54,6 +54,16 @@
 
             </div>
         </div>
+
+        <div class="fixed bottom-0 left-0 right-0 bg-white z-50">
+            <div class="max-w-3xl mx-auto py-2">
+                <div class="flex items-center justify-center">
+                    <div class="text-center text-sm text-gray-700">
+                        ক্যাম্পেইনে টপ করেছো? তোমার জন্য রয়েছে ১ লক্ষ টাকার পুরস্কার! 🏆
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
