@@ -4,7 +4,7 @@ export default defineNuxtPlugin(({ vueApp }) => {
   vueApp.use(VueMathjax, {
     settings: {
       tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        inlineMath: [['$', '$']],
       },
     },
   });
