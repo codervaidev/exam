@@ -23,6 +23,7 @@
             <div v-if="questions.length > 0" class="space-y-3">
                 <div v-for="q, i in questions" :key="i" class="px-3 py-2 bg-white rounded-md">
 
+
                     <AppMath class="text-lg font-semibold " v-model="q.question"></AppMath>
 
                     <div>
@@ -33,7 +34,8 @@
                     <div class="grid gap-3 mt-4">
                         <div v-for="(a, k) in ['a', 'b', 'c', 'd']" :key="k">
                             <div class="flex gap-3 p-2 border rounded-lg">
-                                <Badge variant="secondary" :class="{ 'bg-green-500 text-white': q[a] == q.correct }">
+                                <Badge variant="secondary"
+                                    :class="{ 'bg-green-500 text-white': q[a] == q[parseInt(q.correct) - 1] }">
                                     {{ k + 1 }}
                                 </Badge>
                                 <AppMath v-model="q[parseInt(q.correct) - 1]"></AppMath>
