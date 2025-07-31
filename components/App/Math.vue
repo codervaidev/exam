@@ -1,6 +1,6 @@
 <template>
     <div class="">
-        <vue-mathjax :formula="model" :safe="false" />
+        <vue-mathjax :options="options" :formula="model" :safe="false" />
     </div>
 </template>
 
@@ -8,7 +8,11 @@
 
 const model = defineModel()
 
-
+const options = {
+    tex: {
+        inlineMath: [['$', '$']],
+    },
+}
 
 </script>
 
