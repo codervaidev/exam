@@ -106,14 +106,15 @@ const importQuestions = async () => {
     try {
         importloading.value = true
 
+        const options = ['a', 'b', 'c', 'd']
         await Promise.all(questions.value.map(async (q, sl) => {
             const question = {
                 question: q.question,
                 options: [
-                    { option_text: q.a, correct: q.a == q.correct },
-                    { option_text: q.b, correct: q.b == q.correct },
-                    { option_text: q.c, correct: q.c == q.correct },
-                    { option_text: q.d, correct: q.d == q.correct },
+                    { option_text: q.a, correct: q.a == options[q.correct - 1] },
+                    { option_text: q.b, correct: q.b == options[q.correct - 1] },
+                    { option_text: q.c, correct: q.c == options[q.correct - 1] },
+                    { option_text: q.d, correct: q.d == options[q.correct - 1] },
                 ],
                 examId: props.examId,
                 subject: q.subject || subjectId.value,
