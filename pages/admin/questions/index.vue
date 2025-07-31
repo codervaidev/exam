@@ -38,7 +38,7 @@
                                     :class="{ 'bg-green-500 text-white': q[a] == q[parseInt(q.correct) - 1] }">
                                     {{ k + 1 }}
                                 </Badge>
-                                <AppMath v-model="q[parseInt(q.correct) - 1]"></AppMath>
+                                <AppMath v-model="q[a]"></AppMath>
 
                             </div>
                         </div>
