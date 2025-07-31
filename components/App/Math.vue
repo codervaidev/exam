@@ -1,6 +1,6 @@
 <template>
-    <div v-katex="model">
-
+    <div class="">
+        <vue-mathjax :options="mathjaxOptions" :formula="model" :safe="false" />
     </div>
 </template>
 
@@ -8,11 +8,17 @@
 
 const model = defineModel()
 
-const options = {
+const mathjaxOptions = {
     tex: {
-        inlineMath: [['$', '$']],
+        inlineMath: [['$', '$'],], // Define inline math delimiters
+        displayMath: [['$$', '$$']], // Define display math delimiters
+        macros: {
+            RR: '\\mathbb{R}',
+            bold: ['\\mathbf{#1}', 1],
+        },
     },
 }
+
 
 </script>
 
