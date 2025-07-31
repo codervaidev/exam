@@ -5,7 +5,7 @@
                 class="flex items-center justify-between px-4 py-2 border-2 border-white rounded-full backdrop-blur-sm bg-gradient-to-r from-white to-white/50">
                 <NavbarLogo />
                 <!-- User Profile Dropdown -->
-                <div v-if="user" class="relative items-center hidden gap-2 md:flex">
+                <div v-if="user" class="relative items-center  gap-2 md:flex">
                     <DropdownMenu>
                         <DropdownMenuTrigger class="flex items-center gap-2">
                             <Avatar class="w-8 h-8 bg-gray-200">

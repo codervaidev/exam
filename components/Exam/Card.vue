@@ -1,10 +1,10 @@
 <template>
     <Card class="relative bg-white rounded-xl shadow-none  transition-shadow duration-300">
-        <CardContent class="p-6">
+        <CardContent class="p-3 sm:p-6">
             <!-- Date Label -->
             <div class="absolute top-4 right-4">
                 <div v-if="exam.submission && exam.submission.status === 'submitted'"
-                    class="text-sm inline-block mx-auto rounded-full border py-1 px-2 bg-green-50 mt-2 border-primary  font-semibold text-green-600 text-center">
+                    class="text-sm mt-6 sm:mt-0 inline-block mx-auto rounded-full border py-1 px-2 bg-green-50  border-primary  font-semibold text-green-600 text-center">
 
                     অংশগ্রহণের জন্য ধন্যবাদ।
                 </div>
@@ -22,7 +22,7 @@
             <div class="space-y-5">
                 <!-- Title and Subject -->
                 <div class="pt-2">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">{{ exam.title }}</h3>
+                    <h3 class=" md:text-xl font-bold text-gray-900 mb-2">{{ exam.title }}</h3>
                     <p class="text-sm text-gray-600">{{ exam.subject }}</p>
                 </div>
 
@@ -81,7 +81,9 @@
                     <button @click="openClass"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
                         <VideoIcon class="w-4 h-4" />
-                        One Shot ক্লাস দেখো
+                        <span class="hidden md:block">
+                            One Shot
+                        </span> ক্লাস দেখো
                     </button>
                     <button disabled
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-gray-300 text-gray-600 rounded-xl cursor-not-allowed">
@@ -95,7 +97,9 @@
                     <button @click="openExamModal"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
                         <VideoIcon class="w-4 h-4" />
-                        One Shot ক্লাস দেখো
+                        <span class="hidden md:block">
+                            One Shot
+                        </span> ক্লাস দেখো
                     </button>
                     <button @click="showLeaderboard"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]"

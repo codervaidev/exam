@@ -5,11 +5,11 @@
 
             <div class="flex justify-between items-center">
 
-                <h1 class="text-2xl font-bold">
+                <h1 class=" sm:text-2xl font-bold">
                     চলমান পরীক্ষা
                 </h1>
                 <button @click="navigateTo('/leaderboard')"
-                    class="bg-[#0086431A] text-green-600 flex gap-2 items-center px-4 py-2 rounded-full">
+                    class="bg-[#0086431A] text-green-600 flex gap-2 items-center px-4 py-2 rounded-full text-sm sm:text-base">
 
                     <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
