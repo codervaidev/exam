@@ -178,7 +178,6 @@ const openClass = () => {
 }
 
 const showLeaderboard = () => {
-    navigateTo(`/exam/${exam.id}/leaderboard`)
     if (exam.status == 'past') {
         navigateTo(`/exam/${exam.id}/leaderboard`)
     } else {
