@@ -64,7 +64,7 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div v-if="!exam.isLocked">
+                <div v-if="!exam.isLocked" class="grid md:grid-cols-2 gap-3">
                     <button v-if="!exam.submission || exam.submission.status === 'pending'" @click="openExamModal"
                         class="flex items-center justify-center gap-2 w-full h-12 font-semibold bg-primary text-white rounded-xl shadow-lg hover:bg-green-700 transition-all duration-200 transform hover:scale-[1.02]">
                         <VideoIcon class="w-4 h-4" />
