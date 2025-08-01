@@ -24,7 +24,8 @@ export default defineEventHandler(async (event) => {
           )
         ) as options FROM free_exam_questions q  LEFT JOIN free_exam_question_options o ON q.id = o.question_id
          WHERE q.exam_id = $1
-         GROUP BY q.id, q.question, q.subject, q.difficulty`,
+         GROUP BY q.id, q.question, q.subject, q.difficulty
+         ORDER BY MIN(q.order) ASC`,
     [id]
   );
 

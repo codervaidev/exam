@@ -35,7 +35,7 @@
             <div v-for="(q, i) in data.questions" :key="i"
                 class="p-3 mx-2 space-y-3 bg-white border rounded-lg  md:p-6">
 
-                <div class="text-lg font-semibold text-gray-900 " v-html="q.question"></div>
+                <AppMath class="text-lg font-semibold text-gray-900 " v-model="q.question"></AppMath>
 
                 <div class="flex flex-wrap gap-3 ">
                     <Badge> Q no. {{ i + 1 }}</Badge>

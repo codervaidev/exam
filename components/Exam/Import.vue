@@ -111,10 +111,10 @@ const importQuestions = async () => {
             const question = {
                 question: q.question,
                 options: [
-                    { option_text: q.a, correct: q.a == options[q.correct - 1] },
-                    { option_text: q.b, correct: q.b == options[q.correct - 1] },
-                    { option_text: q.c, correct: q.c == options[q.correct - 1] },
-                    { option_text: q.d, correct: q.d == options[q.correct - 1] },
+                    { option_text: q.a, correct: q.a == q[options[q.correct - 1]] },
+                    { option_text: q.b, correct: q.b == q[options[q.correct - 1]] },
+                    { option_text: q.c, correct: q.c == q[options[q.correct - 1]] },
+                    { option_text: q.d, correct: q.d == q[options[q.correct - 1]] },
                 ],
                 examId: props.examId,
                 subject: q.subject || subjectId.value,
