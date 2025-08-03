@@ -37,5 +37,7 @@ export default defineEventHandler(async (event) => {
 
   const session = await createSession(user.data[0].id) as {id: string, user_id: string, expires_at: Date};
   appendHeader(event, "Set-Cookie", serialiseSession(session));
-  return true;
+  return {
+    session
+  };
 });
