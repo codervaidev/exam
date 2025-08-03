@@ -119,7 +119,7 @@ const importQuestions = async () => {
                 examId: props.examId,
                 subject: q.subject || subjectId.value,
                 order: sl + 1,
-                difficulty: q.difficulty.toLowerCase() || "medium",
+                difficulty: "medium",
             }
             await $fetch('/api/admin/questions', { method: 'POST', body: question });
         }))

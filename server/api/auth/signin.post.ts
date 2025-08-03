@@ -20,6 +20,8 @@ export default eventHandler(async (event) => {
 
       appendHeader(event, "Set-Cookie", serialiseSession(session));
 
-      return true;
+  return {
+        session
+      };
  
 });
