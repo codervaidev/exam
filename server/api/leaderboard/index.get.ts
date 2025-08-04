@@ -48,7 +48,34 @@ export default defineEventHandler(async (event) => {
     const examIds = exams.map(exam => exam.id);
     const totalPossibleMarks = exams.reduce((sum, exam) => sum + exam.total_marks, 0);
 
-    // Calculate total scores per user across all exams
+    // First, get all users with their ranks based on average marks (without search filter)
+    const allUsersRankingResult = await query<{
+      user_id: string;
+      rank: number;
+    }>(
+      `SELECT 
+        u.id as user_id,
+        ROW_NUMBER() OVER (ORDER BY AVG(s.marks) DESC, SUM(s.duration) ASC) as rank
+      FROM free_exam_users u
+      JOIN free_exam_submissions s ON u.id = s.user_id
+      WHERE s.exam_id = ANY($1) 
+        AND s.status = 'submitted'
+      GROUP BY u.id
+    `, [examIds]);
+
+    if (!allUsersRankingResult.success) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Database error while calculating rankings",
+      });
+    }
+
+    // Create a map of user_id to rank
+    const userRankMap = new Map(
+      (allUsersRankingResult.data || []).map(item => [item.user_id, item.rank])
+    );
+
+    // Now get the filtered leaderboard data with search
     const leaderboardResult = await query<{
       user_id: string;
       user_name: string;
@@ -74,7 +101,7 @@ export default defineEventHandler(async (event) => {
         AND s.status = 'submitted'
         AND u.name ILIKE $2
       GROUP BY u.id, u.name, u.institute
-      ORDER BY total_marks_obtained DESC, total_duration ASC
+      ORDER BY average_marks DESC, total_duration ASC
       LIMIT $3 OFFSET $4
     `, [examIds, `%${search}%`, pageSize, skip]);
 
@@ -85,9 +112,9 @@ export default defineEventHandler(async (event) => {
       });
     }
 
-    const leaderboard = (leaderboardResult.data || []).map((item, index) => ({
+    const leaderboard = (leaderboardResult.data || []).map((item) => ({
       id: item.user_id,
-      rank: skip + index + 1,
+      rank: userRankMap.get(item.user_id) || 0,
       user: {
         name: item.user_name,
         institute: item.user_institute,

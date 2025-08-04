@@ -23,11 +23,11 @@
                     </TableHeader>
                     <TableBody>
 
-                        <TableRow v-for="rank, i in leaderboard" :key="rank.id" class="hover:bg-gray-50">
+                        <TableRow v-for="rank in leaderboard" :key="rank.id" class="hover:bg-gray-50">
                             <TableCell class="flex items-center font-medium">
-                                <div v-if="!search" class="flex items-center">
-                                    {{ i + 1 }}
-                                    <Icon v-if="i < 3" name="lucide:medal" size="16" :class="`inline-block ml-1 ${i === 0 ? 'text-yellow-400' : i === 1 ? 'text-gray-400' : 'text-amber-600'
+                                <div class="flex items-center">
+                                    {{ rank.rank }}
+                                    <Icon v-if="rank.rank <= 3" name="lucide:medal" size="16" :class="`inline-block ml-1 ${rank.rank === 1 ? 'text-yellow-400' : rank.rank === 2 ? 'text-gray-400' : 'text-amber-600'
                                         }`" />
                                 </div>
                             </TableCell>
