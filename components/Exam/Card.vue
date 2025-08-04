@@ -162,16 +162,7 @@ const formatDate = (dateString) => {
 
 const getDateLabel = (exam) => {
 
-    if (exam.status === 'upcoming') {
-        return `Day ${exam.sequence_order}`;
-    } else if (exam.sequence_order) {
-        const start_date = new Date(exam.start_time).getDate()
-        console.log(exam);
-
-        return `${start_date} তারিখের পরীক্ষা`
-    } else {
-        return 'পরীক্ষা শেষ'
-    }
+    return `Day ${exam.sequence_order}`
 
 
 }
