@@ -5,6 +5,8 @@ export default defineEventHandler(async (event) => {
   try {
     const queryParams = getQuery(event);
 
+    const user = event.context.user?.id
+
     // Pagination and search
     const page = Math.max(1, parseInt(queryParams.page as string, 10) || 1);
     const pageSize = Math.min(100, Math.max(1, parseInt(queryParams.pageSize as string, 10) || 25));
@@ -60,6 +62,8 @@ export default defineEventHandler(async (event) => {
       JOIN free_exam_submissions s ON u.id = s.user_id
       WHERE s.exam_id = ANY($1) 
         AND s.status = 'submitted'
+        AND s.duration >= 120000
+        AND u.name ~ '^[A-Za-z]{3,}$'
       GROUP BY u.id
     `, [examIds]);
 
@@ -99,7 +103,9 @@ export default defineEventHandler(async (event) => {
       JOIN free_exam_submissions s ON u.id = s.user_id
       WHERE s.exam_id = ANY($1) 
         AND s.status = 'submitted'
+        AND s.duration >= 120000
         AND u.name ILIKE $2
+        AND u.name ~ '^[A-Za-z]{3,}$'
       GROUP BY u.id, u.name, u.institute
       ORDER BY average_marks DESC, total_duration ASC
       LIMIT $3 OFFSET $4
@@ -128,6 +134,7 @@ export default defineEventHandler(async (event) => {
       averageDuration: item.average_duration,
       completionPercentage: exams.length > 0 ? Math.round((item.total_exams_attempted / exams.length) * 100) : 0,
       scorePercentage: totalPossibleMarks > 0 ? Math.round((item.total_marks_obtained / totalPossibleMarks) * 100) : 0,
+      isSuspicious: false,
     }));
 
     // Get total count of users who participated in any exam
@@ -137,7 +144,9 @@ export default defineEventHandler(async (event) => {
       JOIN free_exam_submissions s ON u.id = s.user_id
       WHERE s.exam_id = ANY($1) 
         AND s.status = 'submitted'
+        AND s.duration >= 120000
         AND u.name ILIKE $2
+        AND u.name ~ '^[A-Za-z]{3,}$'
     `, [examIds, `%${search}%`]);
 
     if (!totalParticipantsResult.success) {

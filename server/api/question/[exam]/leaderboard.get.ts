@@ -39,6 +39,7 @@ export default defineEventHandler(async (event) => {
     marks: number;
     duration: number;
     submitted_at: string;
+    answers: string[];
   }>(`
     SELECT 
       s.id,
@@ -46,7 +47,8 @@ export default defineEventHandler(async (event) => {
       u.institute as user_institute,
       s.marks,
       s.duration,
-      s.submitted_at
+      s.submitted_at,
+      s.answers
     FROM free_exam_submissions s
     JOIN free_exam_users u ON s.user_id = u.id
     WHERE s.exam_id = $1 
@@ -55,16 +57,37 @@ export default defineEventHandler(async (event) => {
     LIMIT $3 OFFSET $4
   `, [exam, `%${search}%`, pageSize, skip]);
 
-  const leaderboard = (leaderboardResult.data || []).map(item => ({
-    id: item.id,
-    user: {
-      name: item.user_name,
-      institute: item.user_institute,
-    },
-    marks: item.marks,
-    duration: item.duration,
-    submitted_at: item.submitted_at,
-  }));
+  // Filter out suspicious users (duration < 2 minutes)
+  const leaderboard = (leaderboardResult.data || [])
+    .filter(item => item.duration >= 120000)
+    .map(item => ({
+      id: item.id,
+      user: {
+        name: item.user_name,
+        institute: item.user_institute,
+      },
+      marks: item.marks,
+      duration: item.duration,
+      submitted_at: item.submitted_at,
+      isSuspicious: false,
+      answers: item.answers,
+    }));
+
+  // Find suspicious users (duration < 2 minutes)
+  const suspicious = (leaderboardResult.data || [])
+    .filter(item => item.duration < 120000)
+    .map(item => ({
+      id: item.id,
+      user: {
+        name: item.user_name,
+        institute: item.user_institute,
+      },
+      marks: item.marks,
+      duration: item.duration,
+      submitted_at: item.submitted_at,
+      isSuspicious: true,
+      answers: item.answers,
+    }));
 
   // Fetch the total count of submissions for the exam with the search filter applied
   const totalSubmissionsResult = await query<{count: number}>(
@@ -77,6 +100,7 @@ export default defineEventHandler(async (event) => {
   return {
     examData,
     leaderboard,
+    suspicious,
     pagination: {
       page,
       pageSize,

@@ -46,6 +46,38 @@
                     </TableBody>
                 </Table>
             </div>
+            <!-- Suspicious Users Section -->
+            <div v-if="status === 'success' && data.suspicious && data.suspicious.length > 0" class="mt-8">
+                <div class="p-4 mb-2 text-red-700 bg-red-100 border border-red-300 rounded">
+                    <strong>Suspicious Submissions:</strong> The following users completed exams with an average
+                    duration of less than 2 minutes. Their responses are flagged as suspicious.
+                </div>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Institute</TableHead>
+                            <TableHead class="text-right">Avg. Marks</TableHead>
+                            <TableHead class="text-right">Avg. Duration</TableHead>
+                            <TableHead>Answers</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow v-for="user in data.suspicious" :key="user.id" class="bg-red-50">
+                            <TableCell>{{ user.user.name }}</TableCell>
+                            <TableCell>{{ user.user.institute }}</TableCell>
+                            <TableCell class="font-semibold text-right">{{ user.averageMarks }}</TableCell>
+                            <TableCell class="text-right">{{ formatDuration(user.averageDuration) }}</TableCell>
+                            <TableCell>
+                                <span v-if="user.answers && user.answers.length > 0">
+                                    {{ user.answers.flat().join(', ') }}
+                                </span>
+                                <span v-else>-</span>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </div>
             <div class="my-5">
 
                 <AppLoader v-if="status === 'pending' || loadingMore" />
