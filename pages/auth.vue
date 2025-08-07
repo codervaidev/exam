@@ -9,6 +9,9 @@
                     <FormField v-slot="{ componentField }" name="name">
                         <FormItem>
                             <Label>তোমার নাম*</Label>
+                            <p class="text-sm text-red-500 mt-1">
+                                ভুল নাম ব্যবহার করলে পুরস্কার বা সার্টিফিকেট দেওয়া হবে না।
+                            </p>
                             <FormControl>
                                 <Input
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-base placeholder-gray-400 font-normal"

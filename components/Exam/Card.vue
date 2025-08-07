@@ -181,9 +181,6 @@ const showLeaderboard = () => {
             variant: 'destructive',
         })
     }
-
-
-
 }
 
 

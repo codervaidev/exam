@@ -23,7 +23,12 @@
                             </div>
                             <ChevronDownIcon class="w-4 h-4" />
                         </DropdownMenuTrigger>
+
                         <DropdownMenuContent>
+                            <DropdownMenuItem @click="navigateTo('/profile')">
+                                <UserIcon class="w-4 h-4 mr-2" />
+                                প্রোফাইল
+                            </DropdownMenuItem>
                             <DropdownMenuItem @click="logout">
                                 <LogOutIcon class="w-4 h-4 mr-2" />
                                 লগআউট
@@ -118,14 +123,6 @@ const openSubmenus = ref({})
 
 const user = useUser()
 
-
-const gradeMap = {
-    6: '৬ষ্ঠ',
-    7: '৭ম',
-    8: '৮ম',
-    9: '৯ম',
-    10: '১০ম',
-}
 
 
 
