@@ -1,6 +1,11 @@
 <template>
     <AppHero />
     <AppContainer>
+        <div>
+            <p class="text-sm text-center py-2 text-red-500 mt-1">
+                ভুল নাম দিলে পুরস্কার বা সার্টিফিকেট দেওয়া হবে না। প্রোফাইলে গিয়ে তোমার সঠিক নাম সেট করে আপডেট করে নাও।
+            </p>
+        </div>
         <div v-if="status === 'success'" class="space-y-8 relative py-5">
 
             <div class="flex justify-between items-center">
