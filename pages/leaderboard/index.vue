@@ -23,7 +23,8 @@
                     </TableHeader>
                     <TableBody>
 
-                        <TableRow v-for="rank in leaderboard" :key="rank.id" class="hover:bg-gray-50">
+                        <TableRow v-for="rank in leaderboard" :key="rank.id" class="hover:bg-gray-50 cursor-pointer"
+                            @click="openOverview(rank.id)">
                             <TableCell class="flex items-center font-medium">
                                 <div class="flex items-center">
                                     {{ rank.rank }}
@@ -86,6 +87,53 @@
 
             </div>
         </div>
+
+        <!-- User Overview Modal -->
+        <Dialog v-model:open="isOverviewOpen">
+            <DialogContent class="max-w-3xl">
+                <DialogHeader>
+                    <DialogTitle>
+                        {{ selectedUser?.name || 'User Overview' }}
+                    </DialogTitle>
+                    <DialogDescription>
+                        {{ selectedUser?.institute || '' }}
+                    </DialogDescription>
+                </DialogHeader>
+
+                <div v-if="isLoadingOverview" class="py-6">
+                    <AppLoader />
+                </div>
+                <div v-else>
+
+
+                    <div class="overflow-hidden bg-white border rounded-lg">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Exam</TableHead>
+                                    <TableHead class="text-right">Marks</TableHead>
+                                    <TableHead class="text-right">%</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow v-for="r in results" :key="r.submissionId">
+                                    <TableCell>
+                                        {{ r.title }}
+                                    </TableCell>
+                                    <TableCell class="text-right font-semibold">{{ r.marks }} / {{ r.totalMarks }}
+                                    </TableCell>
+                                    <TableCell class="text-right">{{ r.percentage }}%</TableCell>
+                                </TableRow>
+                                <TableRow v-if="!results || results.length === 0">
+                                    <TableCell colspan="4" class="text-center text-sm text-gray-500 py-6">No submissions
+                                        yet</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </div>
+                </div>
+            </DialogContent>
+        </Dialog>
 
         <div class="fixed bottom-0 left-0 right-0 bg-white z-50">
             <div class="max-w-3xl mx-auto py-2">
@@ -168,6 +216,28 @@ const formatDuration = (totalMinutes) => {
 onMounted(() => {
     window.addEventListener('scroll', onScroll)
 })
+
+// Modal state and logic
+const isOverviewOpen = ref(false)
+const isLoadingOverview = ref(false)
+const selectedUser = ref(null)
+const overview = ref(null)
+const results = ref([])
+
+const openOverview = async (userId) => {
+    isOverviewOpen.value = true
+    isLoadingOverview.value = true
+    try {
+        const res = await $fetch(`/api/leaderboard/${userId}`)
+        selectedUser.value = res.user
+        overview.value = res.overview
+        results.value = res.results
+    } catch (e) {
+        // noop; optionally toast
+    } finally {
+        isLoadingOverview.value = false
+    }
+}
 
 </script>
 

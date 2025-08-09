@@ -5,8 +5,7 @@ export default defineEventHandler(async (event) => {
   try {
     const queryParams = getQuery(event);
 
-    const user = event.context.user?.id
-
+   
     // Pagination and search
     const page = Math.max(1, parseInt(queryParams.page as string, 10) || 1);
     const pageSize = Math.min(100, Math.max(1, parseInt(queryParams.pageSize as string, 10) || 25));
@@ -19,8 +18,9 @@ export default defineEventHandler(async (event) => {
       title: string;
       total_marks: number;
       duration: number;
+      start_time: string;
     }>(
-      `SELECT id, title, total_marks, duration 
+      `SELECT id, title, total_marks, duration, start_time 
       FROM free_exam_exams
       ORDER BY start_time ASC`
     );
@@ -49,6 +49,8 @@ export default defineEventHandler(async (event) => {
 
     const examIds = exams.map(exam => exam.id);
     const totalPossibleMarks = exams.reduce((sum, exam) => sum + exam.total_marks, 0);
+    const now = new Date();
+    const completedExamsCount = exams.filter(exam => new Date(exam.start_time) <= now).length;
 
     // First, get all users with their ranks based on average marks (without search filter)
     const allUsersRankingResult = await query<{
@@ -57,15 +59,19 @@ export default defineEventHandler(async (event) => {
     }>(
       `SELECT 
         u.id as user_id,
-        ROW_NUMBER() OVER (ORDER BY AVG(s.marks) DESC, SUM(s.duration) ASC) as rank
+        ROW_NUMBER() OVER (
+          ORDER BY 
+            (CASE WHEN $2::int > 0 THEN COALESCE(SUM(s.marks), 0)::numeric / $2 ELSE 0 END) DESC,
+            SUM(s.duration) ASC
+        ) as rank
       FROM free_exam_users u
       JOIN free_exam_submissions s ON u.id = s.user_id
       WHERE s.exam_id = ANY($1) 
         AND s.status = 'submitted'
         AND s.duration >= 120000
-        AND u.name ~ '^[A-Za-z]{3,}$'
+        AND char_length(u.name) > 2
       GROUP BY u.id
-    `, [examIds]);
+    `, [examIds, completedExamsCount]);
 
     if (!allUsersRankingResult.success) {
       throw createError({
@@ -96,7 +102,9 @@ export default defineEventHandler(async (event) => {
         u.institute as user_institute,
         COUNT(s.id) as total_exams_attempted,
         COALESCE(SUM(s.marks), 0) as total_marks_obtained,
-        ROUND(AVG(s.marks)::numeric, 2) as average_marks,
+        ROUND(
+          (CASE WHEN $5::int > 0 THEN COALESCE(SUM(s.marks), 0)::numeric / $5 ELSE 0 END)
+        , 2) as average_marks,
         COALESCE(SUM(s.duration), 0) as total_duration,
         ROUND(AVG(s.duration)::numeric, 0) as average_duration
       FROM free_exam_users u
@@ -105,11 +113,11 @@ export default defineEventHandler(async (event) => {
         AND s.status = 'submitted'
         AND s.duration >= 120000
         AND u.name ILIKE $2
-        AND u.name ~ '^[A-Za-z]{3,}$'
+        AND char_length(u.name) > 2
       GROUP BY u.id, u.name, u.institute
       ORDER BY average_marks DESC, total_duration ASC
       LIMIT $3 OFFSET $4
-    `, [examIds, `%${search}%`, pageSize, skip]);
+    `, [examIds, `%${search}%`, pageSize, skip, completedExamsCount]);
 
     if (!leaderboardResult.success) {
       throw createError({
@@ -146,7 +154,7 @@ export default defineEventHandler(async (event) => {
         AND s.status = 'submitted'
         AND s.duration >= 120000
         AND u.name ILIKE $2
-        AND u.name ~ '^[A-Za-z]{3,}$'
+        AND char_length(u.name) > 2
     `, [examIds, `%${search}%`]);
 
     if (!totalParticipantsResult.success) {
