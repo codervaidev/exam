@@ -135,9 +135,41 @@
             </DialogContent>
         </Dialog>
 
-        <div class="fixed bottom-0 left-0 right-0 bg-white z-50">
-            <div class="max-w-3xl mx-auto py-2">
-                <div class="flex items-center justify-center">
+        <div class="fixed bottom-0 left-0 right-0 bg-white z-50 border-t">
+            <div class="max-w-4xl mx-auto py-3 px-4">
+                <div v-if="currentUser && personalOverview" class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-3">
+                        <Avatar class="h-8 w-8">
+                            <AvatarFallback>{{ currentUser.name?.slice(0, 2)?.toUpperCase() }}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <div class="font-semibold">{{ currentUser.name }}</div>
+                            <div class="text-xs text-gray-500">{{ currentUser.institute }}</div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        <div>
+                            <div class="text-xs text-gray-500">Rank</div>
+                            <div class="font-semibold">{{ personalOverview.rank || '-' }}</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-500">Avg. Marks</div>
+                            <div class="font-semibold">{{ personalOverview.averageMarks || 0 }}</div>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="text-xs text-gray-500">Attempted</div>
+                            <div class="font-semibold">{{ personalOverview.totalExamsAttempted || 0 }}</div>
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="text-xs text-gray-500">Completed Exams</div>
+                            <div class="font-semibold">{{ personalOverview.completedExamsCount || 0 }}</div>
+                        </div>
+                    </div>
+                    <div>
+                        <Button size="sm" variant="outline" @click="openOverview(currentUser.id)">View details</Button>
+                    </div>
+                </div>
+                <div v-else class="flex items-center justify-center">
                     <div class="text-center text-sm text-gray-700">
                         ক্যাম্পেইনে টপ করেছো? তোমার জন্য রয়েছে ১ লক্ষ টাকার পুরস্কার! 🏆
                     </div>
@@ -238,6 +270,23 @@ const openOverview = async (userId) => {
         isLoadingOverview.value = false
     }
 }
+
+// Logged-in user's personal sticky overview
+const currentUser = useUser()
+const personalOverview = ref(null)
+
+watchEffect(async () => {
+    if (currentUser.value?.id) {
+        try {
+            const res = await $fetch(`/api/leaderboard/${currentUser.value.id}`)
+            personalOverview.value = res.overview
+        } catch (e) {
+            personalOverview.value = null
+        }
+    } else {
+        personalOverview.value = null
+    }
+})
 
 </script>
 

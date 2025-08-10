@@ -33,18 +33,45 @@ export default defineEventHandler(async (event) => {
       throw createError({ statusCode: 404, statusMessage: 'User not found' })
     }
 
-    // Count exams that have started (completed exams in the sense of leaderboard denominator)
-    const completedExamsCountResult = await query<{ count: number }>(
-      `SELECT COUNT(*)::int as count 
-       FROM free_exam_exams 
-       WHERE start_time <= NOW()`
+    // Fetch all exams to be consistent with leaderboard filters
+    const examsResult = await query<{ id: string; start_time: string }>(
+      `SELECT id, start_time FROM free_exam_exams ORDER BY start_time ASC`
     )
 
-    if (!completedExamsCountResult.success) {
-      throw createError({ statusCode: 500, statusMessage: 'Database error while counting completed exams' })
+    if (!examsResult.success) {
+      throw createError({ statusCode: 500, statusMessage: 'Database error while fetching exams' })
     }
 
-    const completedExamsCount = completedExamsCountResult.data?.[0]?.count || 0
+    const examIds = (examsResult.data || []).map((e) => e.id)
+    // Count exams that have started (completed exams in the sense of leaderboard denominator)
+    const completedExamsCount = (examsResult.data || []).filter((e) => new Date(e.start_time) <= new Date()).length
+
+    // Compute user's rank consistent with leaderboard logic
+    const rankResult = await query<{ user_id: string; rank: number }>(
+      `SELECT user_id, rank FROM (
+         SELECT 
+           u.id as user_id,
+           ROW_NUMBER() OVER (
+             ORDER BY 
+               (CASE WHEN $2::int > 0 THEN COALESCE(SUM(s.marks), 0)::numeric / $2 ELSE 0 END) DESC,
+               SUM(s.duration) ASC
+           ) as rank
+         FROM free_exam_users u
+         JOIN free_exam_submissions s ON u.id = s.user_id
+         WHERE s.exam_id = ANY($1)
+           AND s.status = 'submitted'
+           AND s.duration >= 120000
+           AND char_length(u.name) > 2
+         GROUP BY u.id
+       ) ranked
+       WHERE user_id = $3`,
+      [examIds, completedExamsCount, userId]
+    )
+
+    if (!rankResult.success) {
+      throw createError({ statusCode: 500, statusMessage: 'Database error while calculating rank' })
+    }
+    const rank = rankResult.data?.[0]?.rank || 0
 
     // Fetch per-exam results for the user
     const resultsResult = await query<{
@@ -135,7 +162,8 @@ export default defineEventHandler(async (event) => {
         totalMarksObtained: totals.totalMarksObtained,
         averageMarks,
         totalDuration: totals.totalDuration,
-        averageDuration
+        averageDuration,
+        rank
       },
       results
     }
